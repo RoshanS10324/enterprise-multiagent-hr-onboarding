@@ -1,0 +1,116 @@
+version: "1.0"
+name: "default"
+documents:
+  - id: signed_offer_letter
+    label: "Signed Offer Letter"
+    required: true
+    applies_to: [all]
+    validations:
+      check_readability: true
+      check_required_fields: [employee_name, employer_signature, date]
+      check_expiry: false
+      check_name_consistency: true
+      requires_evidence_stored: false
+
+  - id: passport
+    label: "Passport"
+    required: true
+    applies_to: [all]
+    validations:
+      check_readability: true
+      check_required_fields: [passport_number, nationality, expiry_date, full_name, photo_page]
+      check_expiry: true
+      check_name_consistency: true
+      requires_evidence_stored: false
+
+  - id: emirates_id
+    label: "Emirates ID"
+    required: true
+    applies_to: [location:UAE]
+    validations:
+      check_readability: true
+      check_required_fields: [id_number, expiry_date, full_name]
+      check_expiry: true
+      check_name_consistency: true
+      requires_evidence_stored: false
+
+  - id: degree_certificate
+    label: "Degree Certificate"
+    required: true
+    applies_to: [all]
+    validations:
+      check_readability: true
+      check_required_fields: [institution_name, degree_title, graduate_name, year]
+      check_expiry: false
+      check_name_consistency: true
+      requires_evidence_stored: false
+
+  - id: experience_letter
+    label: "Experience Letter"
+    required: true
+    applies_to: [all]
+    validations:
+      check_readability: true
+      check_required_fields: [employer_name, employee_name, employment_period]
+      check_expiry: false
+      check_name_consistency: true
+      requires_evidence_stored: false
+
+  - id: payslips
+    label: "Payslips (last 3 months)"
+    required: true
+    applies_to: [all]
+    validations:
+      check_readability: true
+      check_required_fields: [employer_name, employee_name, amount, period]
+      check_expiry: false
+      check_name_consistency: true
+      min_count: 3
+      requires_evidence_stored: false
+
+  - id: nda
+    label: "Non-Disclosure Agreement"
+    required: false  # optional (product decision 2026-11-05): validated when supplied, never blocks the gate
+    applies_to: [all]
+    validations:
+      check_readability: true
+      check_required_fields: [employee_signature, date]
+      check_expiry: false
+      check_name_consistency: false
+      requires_evidence_stored: true
+      check_attestation: true
+
+  - id: policy_acknowledgements
+    label: "Policy Acknowledgements"
+    required: false  # optional (product decision 2026-11-05): validated when supplied, never blocks the gate
+    applies_to: [all]
+    validations:
+      check_readability: true
+      check_required_fields: [employee_signature, date, policy_name]
+      check_expiry: false
+      check_name_consistency: false
+      requires_evidence_stored: true
+      check_attestation: true
+
+  - id: family_documents
+    label: "Family/Dependent Documents"
+    required: false
+    applies_to: [sponsorship:true]
+    validations:
+      check_readability: true
+      check_required_fields: [full_name, relationship, date_of_birth]
+      check_expiry: true
+      check_name_consistency: false
+      requires_evidence_stored: false
+
+  - id: visa_documents
+    label: "Visa Application Documents"
+    required: false
+    applies_to: [visa_required:true]
+    validations:
+      check_readability: true
+      check_required_fields: []
+      check_expiry: false
+      check_name_consistency: false
+      requires_evidence_stored: false
+      pro_managed: true

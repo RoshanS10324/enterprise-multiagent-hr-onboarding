@@ -1,0 +1,95 @@
+{
+  "_comment": "SYNTHETIC. One fictional employee for the existing synthetic client SYN-UAE-TEST ('SYNTHETIC TEST CLIENT (not a real client)' in client_configs; approved UC-02 test configuration v1). 'extracted' = what reading the onboarding form (template onboarding-form-2026) would return; loaded by sub_agent.documents.providers.MockExtractionProvider into the same OnboardingDocumentExtraction model the DOCX provider returns. 'intake' = what the INTAKE CALLER supplies (email, placement, the form-approval attestation, and the UC-02 fields role_id/manager_id/location/project). Every personal value is a placeholder; nothing here is a real person, number or document. 'intake.uc02.attributes' are the opt-in checklist attributes the intake caller states (UC-02 never infers them); they match the form: visa from outside the country, travel and hotel stay, insurance plan, background verification.",
+  "synthetic": true,
+  "template_id": "onboarding-form-2026",
+  "extracted": {
+    "employee": {
+      "employee_name": "Rania Synthetic",
+      "reporting_to": "SYN Head of Platform Engineering",
+      "designation": "Synthetic Platform Engineer",
+      "joining_date": "2027-02-01",
+      "probation_months": 6,
+      "final_salary": "SYNTHETIC: AED 18,000 per month"
+    },
+    "offer": {
+      "issuing_entity": "ACME/GLOBAL",
+      "other_promises": "None"
+    },
+    "employment": {
+      "visa_duration_years": 2,
+      "visa_location_category": "OUTSIDE_COUNTRY",
+      "visit_visa_entry_permit": "Entry permit via employer",
+      "direct_entry_permit": "Not required"
+    },
+    "documents": {
+      "passport": "RECEIVED",
+      "passport_cover": "RECEIVED",
+      "visa_copy": null,
+      "cancellation_paper": null,
+      "emirates_id": null,
+      "signed_offer_letter": "RECEIVED",
+      "photograph": "RECEIVED",
+      "degree_certificate": "RECEIVED"
+    },
+    "personal": {
+      "father_name": "SYNTHETIC-FATHER-NAME-21",
+      "mother_name": "SYNTHETIC-MOTHER-NAME-21",
+      "marital_status": "SINGLE",
+      "mobile_number": "SYNTHETIC-MOBILE-21"
+    },
+    "insurance": {
+      "plan": "WN",
+      "employee_insurance": "Census submitted",
+      "family_insurance": "Not applicable"
+    },
+    "benefits": {
+      "annual_employee_ticket": "DXB-BOM, January",
+      "annual_family_ticket": "Not applicable",
+      "hotel_stay_days": 7,
+      "hotel_budget_and_location": "AED 400/night, Dubai Marina"
+    },
+    "roles": {
+      "summary": "Owns platform services as Synthetic Platform Engineer",
+      "is_example": false,
+      "responsibilities": [
+        "Build and operate the platform services owned by the Synthetic Platform Engineer role.",
+        "Maintain deployment pipelines for the synthetic onboarding services.",
+        "Document service runbooks for the platform team."
+      ]
+    }
+  },
+  "intake": {
+    "client_id": "SYN-UAE-TEST",
+    "hr_officer_id": "SYN-HR-OFFICER-21",
+    "candidate_email": "rania.synthetic@example.invalid",
+    "offer_reference": "SYN-OFFER-UAE-0021",
+    "offer_accepted": true,
+    "work_location_type": "OFFICE",
+    "placement": {
+      "location_name": "SYN Dubai Office",
+      "department": "technology",
+      "grade": "L4",
+      "nationality_group": "grp-a",
+      "project_name": "zephyr"
+    },
+    "form_approval": {
+      "form_status": "APPROVED",
+      "approved_by": "SYN-HR-MANAGER-21",
+      "approved_at": "2026-11-01T09:00:00+00:00",
+      "approved_by_role": "hr_ops"
+    },
+    "uc02": {
+      "role_id": "data_engineer",
+      "manager_id": "SYN-MGR-021",
+      "location": "Dubai",
+      "project": "zephyr",
+      "attributes": [
+        "location_status:overseas",
+        "needs_travel",
+        "needs_accommodation",
+        "insurance_required",
+        "bv_required"
+      ]
+    }
+  }
+}

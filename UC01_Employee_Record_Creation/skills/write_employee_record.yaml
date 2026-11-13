@@ -1,0 +1,42 @@
+skill: write_employee_record
+purpose: >
+  Write the approved record to Zoho People and Zoho Payroll.
+
+# From specs/uc01-requirements.yaml. Every requirement must be served
+# by at least one skill; tests/test_llm.py fails if one is orphaned.
+business_requirements: [R4]
+# R4's write half: the prepared records reach Zoho People and Zoho
+# Payroll, once a person has approved.
+
+when_to_use: >
+  Only after HC_05_HRIS_WRITE is approved by someone other than the
+  person who requested it. The last step in UC-01.
+
+inputs:
+  - case_id
+  - the approved HC_05_HRIS_WRITE approval
+
+outputs:
+  - a written record per system, with its external reference
+  - for a post-write change or a rehire, an in-place UPDATE of the
+    existing employee, with the superseded record marked CORRECTED
+  - an EmployeeRecordCreatedEvent
+  - audit entries for the write and the post-write invariant check
+
+approval: HC_05_HRIS_WRITE   # already granted; re-checked immediately before the call
+
+llm_tasks: []   # No model anywhere near a write to a system of record.
+
+entry_point: sub_agent.service.CaseService.execute_hris_write
+
+failure_modes:
+  - Writes disabled by the kill switch -> WRITES_DISABLED, nothing sent.
+  - Approval missing, not approved, or self-approved -> refused.
+  - Payload no longer matches what was approved -> PAYLOAD_MISMATCH; the
+    payload is rebuilt from the form and compared field for field
+    immediately before the call (AC-15).
+  - Case on hold, withdrawn, or closed -> CASE_NOT_ACTIVE.
+  - Gateway unavailable -> retried on the idempotency key; only the
+    exception class name is stored, never its message (GR-14).
+  - Payroll written without People -> caught by the
+    PAYROLL_WITHOUT_PEOPLE invariant.

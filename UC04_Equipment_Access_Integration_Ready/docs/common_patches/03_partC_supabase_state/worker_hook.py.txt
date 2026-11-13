@@ -1,0 +1,13 @@
+# PROPOSED, NOT APPLIED: in Common's uc_worker_runtime.py `_Uc04Handler.__init__`, after the identity profile and before `Uc04Agent()`.
+# UC-04 reads no environment variable; the worker (which may) chooses the store and injects it. Default stays in-memory.
+import os
+
+mode = os.environ.get("UC04_STATE_MODE", "memory")  # "memory" (default) or "supabase"
+if mode == "supabase":
+    from hr_onboarding_common.platform.postgrest_table_client import PostgrestTableClient  # the file next to this one
+    from sub_agent.persistence import DatabaseAgentRunRecorder, DatabaseAuditSink, DatabaseCaseContext, DatabaseCaseRepository, TableStateBackend
+
+    client = PostgrestTableClient(os.environ["SUPABASE_URL"], os.environ["SUPABASE_SERVICE_ROLE_KEY"], os.environ.get("SUPABASE_SCHEMA", "public"))
+    self._agent = Uc04Agent(cases=DatabaseCaseContext(client), store=DatabaseCaseRepository(TableStateBackend(client)),
+                            audit_sink=DatabaseAuditSink(client), run_recorder=DatabaseAgentRunRecorder(client))
+    # the mock case registry is not used in this mode: `_ensure_case` must be skipped, because the parent case already lives in onboarding_cases

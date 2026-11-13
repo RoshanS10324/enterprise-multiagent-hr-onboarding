@@ -1,0 +1,39 @@
+skill: prepare_employee_record
+purpose: >
+  Build the Zoho People and Zoho Payroll payloads from the in-force
+  approved form, ready for a person to approve before any write.
+
+roles: [HR_OFFICER, HR_MANAGER]
+
+form_fields:
+  in_scope:
+    - candidate_name
+    - candidate_email
+    - designation
+    - joining_date
+    - work_location_type
+    - client_site_id
+    - version
+  excluded:
+    # Present in the payroll mapping as a field NAME, never as a value at
+    # prepare time. The stored prepared_payload holds non-sensitive
+    # fields only; the salary payload is built fresh at write time and
+    # never persisted.
+    - salary_and_terms
+    - status
+    - approved_by
+    - approved_at
+    - change_reason
+
+records: >
+  This case and the single form version in force for it. Preparing
+  against a superseded version is what VERSION_NOT_IN_FORCE exists to
+  catch.
+
+tools: []  # Prepares payloads only; no HRIS call is made at this stage.
+
+withheld: >
+  No salary value, and no write. Salary is copied verbatim at write
+  time with no calculation, rounding, or reformatting of any kind.
+
+enforced_by: src/sub_agent/hris_mapping.py

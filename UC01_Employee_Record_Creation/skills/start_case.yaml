@@ -1,0 +1,48 @@
+skill: start_case
+purpose: >
+  Run the start gate and the duplicate/variant check, then open the case
+  on onboarding form version 1, or hold it until the gate is satisfied.
+
+# From specs/uc01-requirements.yaml. Every requirement must be served
+# by at least one skill; tests/test_llm.py fails if one is orphaned.
+business_requirements: [R1, R2, R5]
+# R1 is the gate itself; R2 creates the case from the approved form;
+# R5 covers the duplicate / rehire / internal-transfer detection that
+# runs before the case is opened.
+
+when_to_use: >
+  An offer acceptance has arrived, or an approved onboarding form has
+  appeared for an offer that was already accepted. Always the first
+  skill for a new joiner; never used to reopen a closed case.
+
+inputs:
+  - client_id
+  - offer_ref
+  - hr_officer_id
+  - approved onboarding form (version 1), if one exists yet
+  - hiring freeze state for the client
+
+outputs:
+  - CASE_OPENED with a case_id and employee_no
+  - LINKED_EXISTING when the offer already has a case (EC-38)
+  - HELD when the gate is not satisfied, with the reasons
+  - PAUSED when the client is under a hiring freeze (EC-20)
+  - a HC_12_VARIANT approval when a variant or possible duplicate is found
+
+approval: HC_12_VARIANT    # only when a variant or duplicate is flagged
+
+llm_tasks:
+  - duplicate_explanation  # DRAFT_FOR_HUMAN; describes the match, decides nothing
+
+entry_point: sub_agent.onboarding_entry.open_onboarding_case
+
+failure_modes:
+  - Offer not accepted -> HELD, not an error (EC-19).
+  - No approved form yet -> HELD with a PendingStart, resumed by the
+    same skill when the form arrives.
+  - Two people with the same name -> variant notice to HR, never an
+    automatic merge (EC-39).
+  - Declared minor -> rejected (EC-21).
+  - Rehire/internal transfer -> the case proposes reactivating the
+    existing employee rather than creating a second one (EC-43); HR
+    approves that proposal at HC_12_VARIANT.

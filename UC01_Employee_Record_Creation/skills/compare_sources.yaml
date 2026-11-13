@@ -1,0 +1,41 @@
+skill: compare_sources
+purpose: >
+  Compare other data sources against the approved onboarding form and
+  raise a discrepancy for each field that differs.
+
+# From specs/uc01-requirements.yaml. Every requirement must be served
+# by at least one skill; tests/test_llm.py fails if one is orphaned.
+business_requirements: [R6]
+# R6 in full: the form, the offer and other records are compared and
+# every difference becomes a discrepancy for HR to approve.
+
+when_to_use: >
+  After a case is open and a source snapshot is available. Re-run
+  whenever a new snapshot arrives or a new form version comes into
+  force -- a later version may legitimately agree with a source an
+  earlier one did not.
+
+inputs:
+  - case_id
+  - one or more SourceSnapshots (source name plus field values)
+  # The offer and other HR records. Identity-document checks are the
+  # document-validation use case's job, not UC-01's.
+
+outputs:
+  - a Discrepancy per differing field, de-duplicated per form version
+  - a HC_04_DATA approval for HR to resolve each one
+
+approval: HC_04_DATA
+
+llm_tasks:
+  - discrepancy_summary  # DRAFT_FOR_HUMAN; field names only, never values
+
+entry_point: sub_agent.service.CaseService.compare_sources
+
+failure_modes:
+  - Snapshot carries an unknown field -> rejected at the model boundary,
+    rather than silently compared against nothing.
+  - Salary differs -> flagged by field name; neither value is logged,
+    shown, or sent to a model (SALARY-01).
+  - Same difference seen twice on one form version -> de-duplicated by
+    fingerprint, so HR is not asked the same question twice.

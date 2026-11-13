@@ -1,0 +1,44 @@
+{
+  "id": "EC-41",
+  "title": "Declared agency contractor: variant approval blocks prepare until HR decides",
+  "covers": ["EC-41"],
+  "setup": {
+    "client_id": "client-eval-ec41",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Alex Agency Contractor",
+    "candidate_email": "alex.agencycontractor@example.test",
+    "salary_and_terms": "Base: 90000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {"declared_variants": {"is_agency_contractor": true}},
+      "save": "case",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "prepare",
+      "as": "HR_OFFICER",
+      "args": {"case_id": "$case.case.case_id"},
+      "expect": {"outcome": "BLOCKED_PENDING_VARIANT_DECISION"}
+    },
+    {
+      "action": "decide_variant",
+      "as": "HR_OFFICER",
+      "args": {"approval_id": "$case.approvals_created.0", "approve": true, "note": "contractor engagement confirmed"}
+    },
+    {
+      "action": "prepare",
+      "as": "HR_OFFICER",
+      "args": {"case_id": "$case.case.case_id"},
+      "expect": {"outcome": "PREPARED"}
+    }
+  ],
+  "final": {
+    "case_ref": "case",
+    "stage": "HRIS_APPROVAL_PENDING",
+    "audit_actions_present": ["HRIS_PREPARE_BLOCKED", "VARIANT_APPROVED", "HRIS_PREPARED"],
+    "invariants_clean": true
+  }
+}

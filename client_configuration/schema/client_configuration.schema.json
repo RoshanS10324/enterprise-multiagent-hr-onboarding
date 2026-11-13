@@ -1,0 +1,1565 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dact.example/schemas/client_configuration/1.0.0",
+  "title": "Enterprise HR Agent central client configuration (UC-01 to UC-05)",
+  "description": "One versioned configuration document per client. Five use-case sections plus shared configuration. No secrets, credentials, addresses or personal data belong in it. An empty applicability list means 'applies to all'. Optional fields added for existing mock clients (environment, existing_client_record, eligibility catalogue, checklist attributes, immigration / medical-insurance / payroll configuration) are backward compatible.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "client_master",
+    "shared_configuration",
+    "uc01_employee_record",
+    "uc02_onboarding_tasks",
+    "uc03_document_validation",
+    "uc04_equipment_access",
+    "uc05_orientation_policy",
+    "awaiting_confirmation"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "client_master": {
+      "$ref": "#/$defs/client_master"
+    },
+    "shared_configuration": {
+      "$ref": "#/$defs/shared_configuration"
+    },
+    "uc01_employee_record": {
+      "$ref": "#/$defs/uc01"
+    },
+    "uc02_onboarding_tasks": {
+      "$ref": "#/$defs/uc02"
+    },
+    "uc03_document_validation": {
+      "$ref": "#/$defs/uc03"
+    },
+    "uc04_equipment_access": {
+      "$ref": "#/$defs/uc04"
+    },
+    "uc05_orientation_policy": {
+      "$ref": "#/$defs/uc05"
+    },
+    "awaiting_confirmation": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "item",
+          "owning_team"
+        ],
+        "properties": {
+          "item": {
+            "type": "string",
+            "minLength": 3
+          },
+          "owning_team": {
+            "type": "string",
+            "minLength": 3
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "key": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_\\-:.]*$"
+    },
+    "role": {
+      "enum": [
+        "hr_ops",
+        "hr_lead",
+        "it_manager",
+        "facilities",
+        "finance",
+        "manager",
+        "buddy",
+        "employee",
+        "system",
+        "hr_officer",
+        "hr_manager",
+        "pro"
+      ]
+    },
+    "category": {
+      "enum": [
+        "hr_record",
+        "document_collection",
+        "it_provisioning",
+        "access_management",
+        "workplace",
+        "orientation",
+        "policy_acknowledgement",
+        "payroll",
+        "joining_confirmation",
+        "background_verification",
+        "visa",
+        "medical",
+        "biometrics",
+        "insurance",
+        "travel",
+        "accommodation",
+        "food",
+        "banking_letter",
+        "hr_system_activation"
+      ]
+    },
+    "stringlist": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "roles",
+        "grades",
+        "nationality_groups",
+        "locations",
+        "employment_types",
+        "projects",
+        "requires_attributes",
+        "excludes_attributes"
+      ],
+      "properties": {
+        "roles": {
+          "$ref": "#/$defs/stringlist"
+        },
+        "grades": {
+          "$ref": "#/$defs/stringlist"
+        },
+        "nationality_groups": {
+          "$ref": "#/$defs/stringlist"
+        },
+        "locations": {
+          "$ref": "#/$defs/stringlist"
+        },
+        "employment_types": {
+          "$ref": "#/$defs/stringlist"
+        },
+        "projects": {
+          "$ref": "#/$defs/stringlist"
+        },
+        "requires_attributes": {
+          "$ref": "#/$defs/stringlist"
+        },
+        "excludes_attributes": {
+          "$ref": "#/$defs/stringlist"
+        }
+      }
+    },
+    "client_master": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "client_id",
+        "client_name",
+        "client_status",
+        "country",
+        "supported_locations",
+        "timezone",
+        "configuration_version",
+        "effective_from",
+        "effective_until",
+        "approval_status",
+        "approved_by",
+        "approved_at",
+        "data_origin",
+        "created_at",
+        "updated_at",
+        "synthetic_notice",
+        "scenario"
+      ],
+      "properties": {
+        "client_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9][A-Z0-9_\\-]{1,39}$"
+        },
+        "client_name": {
+          "type": "string",
+          "minLength": 3
+        },
+        "client_status": {
+          "enum": [
+            "active",
+            "inactive"
+          ]
+        },
+        "country": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "code",
+            "name"
+          ],
+          "properties": {
+            "code": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}$"
+            },
+            "name": {
+              "type": "string",
+              "minLength": 2
+            }
+          }
+        },
+        "supported_locations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "name",
+              "country_code",
+              "work_location_type"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 2
+              },
+              "name": {
+                "type": "string"
+              },
+              "country_code": {
+                "type": "string",
+                "pattern": "^[A-Z]{2}$"
+              },
+              "work_location_type": {
+                "enum": [
+                  "OFFICE",
+                  "CLIENT_SITE"
+                ]
+              }
+            }
+          }
+        },
+        "timezone": {
+          "type": "string",
+          "pattern": "^[A-Za-z]+/[A-Za-z_]+$"
+        },
+        "configuration_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "effective_from": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "effective_until": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "approval_status": {
+          "enum": [
+            "draft",
+            "approved",
+            "retired"
+          ],
+          "description": "Stored vocabulary. 'active' / 'expired' / 'inactive' are derived at retrieval from approval_status, the effective dates and client_status."
+        },
+        "approved_by": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "approved_at": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "data_origin": {
+          "enum": [
+            "synthetic",
+            "approved_client"
+          ]
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "updated_at": {
+          "type": "string"
+        },
+        "synthetic_notice": {
+          "type": "string"
+        },
+        "scenario": {
+          "type": "string"
+        },
+        "environment": {
+          "enum": [
+            "mock",
+            "synthetic"
+          ],
+          "description": "test-data label; real client data never uses this schema without an approved data_origin"
+        },
+        "synthetic": {
+          "type": "boolean"
+        },
+        "existing_client_record": {
+          "type": "boolean",
+          "description": "true = the client_configs row already exists and is preserved, never rewritten"
+        },
+        "data_source": {
+          "type": "string"
+        }
+      }
+    },
+    "shared_configuration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calendar",
+        "approval_matrix",
+        "notification_templates",
+        "recipient_mapping_refs",
+        "escalation_rules",
+        "retry_policy",
+        "event_types",
+        "integration_contract_refs"
+      ],
+      "properties": {
+        "calendar": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "timezone",
+            "working_days",
+            "sla_calendar",
+            "holidays"
+          ],
+          "properties": {
+            "timezone": {
+              "type": "string"
+            },
+            "working_days": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 7,
+              "uniqueItems": true,
+              "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 7
+              }
+            },
+            "sla_calendar": {
+              "enum": [
+                "working_days",
+                "calendar_days"
+              ]
+            },
+            "holidays": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "date",
+                  "name",
+                  "observed"
+                ],
+                "properties": {
+                  "date": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "observed": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "weekend_days": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 7
+              },
+              "uniqueItems": true
+            },
+            "working_hours": {
+              "type": "object",
+              "required": [
+                "start",
+                "end"
+              ],
+              "properties": {
+                "start": {
+                  "type": "string",
+                  "pattern": "^\\d{2}:\\d{2}$"
+                },
+                "end": {
+                  "type": "string",
+                  "pattern": "^\\d{2}:\\d{2}$"
+                }
+              }
+            },
+            "observed_holiday_rule": {
+              "type": "string"
+            },
+            "holiday_source_note": {
+              "type": "string"
+            }
+          }
+        },
+        "approval_matrix": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "action",
+              "approver_role",
+              "delegate_role",
+              "separation_of_duties"
+            ],
+            "properties": {
+              "action": {
+                "type": "string"
+              },
+              "approver_role": {
+                "$ref": "#/$defs/role"
+              },
+              "delegate_role": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/role"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "separation_of_duties": {
+                "type": "boolean"
+              },
+              "approval_type": {
+                "type": "string"
+              },
+              "approval_sequence": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "responsible_team": {
+                "type": "string"
+              },
+              "escalation_owner": {
+                "$ref": "#/$defs/role"
+              },
+              "reminder_interval_working_days": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "notification_event": {
+                "type": "string"
+              },
+              "rejection_handling": {
+                "type": "string"
+              },
+              "change_request_handling": {
+                "type": "string"
+              },
+              "approval_evidence": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "notification_templates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "audience",
+              "channel",
+              "language",
+              "approval_required",
+              "template_ref"
+            ],
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "audience": {
+                "enum": [
+                  "internal",
+                  "joiner"
+                ]
+              },
+              "channel": {
+                "type": "string"
+              },
+              "language": {
+                "type": "string"
+              },
+              "approval_required": {
+                "const": true
+              },
+              "template_ref": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "recipient_mapping_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "role_or_team",
+              "reference_key"
+            ],
+            "properties": {
+              "role_or_team": {
+                "type": "string"
+              },
+              "reference_key": {
+                "type": "string",
+                "pattern": "^recipient-map://"
+              }
+            }
+          }
+        },
+        "escalation_rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "rule_key",
+              "trigger",
+              "after_working_days",
+              "escalate_to_role",
+              "channel"
+            ],
+            "properties": {
+              "rule_key": {
+                "type": "string"
+              },
+              "trigger": {
+                "type": "string"
+              },
+              "after_working_days": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "escalate_to_role": {
+                "$ref": "#/$defs/role"
+              },
+              "channel": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "retry_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "max_attempts",
+            "backoff_seconds"
+          ],
+          "properties": {
+            "max_attempts": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            },
+            "backoff_seconds": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "event_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "event",
+              "producer",
+              "consumers",
+              "idempotency_key_field"
+            ],
+            "properties": {
+              "event": {
+                "type": "string"
+              },
+              "producer": {
+                "type": "string"
+              },
+              "consumers": {
+                "$ref": "#/$defs/stringlist"
+              },
+              "idempotency_key_field": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "integration_contract_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "contract",
+              "document"
+            ],
+            "properties": {
+              "contract": {
+                "type": "string"
+              },
+              "document": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "uc01": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "employee_fields",
+        "supported_roles",
+        "grades",
+        "nationality_groups",
+        "employment_types",
+        "work_location_types",
+        "eligibility_rules",
+        "field_validation",
+        "onboarding_record_requirements",
+        "trigger_event",
+        "duplicate_prevention",
+        "uc02_handoff_mapping"
+      ],
+      "properties": {
+        "employee_fields": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "object",
+            "required": [
+              "field",
+              "label",
+              "required",
+              "type",
+              "sensitive"
+            ]
+          }
+        },
+        "supported_roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "role_id",
+              "label"
+            ],
+            "properties": {
+              "role_id": {
+                "$ref": "#/$defs/key"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "grades": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "grade_id",
+              "band_order"
+            ],
+            "properties": {
+              "grade_id": {
+                "type": "string"
+              },
+              "band_order": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "nationality_groups": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "group_code",
+              "label",
+              "nationality_codes"
+            ],
+            "properties": {
+              "group_code": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "nationality_codes": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z]{2}$"
+                }
+              }
+            }
+          }
+        },
+        "employment_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "full_time",
+              "contract",
+              "intern",
+              "part_time"
+            ]
+          }
+        },
+        "work_location_types": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "OFFICE",
+              "CLIENT_SITE"
+            ]
+          }
+        },
+        "eligibility_rules": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": [
+              "rule_key",
+              "outcome",
+              "reason"
+            ],
+            "properties": {
+              "outcome": {
+                "enum": [
+                  "eligible",
+                  "hold",
+                  "review"
+                ]
+              }
+            }
+          }
+        },
+        "field_validation": {
+          "type": "object"
+        },
+        "onboarding_record_requirements": {
+          "type": "object",
+          "required": [
+            "offer_accepted_required",
+            "approved_form_required"
+          ],
+          "properties": {
+            "offer_accepted_required": {
+              "const": true
+            },
+            "approved_form_required": {
+              "const": true
+            }
+          }
+        },
+        "trigger_event": {
+          "type": "object",
+          "required": [
+            "event_type",
+            "required_fields",
+            "idempotency_key_field"
+          ]
+        },
+        "duplicate_prevention": {
+          "type": "object",
+          "required": [
+            "scope",
+            "match_on"
+          ],
+          "properties": {
+            "scope": {
+              "const": "client"
+            }
+          }
+        },
+        "uc02_handoff_mapping": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "uc02_field",
+              "source",
+              "required"
+            ],
+            "properties": {
+              "uc02_field": {
+                "type": "string"
+              },
+              "source": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "work_locations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "name",
+              "country_code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "country_code": {
+                "type": "string",
+                "pattern": "^[A-Z]{2}$"
+              }
+            }
+          }
+        },
+        "checklist_attributes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "family",
+              "values",
+              "required",
+              "reason"
+            ],
+            "properties": {
+              "family": {
+                "type": "string",
+                "pattern": "^[a-z_]+$"
+              },
+              "values": {
+                "$ref": "#/$defs/stringlist"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "required_for_checklist": {
+          "$ref": "#/$defs/stringlist"
+        },
+        "contract_types": {
+          "$ref": "#/$defs/stringlist"
+        },
+        "work_arrangements": {
+          "$ref": "#/$defs/stringlist"
+        },
+        "probation": {
+          "type": "object"
+        },
+        "working_hours": {
+          "type": "object"
+        }
+      }
+    },
+    "uc02": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_templates",
+        "assignment_rules",
+        "document_gates",
+        "hr_approval",
+        "due_date_calculation",
+        "reminders",
+        "escalations",
+        "overdue_monitoring",
+        "milestones",
+        "visa_vs_background_check"
+      ],
+      "properties": {
+        "task_templates": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "template_key",
+              "category",
+              "title",
+              "description",
+              "owner_role",
+              "responsible_team",
+              "priority",
+              "depends_on",
+              "parallel_group",
+              "offset_days",
+              "sla_working_days",
+              "evidence_required",
+              "approval_role",
+              "downstream_use_case",
+              "applicability"
+            ],
+            "properties": {
+              "template_key": {
+                "$ref": "#/$defs/key"
+              },
+              "category": {
+                "$ref": "#/$defs/category"
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "owner_role": {
+                "$ref": "#/$defs/role"
+              },
+              "responsible_team": {
+                "type": "string"
+              },
+              "priority": {
+                "enum": [
+                  "low",
+                  "normal",
+                  "high",
+                  "critical"
+                ]
+              },
+              "depends_on": {
+                "$ref": "#/$defs/stringlist"
+              },
+              "parallel_group": {
+                "type": "string"
+              },
+              "offset_days": {
+                "type": "integer",
+                "maximum": 30,
+                "minimum": -90
+              },
+              "sla_working_days": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 60
+              },
+              "evidence_required": {
+                "type": "boolean"
+              },
+              "approval_role": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/role"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "downstream_use_case": {
+                "enum": [
+                  "UC-03",
+                  "UC-04",
+                  "UC-05",
+                  null
+                ]
+              },
+              "applicability": {
+                "$ref": "#/$defs/applicability"
+              },
+              "blocking": {
+                "type": "boolean"
+              },
+              "awaiting_confirmation": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "assignment_rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "category",
+              "team",
+              "downstream_use_case",
+              "mode",
+              "escalation_owner"
+            ],
+            "properties": {
+              "category": {
+                "$ref": "#/$defs/category"
+              },
+              "team": {
+                "type": "string"
+              },
+              "downstream_use_case": {
+                "enum": [
+                  "UC-03",
+                  "UC-04",
+                  "UC-05",
+                  null
+                ]
+              },
+              "mode": {
+                "enum": [
+                  "role",
+                  "use_case"
+                ]
+              },
+              "escalation_owner": {
+                "$ref": "#/$defs/role"
+              }
+            }
+          }
+        },
+        "document_gates": {
+          "type": "array",
+          "minItems": 1
+        },
+        "hr_approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "plan_approval_required",
+            "approver_role",
+            "delegate_role",
+            "sla_hours"
+          ],
+          "properties": {
+            "plan_approval_required": {
+              "const": true
+            },
+            "approver_role": {
+              "$ref": "#/$defs/role"
+            },
+            "delegate_role": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/role"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sla_hours": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "due_date_calculation": {
+          "type": "object",
+          "required": [
+            "reference",
+            "direction",
+            "calendar"
+          ]
+        },
+        "reminders": {
+          "type": "object",
+          "required": [
+            "first_after_working_days",
+            "repeat_every_working_days",
+            "handover_to_hr_call_after"
+          ]
+        },
+        "escalations": {
+          "type": "array",
+          "minItems": 1
+        },
+        "overdue_monitoring": {
+          "type": "object",
+          "required": [
+            "derived_from_due_date",
+            "stored_status",
+            "sweep"
+          ],
+          "properties": {
+            "derived_from_due_date": {
+              "const": true
+            },
+            "stored_status": {
+              "const": false
+            }
+          }
+        },
+        "milestones": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "milestone_key",
+              "title",
+              "offset_days",
+              "required_task_keys"
+            ]
+          }
+        },
+        "visa_vs_background_check": {
+          "enum": [
+            "not_applicable_no_visa_route",
+            "wait_for_clear_background_check_before_visa",
+            "run_visa_and_background_check_in_parallel_flag_cost_risk_to_hr"
+          ]
+        },
+        "immigration_configuration": {
+          "type": "object"
+        },
+        "medical_insurance_configuration": {
+          "type": "object"
+        },
+        "payroll_configuration": {
+          "type": "object"
+        }
+      }
+    },
+    "uc03": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "global",
+        "documents"
+      ],
+      "properties": {
+        "global": {
+          "type": "object",
+          "required": [
+            "confidence_threshold",
+            "authenticity_decided_by",
+            "capabilities"
+          ],
+          "properties": {
+            "authenticity_decided_by": {
+              "const": "hr"
+            },
+            "capabilities": {
+              "type": "object",
+              "required": [
+                "antivirus_scanning",
+                "identity_verification",
+                "authority_verification"
+              ],
+              "properties": {
+                "antivirus_scanning": {
+                  "const": false
+                },
+                "identity_verification": {
+                  "const": false
+                },
+                "authority_verification": {
+                  "const": false
+                }
+              }
+            }
+          }
+        },
+        "documents": {
+          "type": "array",
+          "minItems": 5,
+          "items": {
+            "type": "object",
+            "required": [
+              "document_key",
+              "name",
+              "category",
+              "mandatory",
+              "applicability",
+              "submission",
+              "accepted_formats",
+              "required_metadata",
+              "expiry",
+              "verification",
+              "initial_status",
+              "rejection_reasons",
+              "resubmission",
+              "depends_on_tasks",
+              "blocks_tasks"
+            ],
+            "properties": {
+              "document_key": {
+                "$ref": "#/$defs/key"
+              },
+              "category": {
+                "enum": [
+                  "offer",
+                  "identity",
+                  "visa",
+                  "education",
+                  "employment",
+                  "agreement",
+                  "medical",
+                  "insurance",
+                  "family",
+                  "bank_payroll",
+                  "client_site",
+                  "tax"
+                ]
+              },
+              "mandatory": {
+                "type": "boolean"
+              },
+              "applicability": {
+                "$ref": "#/$defs/applicability"
+              },
+              "submission": {
+                "type": "object",
+                "required": [
+                  "requirement",
+                  "deadline_offset_days",
+                  "channel"
+                ],
+                "properties": {
+                  "requirement": {
+                    "enum": [
+                      "required",
+                      "optional"
+                    ]
+                  },
+                  "deadline_offset_days": {
+                    "type": "integer",
+                    "minimum": -90,
+                    "maximum": 30
+                  }
+                }
+              },
+              "accepted_formats": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "enum": [
+                    "pdf",
+                    "jpeg",
+                    "png",
+                    "tiff"
+                  ]
+                }
+              },
+              "expiry": {
+                "type": "object",
+                "required": [
+                  "applies",
+                  "min_remaining_validity_days",
+                  "handling"
+                ]
+              },
+              "verification": {
+                "type": "object",
+                "required": [
+                  "checks",
+                  "evidence_required",
+                  "authenticity_decided_by",
+                  "approval_required"
+                ],
+                "properties": {
+                  "authenticity_decided_by": {
+                    "const": "hr"
+                  }
+                }
+              },
+              "initial_status": {
+                "const": "pending"
+              },
+              "rejection_reasons": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "enum": [
+                    "EXPIRED_DOCUMENT",
+                    "UNREADABLE",
+                    "WRONG_TYPE",
+                    "MISSING_FIELDS",
+                    "NAME_MISMATCH",
+                    "LOW_CONFIDENCE",
+                    "EVIDENCE_NOT_STORED"
+                  ]
+                }
+              },
+              "resubmission": {
+                "type": "object",
+                "required": [
+                  "allowed",
+                  "max_attempts",
+                  "replacement_request_needs_hr_approval"
+                ],
+                "properties": {
+                  "replacement_request_needs_hr_approval": {
+                    "const": true
+                  }
+                }
+              },
+              "depends_on_tasks": {
+                "$ref": "#/$defs/stringlist"
+              },
+              "blocks_tasks": {
+                "$ref": "#/$defs/stringlist"
+              }
+            }
+          }
+        }
+      }
+    },
+    "uc04": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "equipment_catalogue",
+        "access_catalogue",
+        "role_equipment_matrix",
+        "role_access_matrix",
+        "approver_config",
+        "lead_times",
+        "handover_rules",
+        "evidence_roles",
+        "provisioning_prerequisites",
+        "completion_evidence",
+        "out_of_matrix_policy",
+        "client_site_rules",
+        "country_rules"
+      ],
+      "properties": {
+        "equipment_catalogue": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "item_code",
+              "name",
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "equipment"
+              }
+            }
+          }
+        },
+        "access_catalogue": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "item_code",
+              "name",
+              "kind"
+            ],
+            "properties": {
+              "kind": {
+                "const": "access"
+              }
+            }
+          }
+        },
+        "role_equipment_matrix": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "role_id",
+              "grades",
+              "items"
+            ]
+          }
+        },
+        "role_access_matrix": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "role_id",
+              "items"
+            ]
+          }
+        },
+        "approver_config": {
+          "type": "object",
+          "required": [
+            "ACCESS",
+            "EQUIPMENT",
+            "EXCEPTION"
+          ]
+        },
+        "lead_times": {
+          "type": "object",
+          "required": [
+            "EQUIPMENT",
+            "ACCESS",
+            "CLIENT_SITE_CLEARANCE"
+          ],
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 365
+          }
+        },
+        "handover_rules": {
+          "type": "object",
+          "required": [
+            "mode",
+            "keep_reserved_on_missed_slot"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "COLLECT",
+                "DELIVER",
+                "READY_AT_DESK"
+              ]
+            }
+          }
+        },
+        "evidence_roles": {
+          "type": "object"
+        },
+        "provisioning_prerequisites": {
+          "$ref": "#/$defs/stringlist"
+        },
+        "completion_evidence": {
+          "$ref": "#/$defs/stringlist"
+        },
+        "out_of_matrix_policy": {
+          "const": "exception_approval_required"
+        },
+        "client_site_rules": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "country_rules": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      }
+    },
+    "uc05": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "orientation_programmes",
+        "policy_acknowledgements",
+        "reminder_rules",
+        "location_specific",
+        "scheduling"
+      ],
+      "properties": {
+        "orientation_programmes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "programme_key",
+              "name",
+              "session_types",
+              "mandatory",
+              "applicability",
+              "completion_deadline_offset_days",
+              "assessment",
+              "completion_criteria",
+              "evidence_required"
+            ]
+          }
+        },
+        "policy_acknowledgements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "policy_key",
+              "name",
+              "policy_reference",
+              "mandatory",
+              "applicability",
+              "acknowledgement_deadline_offset_days",
+              "evidence_required",
+              "evidence_type"
+            ]
+          }
+        },
+        "reminder_rules": {
+          "type": "object"
+        },
+        "location_specific": {
+          "type": "array"
+        },
+        "scheduling": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

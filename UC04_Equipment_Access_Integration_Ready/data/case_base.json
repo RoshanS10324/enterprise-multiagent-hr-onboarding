@@ -1,0 +1,28 @@
+{
+  "case_id": "SYN-CASE-001",
+  "employee_ref": "SYN-EMP-001",
+  "client_id": "client_alpha",
+  "role_id": "software_engineer",
+  "joining_date": "2026-11-16",
+  "offer_accepted": true,
+  "onboarding_form_approved": true,
+  "form_version": "v1",
+  "work_location": "Synthetic Office",
+  "work_mode": "OFFICE",
+  "client_site_required": false,
+  "requested_access": [
+    {"request_key": "SYN-REQ-101", "item_id": "email-teams-account", "item_kind": "ACCESS", "requested_by": "SYN-USER-201"},
+    {"request_key": "SYN-REQ-102", "item_id": "source-control-access", "item_kind": "ACCESS", "requested_by": "SYN-USER-201"}
+  ],
+  "requested_equipment": [
+    {"request_key": "SYN-REQ-201", "item_id": "laptop-standard", "item_kind": "EQUIPMENT", "requested_by": "SYN-USER-201"},
+    {"request_key": "SYN-REQ-202", "item_id": "headset-basic", "item_kind": "EQUIPMENT", "requested_by": "SYN-USER-201"}
+  ],
+  "approval_records": [],
+  "mock_it_ticket_updates": [],
+  "delivery_status": [],
+  "collection_status": [],
+  "provisioning_status": [],
+  "unavailable_approver_roles": [],
+  "as_of_date": "2026-10-15"
+}

@@ -1,0 +1,131 @@
+{
+  "_mock_note": "MOCK DATA - fictional identifiers only. Not real employee data. Assignee identifiers are opaque synthetic ids, never names, emails or contact details.",
+  "_rule": "UC02-BR-03. HR assigns the responsible individual. UC-02 records and tracks the assignment; it never chooses an owner and no model is involved. A template's configured owner ROLE is not an assignment.",
+  "_usage": "template_key resolves to a task id as '<onboarding_id>#<template_key>'. Intended for the EMP-M07 persona in 07_full_relocation.json, which carries every applicability attribute.",
+  "assignments": [
+    {
+      "template_key": "collect_documents",
+      "assignee_id": "U-HR-9",
+      "team": "HR Shared Services",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "it_laptop",
+      "assignee_id": "U-IT-7",
+      "team": "IT Service Desk",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "it_accounts",
+      "assignee_id": "U-IT-8",
+      "team": "IT Identity",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "visa_processing",
+      "assignee_id": "U-PRO-3",
+      "team": "Government Relations",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "medical_test",
+      "assignee_id": "U-HR-5",
+      "team": "Employee Services",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "biometrics_capture",
+      "assignee_id": "U-HR-5",
+      "team": "Employee Services",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "insurance_enrolment",
+      "assignee_id": "U-HR-6",
+      "team": "Benefits",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "family_insurance_enrolment",
+      "assignee_id": "U-HR-6",
+      "team": "Benefits",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "travel_booking",
+      "assignee_id": "U-HR-4",
+      "team": "Mobility",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "accommodation_booking",
+      "assignee_id": "U-FAC-2",
+      "team": "Facilities",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "food_arrangement",
+      "assignee_id": "U-FAC-3",
+      "team": "Facilities",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "salary_transfer_letter",
+      "assignee_id": "U-HRO-2",
+      "team": "HR Operations",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "non_liability_letter",
+      "assignee_id": "U-HRO-2",
+      "team": "HR Operations",
+      "assigned_by": "U-HR-1"
+    },
+    {
+      "template_key": "orientation_schedule",
+      "assignee_id": "U-HR-3",
+      "team": "Talent Development",
+      "assigned_by": "U-HR-1"
+    }
+  ],
+  "_left_unassigned_deliberately": {
+    "_why": "These applicable tasks are intentionally absent from 'assignments' so that unassigned-task detection and the 'unassigned' follow-up flag have something to find. They must NOT be treated as assigned merely because their templates carry an owner role.",
+    "template_keys": [
+      "access_apollo",
+      "background_verification",
+      "desk_allocation",
+      "hr_record_create",
+      "hr_system_activation",
+      "payroll_setup",
+      "policy_ack",
+      "visa_application",
+      "visa_pack_handover"
+    ]
+  },
+  "_rejected_assignments": {
+    "_why": "Assignments UC-02 must refuse. Each names the expected failure so a test cannot pass by accepting them.",
+    "cases": [
+      {
+        "template_key": "collect_documents",
+        "assignee_id": "U-IT-7",
+        "acting_role": "it_manager",
+        "expect": "UnauthorizedActionError",
+        "reason": "only an HR role may assign a task owner"
+      },
+      {
+        "template_key": "collect_documents",
+        "assignee_id": "   ",
+        "acting_role": "hr_ops",
+        "expect": "UnauthorizedActionError",
+        "reason": "a blank assignee is not an assignment; UC-02 never invents one"
+      },
+      {
+        "template_key": "no_such_template",
+        "assignee_id": "U-HR-9",
+        "acting_role": "hr_ops",
+        "expect": "InvalidStateError",
+        "reason": "unknown task id is rejected, not created"
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+task: discrepancy_summary
+
+# Prompt version. Bump on any change to `prompt`, `inputs_allowed`
+# or `output_values`, so an audited decision can be traced back to
+# the exact wording that produced it.
+version: 1
+purpose: >
+  Draft a short plain-language note telling HR which fields differ
+  between the approved onboarding form and another source, so they can
+  decide what to do. Replaces nothing: the discrepancy records remain
+  the record of what differs.
+
+# Produces text for a person to read. Never branches control flow, never
+# resolves a discrepancy, never changes a case.
+authority: DRAFT_FOR_HUMAN
+
+# Field NAMES and source NAMES only. The two conflicting VALUES are
+# deliberately absent: a salary discrepancy must be summarisable without
+# either figure entering the prompt.
+inputs_allowed:
+  - case_id
+  - fields_in_conflict
+  - other_source
+  - form_version
+
+output_values: []
+
+prompt: |
+  Write a short note for an HR officer about fields that disagree
+  between the approved onboarding form and another source.
+
+  You are given the field names, the name of the other source, and the
+  form version in force. You are NOT given the conflicting values, and
+  you must not ask for them or speculate about what they might be. The
+  officer can see the values; your job is to tell them where to look and
+  why it matters.
+
+  Write at most four sentences:
+
+  1. Which fields disagree, and with which source.
+  2. What each disagreement would affect if the record were written as
+     it stands -- for example, a joining-date difference affects payroll
+     start and first-day access.
+  3. That the approved form is the source of truth and nothing has been
+     changed.
+  4. What the officer needs to decide.
+
+  Do not recommend which value is correct. You cannot see them, and that
+  decision is theirs.
+
+  Never quote a salary, bank, or loan value. If `salary_and_terms` is
+  among the fields, name the field and stop there.

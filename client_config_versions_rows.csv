@@ -1,0 +1,6 @@
+client_id,version,effective_from,effective_to,status,config_hash,approved_by,approved_at,created_at
+CLIENT_CANADA,1,2026-11-02,,draft,mock-canada-v1,,,2026-11-02 09:44:05.477749+00
+CLIENT_DUBAI,1,2026-11-02,,draft,mock-dubai-v1,,,2026-11-02 06:05:27.004645+00
+CLIENT_INDIA,1,2026-11-02,,draft,mock-india-v1,,,2026-11-02 06:05:27.004645+00
+CLIENT_USA,1,2026-11-02,,draft,mock-usa-v1,,,2026-11-02 06:05:27.004645+00
+SYN-UAE-TEST,1,2026-01-01,,approved,synthetic-3e270b8c,synthetic-fixture,2026-01-01 00:00:00+00,2026-11-04 05:18:42.885544+00

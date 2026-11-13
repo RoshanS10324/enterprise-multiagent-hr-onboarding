@@ -1,0 +1,60 @@
+{
+  "id": "DL-01",
+  "title": "Offer-acceptance email triggers case open and HRIS write (happy path)",
+  "covers": ["DL-01", "T-01"],
+  "setup": {
+    "client_id": "client-eval-email01",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Morgan Email Trigger",
+    "candidate_email": "morgan.emailtrigger@example.test",
+    "salary_and_terms": "Base: 105000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {"action": "seed_offer", "as": "SYSTEM", "args": {"offer_ref": "OFFER-7001"}},
+    {
+      "action": "seed_form_for_offer",
+      "as": "SYSTEM",
+      "args": {"offer_ref": "OFFER-7001", "form_status": "APPROVED"}
+    },
+    {
+      "action": "inbound_email",
+      "as": "SYSTEM",
+      "args": {
+        "from": "morgan.emailtrigger@example.test",
+        "subject": "Re: Your offer [OFFER-7001] - I accept"
+      },
+      "save": "intake",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "prepare",
+      "as": "HR_OFFICER",
+      "args": {"case_id": "$intake.case_id"},
+      "save": "prep",
+      "expect": {"outcome": "PREPARED"}
+    },
+    {
+      "action": "decide_write",
+      "as": "HR_MANAGER",
+      "args": {"approval_id": "$prep.approval_id", "approve": true}
+    },
+    {
+      "action": "execute_write",
+      "as": "HR_MANAGER",
+      "args": {"case_id": "$intake.case_id"},
+      "expect": {"completed": true}
+    }
+  ],
+  "final": {
+    "case_ref": "intake",
+    "stage": "RECORD_CREATED",
+    "audit_actions_present": [
+      "OFFER_ACCEPTED",
+      "CASE_OPENED",
+      "HRIS_PREPARED",
+      "HRIS_WRITE_APPROVED",
+      "HRIS_WRITE_SUCCEEDED"
+    ],
+    "invariants_clean": true
+  }
+}

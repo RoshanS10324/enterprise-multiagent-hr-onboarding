@@ -1,0 +1,6 @@
+[
+  {"case_id": "SYN-CASE-001", "employee_ref": "SYN-EMP-001", "client_id": "client_alpha", "status": "ACTIVE"},
+  {"case_id": "SYN-CASE-002", "employee_ref": "SYN-EMP-002", "client_id": "client_bravo", "status": "ACTIVE"},
+  {"case_id": "SYN-CASE-003", "employee_ref": "SYN-EMP-003", "client_id": "client_alpha", "status": "ACTIVE"},
+  {"case_id": "SYN-CASE-004", "employee_ref": "SYN-EMP-004", "client_id": "client_alpha", "status": "ACTIVE"}
+]

@@ -1,0 +1,48 @@
+# Tenant-level orchestration settings (orchestration/tenant_config.py). Loaded by
+# orchestration/bootstrap.build_deps from here, or from the path in ORCHESTRATOR_TENANT_CONFIG.
+#
+# timezone             local time zone of the tenant's joining days (a case may carry its own)
+# joining_day_run_at   local time from which a joining day is due to the scheduler (HH:MM)
+# employee_identity    how UC01's employee_no becomes the canonical (HRMS) employee id UC05 uses:
+#                        shared  employee_no IS the HRMS employee id
+#                        mapped  explicit employee_no -> employee_id table (unlisted = unresolved)
+#                        none    the caller must supply employee_id (OnboardingCaseInput.employee_id)
+#
+# The entries below are the synthetic test tenants of this workspace (UC05's employee directory mock
+# holds EMP-TEST-* employees for CLIENT-TEST-A and CLIENT-TEST-B). Confirm real tenants' values
+# with HR before adding them.
+
+default:
+  timezone: Asia/Dubai
+  joining_day_run_at: "06:00"
+  employee_identity:
+    scheme: shared
+
+tenants:
+  CLIENT-TEST-A:
+    timezone: Asia/Dubai
+    employee_identity:
+      scheme: shared
+    # The UC04 test configuration this workspace already pairs with CLIENT-TEST-A (scripts/run_workflow_demo.py,
+    # tests/orchestration/_lifecycle.py). Synthetic; replace with the client's own UC04 CaseConfig.
+    uc04_client_config_ref: ../../UC04_Equipment_Access_Integration_Ready/data/client_alpha_config.json
+  CLIENT-TEST-B:
+    timezone: Asia/Dubai
+    employee_identity:
+      scheme: shared
+  # The synthetic client the real UC02 has an onboarding configuration for (UC02 synthetic.build_registry:
+  # CLIENT-ALPHA, CLIENT-BETA, CLIENT-EMPTY).
+  CLIENT-ALPHA:
+    timezone: Asia/Dubai
+    # HR enters the joiner's HRMS employee number on the form (required at start). UC01's own numbers are not used:
+    # in development UC01 numbers in memory and restarts at EMP-000001 with every backend restart, so they repeat
+    # across cases, and UC05 keeps one onboarding record per employee number.
+    employee_identity:
+      scheme: none
+    # UC04 configuration per role code. SYNTHETIC development configuration (UC04's Alpha test values re-keyed to
+    # CLIENT-ALPHA), not an HR-approved client configuration: see config/uc04/README.md. Another role has none and
+    # is reported as UC04_CONFIGURATION_MISSING for that role.
+    uc04_client_configs:
+      software_engineer: uc04/CLIENT-ALPHA.software_engineer.json
+      power_bi_developer: uc04/CLIENT-ALPHA.power_bi_developer.json
+      developer: uc04/CLIENT-ALPHA.developer.json

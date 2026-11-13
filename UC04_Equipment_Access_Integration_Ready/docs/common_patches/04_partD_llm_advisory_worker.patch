@@ -1,0 +1,53 @@
+diff --git a/HR-Onboarding-Common/src/hr_onboarding_common/orchestration/workers/uc_worker_runtime.py b/HR-Onboarding-Common/src/hr_onboarding_common/orchestration/workers/uc_worker_runtime.py
+index f0d9b9c..c8ba974 100644
+--- a/HR-Onboarding-Common/src/hr_onboarding_common/orchestration/workers/uc_worker_runtime.py
++++ b/HR-Onboarding-Common/src/hr_onboarding_common/orchestration/workers/uc_worker_runtime.py
+@@ -144,6 +144,32 @@ class _Uc04Handler:
+         # for an upstream system. The orchestrator IS that upstream system here, so it populates
+         # the mock registry directly, exactly as UC04's own test harness (`Env`) does.
+         self._cases = self._agent._cases  # noqa: SLF001 -- intentional, see docstring above
++        # The advisory narrative is a SEPARATE operation (`advise_orchestrated`): evaluation never waits for, or depends on, a
++        # model. The advisor agent is built on first use, so a bad LLM configuration only affects that operation and
++        # `__llm_status__`, never `evaluate_orchestrated`.
++        self._advisory_agent = None
++
++    def _advisory(self):
++        if self._advisory_agent is None:
++            # UC04's own gateway wiring (its repo root is on sys.path, see main()). Offline mode -> its deterministic template
++            # advisor; online -> the shared gateway after hr_onboarding_common.llm.build_llm validated the configuration.
++            from integrations.gateway import build_gateway_advisor  # type: ignore
++            from sub_agent.agent import Uc04Agent  # type: ignore
++
++            self._advisory_agent = Uc04Agent(advisor=build_gateway_advisor())
++        return self._advisory_agent
++
++    def llm_status(self) -> dict:
++        """Which advisor UC04 was built with. Names only, never a credential; a bad configuration is reported, not raised."""
++        try:
++            advisor = self._advisory().advisor
++        except Exception as exc:  # noqa: BLE001 -- a status report must not fail
++            return {"implementation": None, "error": type(exc).__name__, "detail": str(exc)[:300]}
++        status = {"implementation": type(advisor).__name__, "advisor_provider": advisor.provider}
++        model = getattr(getattr(advisor, "_model", None), "name", None)
++        if model:
++            status["model"] = model
++        return status
+ 
+     def _ensure_case(self, case_id: str, employee_ref: str, client_id: str) -> None:
+         from sub_agent.ports import ParentCase  # type: ignore
+@@ -169,6 +195,15 @@ class _Uc04Handler:
+             )
+             response = self._agent.evaluate_orchestrated(request)
+             return response.model_dump(mode="json")
++        if op == "advise_orchestrated":
++            # Read-only: explains a result the caller already holds (the `result` of an evaluate_orchestrated response). It re-evaluates
++            # nothing and changes no state, so it cannot alter a decision. A model failure degrades the advisory (`degraded: true`),
++            # it does not raise. UC04's own deadline (20 s) is shorter than the worker call timeout (30 s by default).
++            from sub_agent.contracts import Uc04Result  # type: ignore
++
++            result = Uc04Result.model_validate(payload["result"])
++            report = self._advisory().explain(result)
++            return {"case_id": result.case_id, "advisory": report.model_dump(mode="json")}
+         raise ValueError(f"uc04: unknown op '{op}'")
+ 
+ 

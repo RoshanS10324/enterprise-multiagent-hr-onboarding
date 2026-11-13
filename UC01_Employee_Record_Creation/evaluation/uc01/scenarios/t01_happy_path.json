@@ -1,0 +1,49 @@
+{
+  "id": "T-01",
+  "title": "Happy path: open case through RECORD_CREATED",
+  "covers": ["T-01", "T-05", "AC-15", "AC-02", "GR-18"],
+  "setup": {
+    "client_id": "client-eval-t01",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Taylor Happy Path",
+    "candidate_email": "taylor.happypath@example.test",
+    "salary_and_terms": "Base: 110000 SYNTHETIC/yr; benefits: standard",
+    "designation": "Software Engineer",
+    "joining_date": "2026-03-02"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {},
+      "save": "case",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "prepare",
+      "as": "HR_OFFICER",
+      "args": {"case_id": "$case.case.case_id"},
+      "save": "prep",
+      "expect": {"outcome": "PREPARED"}
+    },
+    {
+      "action": "decide_write",
+      "as": "HR_MANAGER",
+      "args": {"approval_id": "$prep.approval_id", "approve": true}
+    },
+    {
+      "action": "execute_write",
+      "as": "HR_MANAGER",
+      "args": {"case_id": "$case.case.case_id"},
+      "expect": {"completed": true}
+    }
+  ],
+  "final": {
+    "case_ref": "case",
+    "stage": "RECORD_CREATED",
+    "events": {"CaseOpenedEvent": 1, "EmployeeRecordCreatedEvent": 1},
+    "gateway_writes": 2,
+    "audit_actions_present": ["CASE_OPENED", "HRIS_PREPARED", "HRIS_WRITE_APPROVED", "HRIS_WRITE_SUCCEEDED"],
+    "invariants_clean": true
+  }
+}

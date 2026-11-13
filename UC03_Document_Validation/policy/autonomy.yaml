@@ -1,0 +1,33 @@
+autonomy_levels:
+  document_collection:
+    level: 1
+    description: "Agent can collect and track document submissions"
+    auto_execute: true
+
+  document_validation:
+    level: 1
+    description: "Agent can run automated validation checks"
+    auto_execute: true
+
+  checklist_generation:
+    level: 1
+    description: "Agent can generate document checklists"
+    auto_execute: true
+
+  draft_communications:
+    level: 2
+    description: "Agent can draft but not send communications"
+    auto_execute: false
+    requires_approval: SEND_REMINDER
+
+  system_writes:
+    level: 3
+    description: "Agent cannot write to external systems without HR approval"
+    auto_execute: false
+    requires_approval: WRITE_SYSTEM
+
+  compliance_completion:
+    level: 3
+    description: "Agent cannot mark compliance complete without HR approval"
+    auto_execute: false
+    requires_approval: COMPLETE_COMPLIANCE

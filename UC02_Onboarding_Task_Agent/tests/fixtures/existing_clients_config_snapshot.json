@@ -1,0 +1,1160 @@
+{
+ "_note": "READ-ONLY snapshot of the live configuration rows (2026-11-04), used only by tests/test_existing_clients_retrieval.py. Mock and synthetic client data only; no secrets, no personal data.",
+ "client_configs": [
+  {
+   "client_id": "test_enterprise_corp",
+   "company_name": "Acme Global Cloud Solutions",
+   "config_hash": "cfg_hash_demo_2026",
+   "working_days": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "timezone": "Asia/Dubai",
+   "template_count": 0,
+   "milestone_count": 0,
+   "settings_payload": {
+    "portal_theme": "modern",
+    "auto_provisioning": true
+   },
+   "is_active": true
+  },
+  {
+   "client_id": "CLIENT_DUBAI",
+   "company_name": "Dubai Mock Technologies LLC",
+   "config_hash": "mock-dubai-v1",
+   "working_days": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "timezone": "Asia/Dubai",
+   "template_count": 0,
+   "milestone_count": 0,
+   "settings_payload": {
+    "country": "UAE",
+    "currency": "AED",
+    "environment": "mock"
+   },
+   "is_active": true
+  },
+  {
+   "client_id": "CLIENT_USA",
+   "company_name": "USA Mock Technologies Inc",
+   "config_hash": "mock-usa-v1",
+   "working_days": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "timezone": "America/New_York",
+   "template_count": 0,
+   "milestone_count": 0,
+   "settings_payload": {
+    "country": "USA",
+    "currency": "USD",
+    "environment": "mock"
+   },
+   "is_active": true
+  },
+  {
+   "client_id": "CLIENT_INDIA",
+   "company_name": "India Mock Technologies Pvt Ltd",
+   "config_hash": "mock-india-v1",
+   "working_days": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "timezone": "Asia/Kolkata",
+   "template_count": 0,
+   "milestone_count": 0,
+   "settings_payload": {
+    "country": "India",
+    "currency": "INR",
+    "environment": "mock"
+   },
+   "is_active": true
+  },
+  {
+   "client_id": "CLIENT_CANADA",
+   "company_name": "Canada Mock Technologies Inc",
+   "config_hash": "mock-canada-v1",
+   "working_days": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "timezone": "America/Toronto",
+   "template_count": 0,
+   "milestone_count": 0,
+   "settings_payload": {
+    "country": "Canada",
+    "currency": "CAD",
+    "environment": "mock"
+   },
+   "is_active": true
+  },
+  {
+   "client_id": "SYN-UAE-TEST",
+   "company_name": "SYNTHETIC TEST CLIENT (not a real client)",
+   "config_hash": "synthetic-3e270b8c",
+   "working_days": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "timezone": "Asia/Dubai",
+   "template_count": 18,
+   "milestone_count": 0,
+   "settings_payload": {
+    "note": "test-only fixture; never a real client configuration",
+    "country": "synthetic",
+    "data_origin": "synthetic"
+   },
+   "is_active": true
+  }
+ ],
+ "client_config_versions": [
+  {
+   "client_id": "CLIENT_DUBAI",
+   "version": 1,
+   "effective_from": "2026-11-02",
+   "effective_to": null,
+   "status": "draft",
+   "config_hash": "mock-dubai-v1",
+   "approved_by": null,
+   "approved_at": null
+  },
+  {
+   "client_id": "CLIENT_USA",
+   "version": 1,
+   "effective_from": "2026-11-02",
+   "effective_to": null,
+   "status": "draft",
+   "config_hash": "mock-usa-v1",
+   "approved_by": null,
+   "approved_at": null
+  },
+  {
+   "client_id": "CLIENT_INDIA",
+   "version": 1,
+   "effective_from": "2026-11-02",
+   "effective_to": null,
+   "status": "draft",
+   "config_hash": "mock-india-v1",
+   "approved_by": null,
+   "approved_at": null
+  },
+  {
+   "client_id": "CLIENT_CANADA",
+   "version": 1,
+   "effective_from": "2026-11-02",
+   "effective_to": null,
+   "status": "draft",
+   "config_hash": "mock-canada-v1",
+   "approved_by": null,
+   "approved_at": null
+  },
+  {
+   "client_id": "SYN-UAE-TEST",
+   "version": 1,
+   "effective_from": "2026-01-01",
+   "effective_to": null,
+   "status": "approved",
+   "config_hash": "synthetic-3e270b8c",
+   "approved_by": "synthetic-fixture",
+   "approved_at": "2026-01-01T00:00:00+00:00"
+  }
+ ],
+ "task_templates": [
+  {
+   "template_key": "hr_record_create",
+   "client_id": "SYN-UAE-TEST",
+   "category": "hr_record",
+   "title": "[synthetic] hr_record_create",
+   "title_ar": "[synthetic] hr_record_create",
+   "owner_role": "hr_ops",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [],
+   "offset_days": -12,
+   "default_priority": "high",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "collect_documents",
+   "client_id": "SYN-UAE-TEST",
+   "category": "document_collection",
+   "title": "[synthetic] collect_documents",
+   "title_ar": "[synthetic] collect_documents",
+   "owner_role": "hr_ops",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "hr_record_create"
+   ],
+   "offset_days": -10,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "background_verification",
+   "client_id": "SYN-UAE-TEST",
+   "category": "background_verification",
+   "title": "[synthetic] background_verification",
+   "title_ar": "[synthetic] background_verification",
+   "owner_role": "hr_officer",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [
+    "bv_required"
+   ],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "collect_documents"
+   ],
+   "offset_days": -9,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "visa_status_change",
+   "client_id": "SYN-UAE-TEST",
+   "category": "visa",
+   "title": "[synthetic] visa_status_change",
+   "title_ar": "[synthetic] visa_status_change",
+   "owner_role": "pro",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [
+    "location_status:in_country"
+   ],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "collect_documents"
+   ],
+   "offset_days": -8,
+   "default_priority": "high",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "entry_permit",
+   "client_id": "SYN-UAE-TEST",
+   "category": "visa",
+   "title": "[synthetic] entry_permit",
+   "title_ar": "[synthetic] entry_permit",
+   "owner_role": "pro",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [
+    "location_status:overseas"
+   ],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "collect_documents"
+   ],
+   "offset_days": -12,
+   "default_priority": "critical",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "medical_test",
+   "client_id": "SYN-UAE-TEST",
+   "category": "medical",
+   "title": "[synthetic] medical_test",
+   "title_ar": "[synthetic] medical_test",
+   "owner_role": "pro",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [
+    "location_status:in_country"
+   ],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "visa_status_change"
+   ],
+   "offset_days": -6,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "medical_test_arrival",
+   "client_id": "SYN-UAE-TEST",
+   "category": "medical",
+   "title": "[synthetic] medical_test_arrival",
+   "title_ar": "[synthetic] medical_test_arrival",
+   "owner_role": "pro",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [
+    "location_status:overseas"
+   ],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "entry_permit"
+   ],
+   "offset_days": -3,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "biometrics",
+   "client_id": "SYN-UAE-TEST",
+   "category": "biometrics",
+   "title": "[synthetic] biometrics",
+   "title_ar": "[synthetic] biometrics",
+   "owner_role": "pro",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [
+    "location_status:in_country"
+   ],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "medical_test"
+   ],
+   "offset_days": -4,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "biometrics_arrival",
+   "client_id": "SYN-UAE-TEST",
+   "category": "biometrics",
+   "title": "[synthetic] biometrics_arrival",
+   "title_ar": "[synthetic] biometrics_arrival",
+   "owner_role": "pro",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [
+    "location_status:overseas"
+   ],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "medical_test_arrival"
+   ],
+   "offset_days": -2,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "flight_booking",
+   "client_id": "SYN-UAE-TEST",
+   "category": "travel",
+   "title": "[synthetic] flight_booking",
+   "title_ar": "[synthetic] flight_booking",
+   "owner_role": "facilities",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [
+    "location_status:overseas",
+    "needs_travel"
+   ],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "entry_permit"
+   ],
+   "offset_days": -7,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "accommodation",
+   "client_id": "SYN-UAE-TEST",
+   "category": "accommodation",
+   "title": "[synthetic] accommodation",
+   "title_ar": "[synthetic] accommodation",
+   "owner_role": "facilities",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [
+    "needs_accommodation"
+   ],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "flight_booking"
+   ],
+   "offset_days": -5,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "insurance_enrolment",
+   "client_id": "SYN-UAE-TEST",
+   "category": "insurance",
+   "title": "[synthetic] insurance_enrolment",
+   "title_ar": "[synthetic] insurance_enrolment",
+   "owner_role": "hr_ops",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [
+    "insurance_required"
+   ],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "collect_documents"
+   ],
+   "offset_days": -4,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "payroll_setup",
+   "client_id": "SYN-UAE-TEST",
+   "category": "payroll",
+   "title": "[synthetic] payroll_setup",
+   "title_ar": "[synthetic] payroll_setup",
+   "owner_role": "finance",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "collect_documents"
+   ],
+   "offset_days": -4,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "laptop_request",
+   "client_id": "SYN-UAE-TEST",
+   "category": "it_provisioning",
+   "title": "[synthetic] laptop_request",
+   "title_ar": "[synthetic] laptop_request",
+   "owner_role": "it_manager",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "hr_record_create"
+   ],
+   "offset_days": -5,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "system_access",
+   "client_id": "SYN-UAE-TEST",
+   "category": "access_management",
+   "title": "[synthetic] system_access",
+   "title_ar": "[synthetic] system_access",
+   "owner_role": "it_manager",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [
+    "L4",
+    "L5"
+   ],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "laptop_request"
+   ],
+   "offset_days": -2,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "orientation_slot",
+   "client_id": "SYN-UAE-TEST",
+   "category": "orientation",
+   "title": "[synthetic] orientation_slot",
+   "title_ar": "[synthetic] orientation_slot",
+   "owner_role": "hr_ops",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "hr_record_create"
+   ],
+   "offset_days": 0,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "policy_ack",
+   "client_id": "SYN-UAE-TEST",
+   "category": "policy_acknowledgement",
+   "title": "[synthetic] policy_ack",
+   "title_ar": "[synthetic] policy_ack",
+   "owner_role": "employee",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "orientation_slot"
+   ],
+   "offset_days": 2,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  },
+  {
+   "template_key": "senior_briefing",
+   "client_id": "SYN-UAE-TEST",
+   "category": "orientation",
+   "title": "[synthetic] senior_briefing",
+   "title_ar": "[synthetic] senior_briefing",
+   "owner_role": "manager",
+   "default_lead_days": 0,
+   "evidence_required": false,
+   "requires_attributes": [],
+   "sensitive_to": [
+    "joining_date"
+   ],
+   "approval_role": null,
+   "description": null,
+   "role_ids": [],
+   "grades": [
+    "L4",
+    "L5"
+   ],
+   "locations": [],
+   "projects": [],
+   "nationality_groups": [],
+   "depends_on_template_keys": [
+    "orientation_slot"
+   ],
+   "offset_days": 1,
+   "default_priority": "normal",
+   "config_version": 1,
+   "is_active": true
+  }
+ ],
+ "client_document_requirements": [
+  {
+   "requirement_id": "744f94b4-d1c3-59f0-95eb-70d968369327",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "documents",
+   "requirement_key": "identity",
+   "document_type": "synthetic_identity",
+   "description": "synthetic: identity check for every employee",
+   "is_mandatory": true,
+   "applicable_roles": [],
+   "applicable_grades": [],
+   "applicable_locations": [],
+   "applicable_projects": [],
+   "eligibility_rules": {
+    "nationality_groups": [],
+    "requires_attributes": [],
+    "allow_not_applicable": false
+   },
+   "validation_profile": {},
+   "is_active": true
+  },
+  {
+   "requirement_id": "9be641f2-49d3-53c6-b720-e0d3c8054544",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "documents",
+   "requirement_key": "education",
+   "document_type": "synthetic_education",
+   "description": "synthetic: qualification check for every employee",
+   "is_mandatory": true,
+   "applicable_roles": [],
+   "applicable_grades": [],
+   "applicable_locations": [],
+   "applicable_projects": [],
+   "eligibility_rules": {
+    "nationality_groups": [],
+    "requires_attributes": [],
+    "allow_not_applicable": false
+   },
+   "validation_profile": {},
+   "is_active": true
+  },
+  {
+   "requirement_id": "7d333a4a-2c69-50b7-be09-e4d4359c461f",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "documents",
+   "requirement_key": "status_change_pack",
+   "document_type": "synthetic_status_change_pack",
+   "description": "synthetic: needed only for the in-country visa route",
+   "is_mandatory": true,
+   "applicable_roles": [],
+   "applicable_grades": [],
+   "applicable_locations": [],
+   "applicable_projects": [],
+   "eligibility_rules": {
+    "nationality_groups": [],
+    "requires_attributes": [
+     "location_status:in_country"
+    ],
+    "allow_not_applicable": false
+   },
+   "validation_profile": {},
+   "is_active": true
+  },
+  {
+   "requirement_id": "3438c212-7c70-57f1-a3a6-db63985fc1eb",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "documents",
+   "requirement_key": "entry_permit_pack",
+   "document_type": "synthetic_entry_permit_pack",
+   "description": "synthetic: needed only for the overseas entry-permit route",
+   "is_mandatory": true,
+   "applicable_roles": [],
+   "applicable_grades": [],
+   "applicable_locations": [],
+   "applicable_projects": [],
+   "eligibility_rules": {
+    "nationality_groups": [],
+    "requires_attributes": [
+     "location_status:overseas"
+    ],
+    "allow_not_applicable": false
+   },
+   "validation_profile": {},
+   "is_active": true
+  },
+  {
+   "requirement_id": "dc45433d-adbc-5b97-a7e0-d5687e5b17ad",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "documents",
+   "requirement_key": "family_cover_form",
+   "document_type": "synthetic_family_cover_form",
+   "description": "synthetic: optional, only when insurance is requested",
+   "is_mandatory": false,
+   "applicable_roles": [],
+   "applicable_grades": [],
+   "applicable_locations": [],
+   "applicable_projects": [],
+   "eligibility_rules": {
+    "nationality_groups": [],
+    "requires_attributes": [
+     "insurance_required"
+    ],
+    "allow_not_applicable": true
+   },
+   "validation_profile": {},
+   "is_active": true
+  },
+  {
+   "requirement_id": "fe6ab6c0-7613-582f-a072-6f0fd7254479",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "documents",
+   "requirement_key": "senior_declaration",
+   "document_type": "synthetic_senior_declaration",
+   "description": "synthetic: senior grades only",
+   "is_mandatory": true,
+   "applicable_roles": [],
+   "applicable_grades": [
+    "L4",
+    "L5"
+   ],
+   "applicable_locations": [],
+   "applicable_projects": [],
+   "eligibility_rules": {
+    "nationality_groups": [],
+    "requires_attributes": [],
+    "allow_not_applicable": false
+   },
+   "validation_profile": {},
+   "is_active": true
+  }
+ ],
+ "client_service_policies": [
+  {
+   "policy_id": "c564d6dc-42a4-5541-b301-6555e646411b",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "hr_record",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "role",
+    "team": "HR Operations (synthetic)",
+    "use_case": "",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "c0feb229-7a54-57c7-a32d-9469de454bd0",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "document_collection",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "use_case",
+    "team": "HR Operations (synthetic)",
+    "use_case": "UC-03",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "284d3655-12e2-507c-b8ce-9850593ec880",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "background_verification",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "role",
+    "team": "HR Onboarding Officer (synthetic)",
+    "use_case": "",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "200be2dd-469b-5965-940f-80447c8ba693",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "visa",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "role",
+    "team": "PRO / Visa (synthetic)",
+    "use_case": "",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "2ec645d2-771c-52ca-8008-2d2fec8f1e9c",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "medical",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "role",
+    "team": "PRO / Visa (synthetic)",
+    "use_case": "",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "45446b59-bef7-5a26-9005-75a5e85215fb",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "biometrics",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "role",
+    "team": "PRO / Visa (synthetic)",
+    "use_case": "",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "e7d593a6-da02-5fb2-929b-9e016436b461",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "travel",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "role",
+    "team": "Admin / Travel Desk (synthetic)",
+    "use_case": "",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "52c359db-78d2-5591-83c9-f55485b6b648",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "accommodation",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "role",
+    "team": "Admin / Travel Desk (synthetic)",
+    "use_case": "",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "8fbdda3c-66d6-59a5-bcf5-20bb8c507e5e",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "insurance",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "role",
+    "team": "HR Operations (synthetic)",
+    "use_case": "",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "67cee88b-d34f-54df-9dd4-8dc8d6d2251c",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "payroll",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "role",
+    "team": "Payroll (synthetic)",
+    "use_case": "",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "cc5e5b46-e610-593c-ab1b-65bb1284586a",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "it_provisioning",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "use_case",
+    "team": "IT Service Desk (synthetic)",
+    "use_case": "UC-04",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "62db7409-a414-508b-bff7-906b0830166d",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "access_management",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "use_case",
+    "team": "IT Service Desk (synthetic)",
+    "use_case": "UC-04",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "6e09e85d-7687-5fb3-913f-03f5e0dbf9cc",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "orientation",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "use_case",
+    "team": "HR Operations (synthetic)",
+    "use_case": "UC-05",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  },
+  {
+   "policy_id": "df35a0ae-5d57-535f-affe-d915e97581bb",
+   "client_id": "SYN-UAE-TEST",
+   "config_version": 1,
+   "service_category": "uc02_assignment",
+   "service_key": "policy_acknowledgement",
+   "is_available": true,
+   "is_mandatory": false,
+   "eligibility_rules": {},
+   "policy_details": {
+    "mode": "use_case",
+    "team": "Employee",
+    "use_case": "UC-05",
+    "escalation_owner": "hr_officer"
+   },
+   "responsible_role": null,
+   "effective_from": null,
+   "effective_to": null,
+   "is_active": true
+  }
+ ],
+ "client_milestone_templates": [],
+ "client_holidays": [
+  {
+   "client_id": "CLIENT_DUBAI",
+   "holiday_date": "2026-12-02",
+   "name": "[SAMPLE] UAE National Day",
+   "is_observed": true
+  },
+  {
+   "client_id": "CLIENT_DUBAI",
+   "holiday_date": "2026-12-03",
+   "name": "[SAMPLE] UAE National Day (2nd)",
+   "is_observed": true
+  },
+  {
+   "client_id": "SYN-UAE-TEST",
+   "holiday_date": "2026-12-02",
+   "name": "SYNTHETIC holiday",
+   "is_observed": true
+  },
+  {
+   "client_id": "SYN-UAE-TEST",
+   "holiday_date": "2026-12-03",
+   "name": "SYNTHETIC holiday",
+   "is_observed": true
+  }
+ ]
+}

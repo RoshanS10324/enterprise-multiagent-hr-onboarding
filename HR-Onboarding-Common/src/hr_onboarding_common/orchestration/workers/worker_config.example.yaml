@@ -1,0 +1,31 @@
+# Copy to worker_config.yaml (git-ignored) and fill in YOUR machine's paths, or set the
+# equivalent environment variables (UC01_WORKER_PYTHON / UC01_WORKER_SRC_DIR, etc.) instead --
+# env vars take precedence over this file. See config.py: load_worker_config().
+#
+# `python` is that UC's OWN existing virtualenv interpreter -- never the orchestrator's own.
+# `src_dir` is that UC's `src/` directory (the one containing `sub_agent/`), not its repo root.
+#
+# If `python` is omitted, that UC's own `<repo_root>/.venv/Scripts/python.exe` (Windows) or
+# `<repo_root>/.venv/bin/python` (POSIX) is used automatically IF it exists -- this is a
+# convenience default, not a silent fallback: if neither is found, startup fails loudly with
+# WorkerConfigurationError rather than substituting the orchestrator's own interpreter.
+#
+# `timeout_s` (optional) is that UC's per-call timeout in seconds (env: UC0X_WORKER_TIMEOUT_S); without
+# it the pool default applies (build_deps(worker_timeout_s=...), 30 s). A call that times out stops the
+# worker and its outcome is treated as unknown (UNCERTAIN) -- never as a failure that is safe to repeat.
+#
+# `llm_access` (optional, env: UC0X_WORKER_LLM_ACCESS=1/0) decides whether that worker process receives
+# the LLM provider credentials (OPENROUTER_API_KEY, ...). Default: uc05 true, uc01/uc04 false -- they make
+# no model calls today (docs/UC_LLM_GATEWAY_MIGRATION_GUIDE.md). Every other variable is passed on.
+
+uc01:
+  python: "/path/to/UC01_Employee_Record_Creation/.venv/Scripts/python.exe"
+  src_dir: "/path/to/UC01_Employee_Record_Creation/src"
+
+uc04:
+  python: "/path/to/UC04_Equipment_Access_Integration_Ready/.venv/Scripts/python.exe"
+  src_dir: "/path/to/UC04_Equipment_Access_Integration_Ready/src"
+
+uc05:
+  python: "/path/to/UC05_Orientation-Schedule-Agent/.venv/Scripts/python.exe"
+  src_dir: "/path/to/UC05_Orientation-Schedule-Agent/src"

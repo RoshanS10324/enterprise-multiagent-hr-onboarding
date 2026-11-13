@@ -1,0 +1,44 @@
+skill: change_employee_details
+purpose: >
+  Handle a change to employee details after the case is created:
+  propose the next form version, and record the decision on it.
+
+# From specs/uc01-requirements.yaml. Every requirement must be served
+# by at least one skill; tests/test_llm.py fails if one is orphaned.
+business_requirements: [R3, R5]
+# R5's fourth case (changes to employee details), and the ongoing half
+# of R3 -- maintaining the source details as they change, by version.
+
+when_to_use: >
+  Any detail on an open case needs to change after version 1 was
+  approved -- a moved joining date, a corrected name, a revised
+  package. Not used for the initial form, which arrives already
+  approved.
+
+inputs:
+  - case_id
+  - the fields to change and their new values
+  - change_reason
+  - the requesting user
+
+outputs:
+  - a new DRAFT form version carrying every unchanged field forward
+  - a HC_01_FORM approval
+  - on approval, the new version comes into force and the previous one
+    is superseded
+
+approval: HC_01_FORM
+
+llm_tasks: []   # Fully deterministic. No model is involved in a detail change.
+
+entry_point: sub_agent.service.CaseService.propose_form_change
+
+failure_modes:
+  - Requester tries to approve their own change -> refused by policy
+    (SELF_APPROVAL), separation of duties on HC_01_FORM.
+  - Joining date moved -> prepared HRIS records for the old version go
+    stale; the record must be re-prepared (EC-11/EC-35).
+  - Rejected change -> the in-force version is unchanged; nothing is
+    partially applied.
+  - Salary revised -> carried through as an opaque value. No delta is
+    computed and neither figure is rendered anywhere (SALARY-01).

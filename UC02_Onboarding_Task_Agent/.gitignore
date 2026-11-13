@@ -1,0 +1,64 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Build / packaging artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Secrets and local environment.
+# .env.example is tracked on purpose — it documents required variables.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# Test, coverage and type-checker artifacts
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# Local prototype data stores (audit JSONL, HITL SQLite) once file-backed
+*.sqlite
+*.sqlite3
+*.db
+audit*.jsonl
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# NOTE: src/, tests/, docs/, guardrails/ and pyproject.toml are tracked.
+# Nothing in this file should exclude source, tests, docs or policy.
+
+# Local development database (UC02_STORE_MODE=sqlite). Synthetic data only; never commit.
+local_db/
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.sqlite3-journal

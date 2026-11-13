@@ -1,0 +1,30 @@
+gates:
+  SEND_REMINDER:
+    description: "Send document reminder to candidate"
+    required_actor_types: [HR_USER]
+    auto_approve: false
+
+  SEND_REPLACEMENT_REQUEST:
+    description: "Send replacement document request to candidate"
+    required_actor_types: [HR_USER]
+    auto_approve: false
+
+  WRITE_SYSTEM:
+    description: "Write or update employee record in external system"
+    required_actor_types: [HR_USER]
+    auto_approve: false
+
+  COMPLETE_COMPLIANCE:
+    description: "Mark a compliance item as complete"
+    required_actor_types: [HR_USER]
+    auto_approve: false
+
+  PREPARE_VISA_PACK:
+    description: "Prepare visa document pack for PRO review"
+    required_actor_types: [HR_USER, PRO_USER]
+    auto_approve: false
+
+  ACCESS_REQUEST:
+    description: "Grant system access to the employee"
+    required_actor_types: [HR_USER]
+    auto_approve: false

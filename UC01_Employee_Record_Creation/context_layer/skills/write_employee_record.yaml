@@ -1,0 +1,42 @@
+skill: write_employee_record
+purpose: >
+  Write the approved record to Zoho People and Zoho Payroll, after a
+  person has approved it at HC_05_HRIS_WRITE.
+
+roles: [HR_MANAGER]
+
+form_fields:
+  in_scope:
+    - candidate_name
+    - candidate_email
+    - designation
+    - joining_date
+    - work_location_type
+    - client_site_id
+    - version
+    - approved_by
+    - approved_at
+    - status
+    # The one skill that reads the salary value, and the narrowest point
+    # at which it can be read: in memory, at write time, copied verbatim
+    # into the payroll payload. Never stored on the HrisRecord, never
+    # logged, never returned to a caller.
+    - salary_and_terms
+  excluded:
+    - change_reason
+
+records: >
+  This case, its in-force form version, and the HC_05_HRIS_WRITE
+  approval. The payload is rebuilt from the form and compared field for
+  field against the prepared one immediately before the call, so a
+  record prepared from different data cannot be written.
+
+tools:
+  - hris.zoho_people.write
+  - hris.zoho_payroll.write
+
+withheld: >
+  Nothing reaches the joiner here. This skill writes to systems of
+  record only; joiner-facing messages are outside UC-01.
+
+enforced_by: src/sub_agent/hooks.py

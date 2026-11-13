@@ -1,0 +1,25 @@
+# The shape every skill context file in this directory must follow.
+# Enforced by tests/testcase.py, which validates each file against this
+# list of keys and against the real field/role names in the code.
+#
+# Keys, all required:
+#
+#   skill             Skill name. Must match the filename stem.
+#   purpose           One line: what the agent does with this context.
+#   roles             Roles that may invoke the skill. Valid values come
+#                     from sub_agent.models.enums.Role.
+#   form_fields:
+#     in_scope        OnboardingForm field names the skill may read.
+#     excluded        OnboardingForm field names deliberately withheld.
+#                     in_scope + excluded must together cover every
+#                     field a reader might expect, and must not overlap.
+#   records           Which records are reachable: this case only, or
+#                     sibling records, and why.
+#   tools             mcp/ tool names the skill may call. Empty list
+#                     means it calls no business system at all.
+#   withheld          Things a reader might expect here, and why they
+#                     are not.
+#   enforced_by       Code path that enforces the scope at runtime.
+#
+# Scope is deny by default: a field not listed in in_scope is not
+# visible to the skill, whether or not it appears in excluded.

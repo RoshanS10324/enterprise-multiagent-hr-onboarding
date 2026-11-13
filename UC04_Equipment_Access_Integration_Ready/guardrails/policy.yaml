@@ -1,0 +1,75 @@
+# UC-04 guardrails policy: a human-readable MIRROR, not the enforced policy.
+#
+# This file is NOT read by any code. Editing it changes nothing at run time.
+#   - Enforced policy (autonomy, kill switch, caller roles, tool allowlist): policy/uc04_policy.json
+#   - Enforced privacy and injection checks: guardrails/guardrails.py (imported as sub_agent.guardrails)
+# tests/test_policy_yaml_mirror.py fails if this file drifts from those two sources, or if any code starts loading it
+# (in that case update this header and the test).
+
+agent: employee-onboarding-uc04
+use_case: UC-04 Equipment & Approved Access Management
+version: 1
+implementation_mode: LOCAL_SIMULATION  # no real calls; mock adapters only
+
+# -------------------------------------------------------------------------- kill switch
+enabled: true   # mirror only. Editing this line switches nothing off; the real kill switch is "enabled" in policy/uc04_policy.json (BR-18)
+
+# -------------------------------------------------------------------------- autonomy
+autonomy:
+  level: L1          # observe and propose; nothing is written or sent without a person's approval
+  ceiling: L1         # cannot be escalated beyond L1 in this policy version
+  approved_by: []     # production: the approvers who signed off (empty today: not yet approved by a governance owner)
+
+# -------------------------------------------------------------------------- caller access control
+caller_roles:
+  allowed:
+    - hr_onboarding_officer
+    - hiring_manager
+    - onboarding_orchestrator
+
+# -------------------------------------------------------------------------- tool allowlist
+tools:
+  read:
+    - case_context.get_case
+    - case_context.case_for_employee
+  write: []
+  write_requires_approval:
+    - it_service_desk.submit_request  # GR-02: no request is raised without a human checkpoint (spend approval HC-08 is undefined)
+
+# -------------------------------------------------------------------------- privacy guardrails (GR-06, GR-10, GR-18, BR-15)
+privacy:
+  blocked_categories:
+    - pay_or_compensation
+    - loan_or_bank
+    - medical_or_disability
+    - criminal_record
+    - money_amount
+    - email_address
+    - phone_number
+    - national_id
+    - passport_number
+    - secret
+  action_on_violation: FAIL_CLOSED   # raise PrivacyViolation, restore the stored state, never log the value
+  redaction_marker: "[REDACTED: HR item, see HR]"
+
+# -------------------------------------------------------------------------- injection detection (GR-10)
+injection:
+  patterns:
+    - ignore_instructions
+    - role_hijack
+    - approval_claim
+  action_on_detection: FLAG_AND_TREAT_AS_DATA  # logged by label (untrusted_text.flagged); the text is never acted on and the case carries on
+
+# -------------------------------------------------------------------------- idempotency (BR-21, BR-22)
+idempotency:
+  strategy: PAYLOAD_HASH_PLUS_STATE_VERSION_PLUS_PARENT_STATUS   # a stored result is replayed only while all three still match
+  on_conflict: REJECT_409               # different payload, same key: 409
+
+# -------------------------------------------------------------------------- fail-closed rules (BR-18)
+fail_closed:
+  - condition: privacy_violation
+    action: abort_restore_state_and_audit
+  - condition: adapter_error
+    action: store_ADAPTER_ERROR_and_block_retry
+  - condition: validation_error
+    action: reject_with_field_names_only  # never echo field values

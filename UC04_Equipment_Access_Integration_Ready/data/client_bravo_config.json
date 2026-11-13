@@ -1,0 +1,22 @@
+{
+  "client_id": "client_bravo",
+  "role_id": "software_engineer",
+  "version": "bravo-v1",
+  "role_access_matrix": {"state": "VERIFIED", "value": ["email-teams-account", "vpn-access"]},
+  "role_equipment_matrix": {"state": "VERIFIED", "value": ["laptop-standard", "monitor-27"]},
+  "approver_config": {"state": "VERIFIED", "value": {
+    "ACCESS": {"role": "line_manager", "delegate_role": null},
+    "EQUIPMENT": {"role": "line_manager", "delegate_role": null},
+    "EXCEPTION": {"role": "exception_approver", "delegate_role": null}
+  }},
+  "lead_times": {"state": "VERIFIED", "value": {"EQUIPMENT": 7, "ACCESS": 3, "CLIENT_SITE_CLEARANCE": 20}},
+  "work_calendar": {"state": "VERIFIED", "value": {"weekend_days": [5, 6], "holidays": []}},
+  "handover_rules": {"state": "VERIFIED", "value": {"mode": "DELIVER", "keep_reserved_on_missed_slot": false}},
+  "evidence_roles": {"state": "VERIFIED", "value": {
+    "PROVISIONING": ["it_service_desk"], "DELIVERY": ["it_service_desk"], "COLLECTION": ["it_service_desk"],
+    "CLIENT_SITE_CLEARANCE": ["account_manager"]
+  }},
+  "country_rules": {"state": "MISSING"},
+  "client_site_rules": {"state": "MISSING"},
+  "client_overrides": {}
+}

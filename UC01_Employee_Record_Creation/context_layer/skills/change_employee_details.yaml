@@ -1,0 +1,40 @@
+skill: change_employee_details
+purpose: >
+  Handle a change to employee details after case creation: propose the
+  next form version, and record the approve/reject decision on it.
+
+roles: [HR_OFFICER, HR_MANAGER, CLIENT_USER]
+
+form_fields:
+  in_scope:
+    - candidate_name
+    - candidate_email
+    - designation
+    - joining_date
+    - work_location_type
+    - client_site_id
+    - version
+    - status
+    - change_reason
+    - approved_by
+    - approved_at
+  excluded:
+    # A salary change is proposed as an opaque replacement value and
+    # carried through as-is. The skill never reads the old figure, never
+    # computes a delta, and never renders either value -- so a salary
+    # change can be approved without the figure entering context. The
+    # SALARY-01 eval scenario checks exactly this.
+    - salary_and_terms
+
+records: >
+  This case and its form version history. Other cases are not reachable:
+  a change to one joiner's details never reads another's.
+
+tools: []  # Produces a new form version; the HRIS write is a separate skill.
+
+withheld: >
+  No write to a system of record. A new version supersedes the old only
+  on approval, and the record is not re-written until
+  write_employee_record runs with its own approval.
+
+enforced_by: src/sub_agent/form_changes.py

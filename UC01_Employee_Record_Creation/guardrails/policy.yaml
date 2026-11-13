@@ -1,0 +1,230 @@
+# UC-01 guardrails.
+#
+# [Proposed] This file is the declared, reviewable statement of the
+# guardrails. It is not itself the enforcement point: each rule below
+# names the code that enforces it, and that code is the thing that must
+# pass. If a rule here has no `enforced_by`, it is not yet enforced --
+# treat it as a gap, not a guarantee.
+#
+# Authorization (who may take which action/decision) is NOT here. That
+# lives in policy/uc01_policy.toml, loaded by
+# src/sub_agent/policy.py.
+
+version: 1
+use_case: UC-01 Employee Record Creation
+
+# ---------------------------------------------------------------------
+# Data handling
+# ---------------------------------------------------------------------
+data:
+  synthetic_only:
+    rule: >
+      Only synthetic joiner data in code, tests, fixtures, examples, and
+      demo mailboxes. No real personal data, ever.
+    applies_to: [tests/, evaluation/, demo/, docs/]
+    enforced_by: review
+
+  secrets:
+    rule: >
+      No secrets in the repo. Configuration comes from .env locally and
+      from Key Vault in deployed environments.
+    enforced_by: src/sub_agent/api/container.py  # rejects placeholder secrets
+
+# ---------------------------------------------------------------------
+# Sensitive fields: salary, bank, loan
+# ---------------------------------------------------------------------
+sensitive_fields:
+  categories: [salary, bank, loan]
+  rules:
+    no_transformation:
+      rule: >
+        Never calculate, round, reformat, or otherwise change a salary
+        figure. Salary values are copied exactly as approved.
+      enforced_by: src/sub_agent/hris_mapping.py
+    scope_confinement:
+      rule: >
+        Salary, bank, and loan data stay inside HR and payroll scopes.
+        They are not exposed to other scopes, tools, or connectors.
+      enforced_by: src/sub_agent/access.py
+    never_in_audit:
+      rule: >
+        Sensitive values are never written into audit entries. Refused
+        at the append boundary (preventive, by key name and secret
+        shape) and additionally detected after the fact.
+      enforced_by:
+        - src/sub_agent/audit_integrity.py  # check_entry, at append
+        - src/sub_agent/invariants.py       # SENSITIVE_IN_AUDIT, after the fact
+    never_in_errors:
+      rule: >
+        Exception messages carry a code, never an id or a field value;
+        gateway errors persist the class name only.
+      enforced_by: src/sub_agent/errors.py
+
+# ---------------------------------------------------------------------
+# Source of truth
+# ---------------------------------------------------------------------
+source_of_truth:
+  approved_form:
+    rule: >
+      The approved onboarding form is the source of truth. Differences
+      between it and other data are flagged to HR as discrepancies and
+      are never silently overwritten.
+    enforced_by: src/sub_agent/compare_sources.py
+  write_matches_form:
+    rule: >
+      Every HRIS payload is rebuilt from the in-force form version and
+      compared field for field immediately before the write.
+    enforced_by: src/sub_agent/hooks.py  # before_hris_write, PAYLOAD_MISMATCH
+
+# ---------------------------------------------------------------------
+# Human approval
+# ---------------------------------------------------------------------
+human_approval:
+  rule: >
+    Anything sent to a joiner, any write to a system of record, and any
+    spend waits for a person's approval before it happens.
+  required_for:
+    - write_to_system_of_record
+    - message_to_joiner
+    - spend
+  no_self_approval:
+    rule: The requester and the approver are never the same person.
+    enforced_by: src/sub_agent/policy.py  # SELF_APPROVAL
+  enforced_by:
+    - src/sub_agent/hooks.py       # APPROVAL_NOT_APPROVED
+    - src/sub_agent/invariants.py  # WRITTEN_WITHOUT_APPROVAL, SELF_APPROVED
+
+# ---------------------------------------------------------------------
+# Tooling boundaries
+# ---------------------------------------------------------------------
+tooling:
+  rule: >
+    Every call to a business system (HRIS, finance, Graph, IT service
+    desk, documents) goes through a tool defined in mcp/. Stubs are
+    acceptable; direct calls are not.
+  exempt:
+    - connectors/outlook/mock.py  # talks to nothing
+  enforced_by: review
+
+kill_switches:
+  hris_writes_enabled:
+    rule: HRIS writes can be disabled without a deploy.
+    config: UC01_HRIS_WRITES_ENABLED
+    enforced_by: src/sub_agent/hooks.py  # WRITES_DISABLED
+  fail_closed_environment:
+    rule: >
+      The container refuses to start outside APP_ENV=dev while only
+      in-memory adapters exist.
+    enforced_by: src/sub_agent/api/container.py
+
+# ---------------------------------------------------------------------
+# Inbound content
+# ---------------------------------------------------------------------
+inbound_content:
+  email_body_never_read:
+    rule: >
+      Acceptance email parsing inspects From and Subject only. The body
+      is never read, stored, or logged, which removes the body as a
+      prompt-injection surface.
+    enforced_by: src/sub_agent/intake/email_intake.py
+  no_free_text_decisions:
+    rule: >
+      No inbound text decides anything on its own. Intake classifies to
+      a fixed code set and routes anything ambiguous to HR review.
+    enforced_by: src/sub_agent/intake/email_intake.py
+  pii_in_rejections:
+    rule: >
+      Rejection and review audit entries record a code only, never the
+      sender address or any message text.
+    enforced_by: src/sub_agent/intake/email_intake.py
+
+# ---------------------------------------------------------------------
+# Advisory model
+# ---------------------------------------------------------------------
+llm:
+  no_decision_authority:
+    rule: >
+      UC-01 makes no decision with a model. A task is either
+      ADVISORY_ESCALATE_ONLY (may raise a review for a human, may never
+      clear one) or DRAFT_FOR_HUMAN (produces text, never branches
+      control flow). There is no third level.
+    enforced_by: src/sub_agent/llm/base.py
+  escalate_only_wiring:
+    rule: >
+      The advisory classifier runs only after the deterministic rules
+      have found nothing, so it can add a review but can never overturn
+      one. It is off by default.
+    enforced_by: src/sub_agent/intake/email_intake.py
+  structural_redaction:
+    rule: >
+      Each task declares the inputs it may receive; anything else is
+      refused before a prompt is assembled. No task may declare salary,
+      bank, or loan inputs -- such a task fails to load.
+    enforced_by: src/sub_agent/llm/guard.py
+  no_email_body:
+    rule: >
+      No task may declare the email body as an input, keeping the body
+      out of reach as a prompt-injection surface.
+    enforced_by: brain/tasks/intake_intent.yaml
+  outage_never_blocks:
+    rule: >
+      A model outage is audited and ignored; the deterministic result
+      stands. A case never waits on a model.
+    enforced_by: src/sub_agent/intake/email_intake.py
+  provenance:
+    rule: >
+      Every brain task declares a `version`, and every audited model
+      call records the task version that produced the result, so a past
+      advisory decision can be read against the wording actually in
+      force at the time. Policy denials likewise record policy_version.
+    enforced_by:
+      - src/sub_agent/llm/brain.py  # version is a required task key
+      - src/sub_agent/policy.py     # policy_version on POLICY_DENIED
+  audited_without_content:
+    rule: >
+      Every call is audited by task name, label, model, and confidence.
+      The prompt text and the raw output are never written to the audit
+      log, since either could echo an input.
+    enforced_by: src/sub_agent/intake/email_intake.py
+
+# ---------------------------------------------------------------------
+# Audit
+# ---------------------------------------------------------------------
+audit:
+  rule: Every action, decision, and approval is written to the audit log.
+  enforced_by:
+    - src/sub_agent/service.py
+    - src/sub_agent/invariants.py  # MISSING_CASE_OPENED_AUDIT
+  integrity:
+    rule: >
+      Each entry is hash-linked to the one before it. verify_chain, run
+      over the COMPLETE log, detects an entry that was edited, removed
+      from the middle, or reordered.
+    not_detected:
+      - >
+        Truncation of the most recent entries: dropping entries off the
+        tail leaves a shorter but internally valid chain. Detecting it
+        needs a high-water mark held outside the log.
+      - >
+        Wholesale rewriting: with no key and no external anchor, an
+        actor who can rewrite every entry can recompute every digest.
+        This is tamper EVIDENCE, not tamper proofing.
+      - >
+        Anything before the current process started: the chain lives in
+        InMemoryAuditLog and restarts from GENESIS_HASH on every boot. A
+        persistent adapter must carry the last digest forward.
+    enforced_by:
+      - src/sub_agent/audit_integrity.py  # verify_chain
+      - src/sub_agent/case_status.py      # verify_audit_integrity, AUDITOR only
+      - src/sub_agent/api/app.py          # GET /audit/integrity
+
+# ---------------------------------------------------------------------
+# Scope
+# ---------------------------------------------------------------------
+scope:
+  rule: >
+    UC-01 covers the start gate, duplicate/variant check, case creation
+    on onboarding form version 1, discrepancy flagging, preparing the
+    record in Zoho People/Payroll, and changes to employee details after
+    case creation. Nothing outside this ships under the UC-01 label.
+  enforced_by: review

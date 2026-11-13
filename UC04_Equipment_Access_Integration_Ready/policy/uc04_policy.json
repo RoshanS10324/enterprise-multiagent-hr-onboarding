@@ -1,0 +1,15 @@
+{
+  "policy": "uc04-equipment-access",
+  "agent": "employee-onboarding-uc04",
+  "version": 1,
+  "enabled": true,
+  "approved_by": [],
+  "autonomy": "L1",
+  "ceiling": "L1",
+  "allowed_caller_roles": ["hr_onboarding_officer", "hiring_manager", "onboarding_orchestrator"],
+  "tools": {
+    "read": ["case_context.get_case", "case_context.case_for_employee"],
+    "write": [],
+    "write_requires_approval": ["it_service_desk.submit_request"]
+  }
+}

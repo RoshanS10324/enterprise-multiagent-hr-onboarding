@@ -1,0 +1,39 @@
+skill: case_status
+purpose: >
+  Answer "where is this case" for HR, the client, and auditors, and list
+  what is waiting on a decision.
+
+# From specs/uc01-requirements.yaml. Every requirement must be served
+# by at least one skill; tests/test_llm.py fails if one is orphaned.
+business_requirements: [R3]
+# The traceable-status half of the expected output, and the read side
+# of R3 -- what is in force right now, and what is waiting.
+
+when_to_use: >
+  Any time someone asks about progress. The only skill a CLIENT_USER or
+  an AUDITOR can reach, and the only read-only one.
+
+inputs:
+  - viewer (user, role, client_ids)
+  - case_id, or nothing for the pending-approval worklist
+
+outputs:
+  - >-
+    a CaseStatusView: stage, form version in force, joining date, open
+    discrepancies by field name, pending approvals, HRIS status
+  - the audit trail, for roles allowed to see it
+  - the pending-approval worklist
+
+approval: none   # Reads nothing into existence and changes nothing.
+
+llm_tasks: []    # Fully deterministic.
+
+entry_point: sub_agent.service.CaseService.get_status
+
+failure_modes:
+  - Case not visible to the viewer -> answers exactly as it does for a
+    case that does not exist, so the response cannot be used to probe.
+  - HR_OFFICER asking about another officer's case -> not visible.
+  - AUDITOR -> candidate_name is omitted; they get the trail, not the
+    person.
+  - No role sees salary, bank, or loan data through this skill.

@@ -1,0 +1,41 @@
+skill: start_case
+purpose: >
+  Run the start gate and the duplicate/variant check, then open the case
+  on onboarding form version 1, or hold it if the gate is not satisfied.
+
+roles: [HR_OFFICER, HR_MANAGER]
+
+form_fields:
+  in_scope:
+    - candidate_name
+    - candidate_email
+    - designation
+    - joining_date
+    - work_location_type
+    - client_site_id
+    - version
+    - status
+  excluded:
+    # The gate turns on whether an approved form exists and whether the
+    # offer was accepted. Compensation plays no part in that decision, so
+    # it is not in context here even though the form carries it.
+    - salary_and_terms
+    - approved_by
+    - approved_at
+    - change_reason
+
+records: >
+  This case, plus sibling PersonRecords for the same client. The
+  duplicate and variant checks cannot work on a single record in
+  isolation -- they exist to find the other ones. Scoped to the
+  viewer's client_ids; records belonging to another client are never
+  reachable.
+
+tools: []  # No business system is called. The gate is a local decision.
+
+withheld: >
+  No HRIS record and no payroll data. Nothing is written anywhere at
+  this stage: the skill's only outputs are a case, a hold, or a variant
+  notice raised to HR.
+
+enforced_by: src/sub_agent/start_gate.py

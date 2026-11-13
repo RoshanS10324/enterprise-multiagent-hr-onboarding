@@ -1,0 +1,11 @@
+# Secrets and local configuration: never committed. .env.example holds placeholders only.
+.env
+.env.*
+!.env.example
+
+# Local runtime data and caches
+.dact/
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/

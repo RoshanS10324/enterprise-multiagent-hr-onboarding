@@ -1,0 +1,34 @@
+# Development identities (platform/identity.RegistryIdentityProvider; scripts/serve_orchestrator.py --dev-identity).
+# The backend resolves each user's roles and permitted clients from THIS file; the browser only names a user and a
+# client, and any roles it sends are ignored. Development only: a real identity provider replaces this.
+#
+#   hr_admin               document review, the day-1 signoff, case operations
+#   hr_onboarding_officer  starts/resumes cases, supplies documents; UC04 accepts it as a caller
+#                          (UC04 policy/uc04_policy.json allowed_caller_roles)
+#   hr_lead                approves internal onboarding forms (gate onboarding_form_approval; a role UC02 accepts)
+#   onboarding_scheduler   the joining-day scheduler service
+#   team_lead              decides UC05's team-introduction booking -- only the team lead ON RECORD for the employee
+#                          (the form's reporting manager id); UC05 checks the person, not just the role
+#   hiring_manager         decides UC04 item approvals (UC04 approver configuration: hiring_manager for CLIENT-ALPHA);
+#                          UC04 checks each recorded approval itself
+users:
+  user:hr-admin-01:
+    label: HR Admin & Onboarding Officer (submits forms)
+    roles: [hr_admin, hr_onboarding_officer]
+    clients: [CLIENT-ALPHA, CLIENT-TEST-A, CLIENT-TEST-B, CLIENT_DUBAI]
+  user:hr-lead-01:
+    label: HR Lead (approves forms)
+    roles: [hr_lead]
+    clients: [CLIENT-ALPHA, CLIENT-TEST-A, CLIENT-TEST-B, CLIENT_DUBAI]
+  TL-TEST-001:
+    label: Team lead TL-TEST-001 (reporting manager on the form; decides team introductions)
+    roles: [team_lead]
+    clients: [CLIENT-ALPHA, CLIENT-TEST-A]
+  user:hiring-manager-01:
+    label: Hiring manager (approves equipment and access items, UC04)
+    roles: [hiring_manager]
+    clients: [CLIENT-ALPHA, CLIENT-TEST-A]
+  svc:joining-day-scheduler:
+    label: Joining-day scheduler (service)
+    roles: [onboarding_scheduler]
+    clients: [CLIENT-ALPHA, CLIENT-TEST-A, CLIENT-TEST-B, CLIENT_DUBAI]

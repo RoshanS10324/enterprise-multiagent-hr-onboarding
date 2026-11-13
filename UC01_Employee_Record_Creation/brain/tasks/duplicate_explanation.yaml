@@ -1,0 +1,54 @@
+task: duplicate_explanation
+
+# Prompt version. Bump on any change to `prompt`, `inputs_allowed`
+# or `output_values`, so an audited decision can be traced back to
+# the exact wording that produced it.
+version: 1
+purpose: >
+  Draft a short note explaining why a possible duplicate or a variant
+  (rehire, internal transfer, agency contractor) was flagged on a case,
+  so the HR manager deciding HC_12_VARIANT knows what they are looking
+  at. The match itself is computed deterministically; this only
+  describes it.
+
+authority: DRAFT_FOR_HUMAN
+
+# Which signals matched, not the values that matched. "email and date of
+# birth agree" is enough for a person to go and look; repeating the
+# email address here is not needed and would spread personal data into
+# prompt text.
+inputs_allowed:
+  - case_id
+  - matched_on
+  - match_kind
+  - existing_record_kind
+  - variant_flags
+
+output_values: []
+
+prompt: |
+  Write a short note for the HR manager deciding whether a new case is
+  the same person as an existing record, or a variant that needs
+  different handling.
+
+  You are given which signals matched (for example "email, full_name"),
+  the kind of match, what the existing record is (a past employee, a
+  current employee, another open case), and any variant flags set.
+
+  You are NOT given the matched values themselves. Do not ask for them
+  and do not invent them.
+
+  Write at most three sentences:
+
+  1. What matched and against what kind of existing record.
+  2. What that most likely means -- a rehire, an internal transfer, an
+     agency contractor, two different people who share a name, or a
+     genuine repeat request.
+  3. What specifically the manager should check to tell those apart.
+
+  Two different people sharing a common name is an ordinary occurrence,
+  not an anomaly. Where a name alone matched, say so plainly, because it
+  is the weakest signal here.
+
+  Do not recommend approving or rejecting. Set out what is known and
+  what the manager needs to confirm.

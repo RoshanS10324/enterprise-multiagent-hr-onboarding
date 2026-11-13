@@ -1,0 +1,104 @@
+"""UC04 adapter: status mapping and parent-supplied inputs, with a stub worker (no process, no network)."""
+
+from types import SimpleNamespace
+
+import pytest
+
+from hr_onboarding_common.orchestration.adapters.uc04_equipment_access import call_uc04_equipment_access
+from hr_onboarding_common.orchestration.deps import OrchestratorDeps
+from hr_onboarding_common.orchestration.state import Stage, StageStatus, new_state
+from _helpers import UC_ROOTS
+
+
+class StubWorker:
+    is_alive = True
+
+    def __init__(self, status="READY", blockers=()):
+        self.status, self.blockers, self.sent = status, list(blockers), []
+
+    def call(self, op, payload, *, actor, run_id, idempotency_key):
+        self.sent.append((op, payload))
+        result = {"overall_status": self.status, "items": [], "blockers": self.blockers, "config_version": "alpha-v1", "config_digest": "0" * 16}
+        return SimpleNamespace(ok=True, result={"result": result, "proposals": []}, error_code=None, error_detail=None)
+
+
+class Pool:
+    def __init__(self, worker): self._w = worker
+    def get(self, uc_id): return self._w
+
+
+CONFIG = {"client_id": "client_alpha", "role_id": "software_engineer", "version": "alpha-v1"}
+CTX = {"role_id": "software_engineer", "uc04_client_config": CONFIG, "offer_accepted_at": "2026-10-01", "form_approved_at": "2026-10-02",
+       "form_version": 3}
+
+
+def state(ctx=None):
+    s = new_state(case_id="SYN-CASE-001", client_id="client_alpha", correlation_id="corr1",
+                  actor={"on_behalf_of": "SYN-USER-201", "roles": ["hr_onboarding_officer"]}, intake_trigger={})
+    s["employee_id"], s["joining_date"] = "SYN-EMP-001", "2026-11-16"
+    s["uc02_role_context"] = CTX if ctx is None else ctx
+    return s
+
+
+def run(worker, ctx=None):
+    deps = OrchestratorDeps(ctx=None, worker_pool=Pool(worker), uc03_repo_root=UC_ROOTS["uc03"])
+    return call_uc04_equipment_access(state(ctx), deps)
+
+
+STAGE = Stage.EQUIPMENT_ACCESS.value
+
+
+@pytest.mark.parametrize("uc04,expected", [
+    ("READY", StageStatus.COMPLETE), ("IN_PROGRESS", StageStatus.IN_PROGRESS), ("AWAITING_APPROVAL", StageStatus.AWAITING_APPROVAL),
+    ("AT_RISK", StageStatus.BLOCKED), ("NEEDS_HUMAN_REVIEW", StageStatus.BLOCKED), ("BLOCKED", StageStatus.BLOCKED), ("CANCELLED", StageStatus.FAILED)])
+def test_every_uc04_status_maps_to_a_distinct_parent_status(uc04, expected):
+    assert run(StubWorker(uc04))["stage_statuses"][STAGE] == expected.value
+
+
+def test_in_progress_is_never_complete():
+    assert run(StubWorker("IN_PROGRESS"))["stage_statuses"][STAGE] != StageStatus.COMPLETE.value
+
+
+def test_at_risk_is_reachable_and_carries_a_blocker():
+    out = run(StubWorker("AT_RISK"))
+    assert out["stage_statuses"][STAGE] == StageStatus.BLOCKED.value
+    assert any(b.get("code") == "AT_RISK" for b in out.get("blockers", out.get("pending_actions", []))) or "at_risk" in out["next_action"]
+
+
+def test_cancelled_is_terminal_not_resumable():
+    out = run(StubWorker("CANCELLED"))
+    assert out["stage_statuses"][STAGE] == StageStatus.FAILED.value and out["error_code"] == "CASE_CANCELLED"
+
+
+def test_an_unknown_status_is_failed_never_success():
+    out = run(StubWorker("SOMETHING_NEW"))
+    assert out["stage_statuses"][STAGE] == StageStatus.FAILED.value and out["error_code"] == "UNKNOWN_STATUS"
+
+
+def test_offer_and_form_state_come_from_the_parent_context_not_constants():
+    worker = StubWorker()
+    run(worker)
+    sent = worker.sent[0][1]["input"]
+    assert sent["offer_accepted"] is True and sent["onboarding_form_approved"] is True and sent["form_version"] == "3"
+    worker = StubWorker()
+    run(worker, {**CTX, "offer_accepted_at": None, "form_approved_at": None})
+    sent = worker.sent[0][1]["input"]
+    assert sent["offer_accepted"] is False and sent["onboarding_form_approved"] is False  # UC04's start gate then holds the case
+
+
+def test_a_missing_form_version_blocks_and_is_never_defaulted():
+    worker = StubWorker()
+    ctx = {k: v for k, v in CTX.items() if k != "form_version"}
+    out = run(worker, ctx)
+    assert out["stage_statuses"][STAGE] == StageStatus.BLOCKED.value and out["error_code"] == "MISSING_DATA" and worker.sent == []
+
+
+def test_missing_configuration_blocks_without_calling_uc04():
+    worker = StubWorker()
+    out = run(worker, {k: v for k, v in CTX.items() if k != "uc04_client_config"})
+    assert out["stage_statuses"][STAGE] == StageStatus.BLOCKED.value and worker.sent == []
+
+
+def test_the_config_version_and_digest_are_preserved_in_the_projection():
+    out = run(StubWorker())
+    assert out["equipment_access_result"]["config_version"] == "alpha-v1" and out["equipment_access_result"]["config_digest"] == "0" * 16

@@ -1,0 +1,38 @@
+skill: compare_sources
+purpose: >
+  Compare other data sources against the approved onboarding form and
+  raise a discrepancy for every difference, for HR to resolve.
+
+roles: [HR_OFFICER, HR_MANAGER]
+
+form_fields:
+  in_scope:
+    - candidate_name
+    - candidate_email
+    - designation
+    - joining_date
+    - work_location_type
+    - client_site_id
+    - version
+  excluded:
+    # A salary difference is still flagged, but by field NAME only. The
+    # two values are never both in context, because holding them is how
+    # a comparison turns into a leak.
+    - salary_and_terms
+    - status
+    - approved_by
+    - approved_at
+    - change_reason
+
+records: >
+  This case, its in-force approved form, and the SourceSnapshots being
+  compared against it.
+
+tools: []  # Snapshots are supplied by the caller; nothing is fetched here.
+
+withheld: >
+  No authority to change anything. The approved form is the source of
+  truth: a difference becomes a Discrepancy for HR to decide, and is
+  never silently written over the form or over the other source.
+
+enforced_by: src/sub_agent/compare_sources.py

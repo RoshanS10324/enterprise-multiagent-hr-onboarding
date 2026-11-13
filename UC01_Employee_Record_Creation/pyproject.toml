@@ -1,0 +1,66 @@
+[project]
+name = "uc01-employee-record"
+version = "0.1.0"
+description = "UC-01 Employee Record Creation agent for Enterprise onboarding"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.162.0",
+    "pydantic>=2.10.0",
+    "python-dotenv>=1.0.0",
+    "uvicorn[standard]>=0.54.0",
+    # Supabase persistence. httpx is the PostgREST transport (promoted
+    # from the dev group, where it was only the FastAPI test client);
+    # cryptography provides AES-256-GCM for salary_and_terms_encrypted.
+    # No supabase-py: its PostgREST layer is one implicit transaction per
+    # call, and its package name collides with the repo's supabase/ dir.
+    "httpx>=0.28.1",
+    "cryptography>=43.0",
+]
+
+[project.optional-dependencies]
+# Text-based PDF onboarding forms (sub_agent.documents.pdf_reader). Pure
+# Python; without it a PDF is rejected (PDF_SUPPORT_UNAVAILABLE) and .docx
+# keeps working.
+pdf = ["pypdf>=5.1"]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest",
+    # Coverage gate in CI. The threshold lives in [tool.coverage.report]
+    # below so a local `uv run pytest --cov` fails the same way CI does.
+    "pytest-cov>=5.0",
+    # tests/testcase.py parses guardrails/policy.yaml to check every
+    # enforced_by path still exists. Declared so that check cannot
+    # silently skip if a transitive source of PyYAML goes away.
+    "pyyaml>=6.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sub_agent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# tests/testcase.py covers the structural contracts between layers and
+# does not match pytest's default test_*.py, so name it explicitly.
+python_files = ["test_*.py", "testcase.py"]
+
+[tool.coverage.run]
+source = ["sub_agent"]
+branch = true
+
+[tool.coverage.report]
+# Measured at 94.57% (statement + branch) when the gate was introduced.
+# The floor is set just below that: high enough that deleting a tested
+# path fails CI, with enough headroom that an unrelated refactor does not.
+fail_under = 93
+show_missing = true
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "\\.\\.\\.",
+]

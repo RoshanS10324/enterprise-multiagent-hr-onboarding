@@ -1,0 +1,179 @@
+# Policy envelope for UC-02 — Onboarding Task Management.
+#
+# STATUS: declared, not yet enforced from this file. `pyyaml` is not installed
+# (uv missing), so the prototype cannot parse it. The values below are mirrored
+# in src/onboarding_task_management/approvals.py (GATES) and config.py
+# (thresholds) and MUST be kept identical until PolicyStore can load this file.
+# CLAUDE.md rule 3 makes this file the single source of truth once that happens.
+#
+# agent id is PROPOSED — review C-5/D-6 require framework-team confirmation.
+
+policy: onboarding-task-management
+agent: onboarding-task-management
+version: 1
+enabled: true
+
+autonomy: L1
+ceiling: L2
+
+# Tool allowlist. Enforced by hr_recruitment_common.platform.tools.ToolGateway,
+# which raises PolicyViolation for any tool not named here and refuses every
+# write tool when autonomy is L0. Names mirror
+# src/onboarding_task_management/agent/tools.py; test_agent.py asserts parity.
+#
+# The `uc02.*` tools exist and are exercised by the test suite. The `hris.*`
+# and `itsm.*` entries are the planned connectors from review C-3/C-4: they
+# remain declared but UNIMPLEMENTED — no HRIS or ITSM adapter exists.
+tools:
+  read:
+    - uc02.get_onboarding
+    - uc02.get_checklist
+    - uc02.inspect_blockers
+    - uc02.preview_checklist
+    - uc02.assess_risk
+    - uc02.prepare_followup
+    - uc02.verify_task_state
+    - uc02.get_configuration
+    - uc02.critical_path
+    - uc02.analyse_plan
+    - uc02.propose_replan
+    - uc02.prepare_team_drafts
+    # Planned connectors, not implemented.
+    - hris.get_employee
+    - hris.get_onboarding_record
+    - itsm.get_ticket_status
+  write: []
+  write_requires_approval:
+    - uc02.request_approval
+    - uc02.update_task_state
+    # Planned connectors, not implemented.
+    - hris.update_joining_date
+    - hris.update_work_location
+    - itsm.create_ticket
+    - notify.send_reminder
+
+# `authorises` binds each gate to the single operation it may authorise.
+# An approval for one gate must never drive another operation (finding C1);
+# the binding is mirrored by approvals.CHANGE_GATES / CANCELLATION_GATES.
+# `unused` means the gate is declared but no operation consumes it yet.
+gates:
+  date_change_approval:
+    approver_role: hr_ops
+    description: "Joining date change requires HR Ops approval before tasks are re-planned"
+    sla_hours: 24
+    authorises: replan
+  location_change_approval:
+    approver_role: hr_ops
+    description: "Work location change requires HR Ops approval before re-planning"
+    sla_hours: 24
+    authorises: replan
+  project_change_approval:
+    approver_role: manager
+    description: "Project reassignment requires the hiring manager's approval"
+    sla_hours: 24
+    authorises: replan
+  cancellation_approval:
+    approver_role: hr_ops
+    description: "Cancelling an onboarding requires HR Ops approval"
+    sla_hours: 4
+    authorises: cancel
+  joining_confirmation:
+    approver_role: hr_ops
+    description: "Joining instructions must not be sent without HR Ops confirmation"
+    sla_hours: 4
+    authorises: unused
+  # NEEDS TL CONFIRMATION: no approved role mapping names the approver of these two; HR Ops
+  # matches every other HR-facing gate.
+  plan_approval:
+    approver_role: hr_ops
+    description: "An onboarding plan must be approved by HR Ops before teams execute it"
+    sla_hours: 24
+    authorises: plan_release
+  final_review:
+    approver_role: hr_ops
+    description: "The final onboarding submission must be reviewed by HR Ops"
+    sla_hours: 24
+    authorises: final_release
+
+never_auto:
+  - hris.update_joining_date
+  - hris.update_work_location
+  - cancel_onboarding
+  - send_joining_instructions
+  - send_reminder
+
+thresholds:
+  joining_risk_days_before: 2
+  reminder_lead_days: 3
+
+# UC02-BR-10 escalation ladder. Sourced verbatim from Business Framework §10:
+# "Escalation: to the assigned HR officer in Teams; if there is no response
+# within one working day, to the HR operations lead." GR-12 defines WHAT
+# escalates: items at risk of missing the start date, and approvals stalled
+# past their due date. Mirrors config.ESCALATION_RESPONSE_DAYS.
+escalation:
+  first_responder: hr_officer
+  second_responder: hr_lead
+  response_days: 1
+  source_rule: GR-12
+
+# Task categories that must be complete for day-1 readiness. Mirrors
+# config.DAY_ONE_CRITICAL_CATEGORIES, which previously had no entry here at
+# all (finding M1).
+day_one_critical_categories:
+  - hr_record
+  - document_collection
+  - it_provisioning
+  - access_management
+
+# Inclusive bounds of the verified UAE holiday calendar. Dates outside this
+# window are rejected rather than silently treated as holiday-free (L3).
+# Mirrors calendar_uae.COVERAGE_START / COVERAGE_END.
+calendar_coverage:
+  start: 2026-01-01
+  end: 2027-12-31
+
+volume_ceiling:
+  per_run: 50
+
+# Required before L1 live (review C-12 / wave-1-runbook G-3):
+# Head of HR Ops and DPO names go here. Empty = not cleared for live use.
+approved_by: []
+
+# ---------------------------------------------------------------------------
+# Enforcement status of every key above. Three values only:
+#   enforced               - code acts on this value and a test proves it
+#   declared_not_enforced  - value is declared but nothing reads it yet
+#   unused_pending_decision- blocked on a business decision, not on code
+# test_policy_parity.py asserts this section covers every key and that no key
+# claims a status it does not have.
+# ---------------------------------------------------------------------------
+enforcement:
+  gates: enforced
+  gate_authorises: enforced
+  thresholds: enforced
+  day_one_critical_categories: enforced
+  calendar_coverage: enforced
+  escalation: enforced
+  autonomy: declared_not_enforced
+  ceiling: declared_not_enforced
+  tools: enforced
+  write_requires_approval: enforced
+  never_auto: declared_not_enforced
+  approved_by: declared_not_enforced
+  volume_ceiling: unused_pending_decision
+
+enforcement_notes:
+  gates: "approvals.GATES; approver role, SLA and self-approval enforced by ApprovalInbox"
+  gate_authorises: "approvals.CHANGE_GATES/CANCELLATION_GATES; binds each gate to one operation (C1)"
+  thresholds: "config.JOINING_RISK_DAYS_BEFORE and REMINDER_LEAD_DAYS, used by tracker and reminders"
+  day_one_critical_categories: "config.DAY_ONE_CRITICAL_CATEGORIES, used by tracker.assess_joining_risk"
+  calendar_coverage: "calendar_uae.COVERAGE_START/END; dates outside the window are rejected"
+  escalation: "tracker.escalations + service._stalled_approvals; routing per Framework §10, triggers per GR-12"
+  autonomy: "No proposal/autonomy mechanism exists in the prototype. Needs BaseAgent from hr-recruitment-common."
+  ceiling: "As autonomy. L2 ceiling also needs DPO co-sign (review C-11)."
+  tools: "Enforced by hr_recruitment_common.platform.tools.ToolGateway via agent/harness.py; the uc02.* names mirror agent/tools.py and test_agent.py asserts parity. The hris.*/itsm.* entries remain declared-only connectors."
+  write_requires_approval: "ToolGateway refuses a write tool without an approved HITL item; UC-02's own hard gates enforce the same rule in approvals.py for the non-harness path."
+  never_auto: "Hard gates are enforced in code, but not driven from this list. Converge via PolicyStore."
+  approved_by: "Sign-off gate for L1 live; nothing to enforce during prototype development."
+  volume_ceiling: "BLOCKED: 'per run' is undefined for onboarding (1 run = 1 employee?). Needs HR Ops to define the unit and limit (review C-13)."

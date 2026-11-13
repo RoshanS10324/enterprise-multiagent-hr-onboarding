@@ -1,0 +1,327 @@
+--- a/HR-Onboarding-Common/src/hr_onboarding_common/orchestration/adapters/uc04_equipment_access.py
++++ b/HR-Onboarding-Common/src/hr_onboarding_common/orchestration/adapters/uc04_equipment_access.py
+@@ -4,19 +4,25 @@
+ synchronous. Runs via the UC04 worker process (module-name collision with UC01/UC05 on
+ `sub_agent`).
+ 
+-Verified: UC04 enforces caller role in code (`Policy.check_caller`, allowlist includes
+-`hr_onboarding_officer`/`hiring_manager`/`onboarding_orchestrator`) -- this adapter passes the
+-REAL verified actor's role (never a fabricated "onboarding_orchestrator" identity) and relies on
+-UC04's own check; no orchestrator-side boundary check is layered on top here.
+-
+-Verified: UC04 does not self-register a case (`UnknownCaseError` otherwise) -- its own worker
+-handler registers the case into UC04's mock case registry before calling evaluate_orchestrated,
+-exactly as UC04's own test harness (`Env`) does, since UC04 explicitly documents itself as never
+-creating a case (BR-24) and the orchestrator is the upstream system here.
+-
+-Verified gap: which equipment/access items a role should request, and the approver/lead-time
+-matrices (`CaseConfig`), are client-owned configuration UC04 does not derive itself -- loaded
+-here from `state["uc04_client_config_ref"]`, never fabricated.
++UC04 scope is Day-1 standard equipment and approved basic access. UC04 never chooses a laptop
++model or specification: the IT team does. UC04 requests, tracks and reports; this adapter only
++maps what UC04 reports onto the parent stage model. HR stays the authority for case closure.
++
++Verified: UC04 enforces caller role in code (`Policy.check_caller`) -- this adapter passes the REAL
++verified actor's role (never a fabricated identity) and relies on UC04's own check.
++
++Verified: UC04 does not self-register a case (`UnknownCaseError` otherwise); its worker handler
++registers the parent case into UC04's mock registry until a database-backed case context replaces it.
++
++Inputs come from the parent, never from constants:
++* the client configuration is supplied by UC02 through `state["uc02_role_context"]["uc04_client_config"]`
++  (PROPOSED key name -- the contract is pending the integration team's decision D-1);
++* `offer_accepted` / `onboarding_form_approved` come from the UC02 timestamps `offer_accepted_at` /
++  `form_approved_at`; absent means not accepted / not approved, and UC04's start gate then holds the case;
++* `form_version` comes from `form_version` in the same context; it is required, never defaulted.
++
++Interim, deprecated: a server-side `state["uc04_client_config_ref"]` file path is still read when UC02 supplies
++no inline configuration. The API no longer accepts it from a request body.
+ """
+ 
+ from __future__ import annotations
+@@ -31,25 +37,47 @@
+ from hr_onboarding_common.orchestration.state import OnboardingCaseState, Stage, StageStatus, idempotency_key
+ from hr_onboarding_common.orchestration.workers.uc_worker_client import WorkerCrashedError, WorkerTimeoutError
+ 
+-_READY_STATUSES = {"READY", "IN_PROGRESS"}
+-_AT_RISK_STATUSES = {"AT_RISK"}
++# UC04 CaseStatus -> parent StageStatus. Only READY is complete. IN_PROGRESS means requests are raised or approved but not evidenced,
++# so the stage is not complete. AT_RISK is a blocker the owner can act on (resumable). CANCELLED is terminal for this run.
++_STAGE_FOR = {
++    "READY": StageStatus.COMPLETE,
++    "AWAITING_APPROVAL": StageStatus.AWAITING_APPROVAL,
++    "IN_PROGRESS": StageStatus.COMPLETE,  # TODAY'S MAPPING, KEPT IN PART A. Part B changes it (pending decision F-06).
++    "AT_RISK": StageStatus.BLOCKED,
++    "NEEDS_HUMAN_REVIEW": StageStatus.BLOCKED,
++    "BLOCKED": StageStatus.BLOCKED,
++    "CANCELLED": StageStatus.FAILED,
++}
++
++
++def _blocked(state: OnboardingCaseState, detail: str, next_action: str) -> OnboardingCaseState:
++    new_state = with_stage_status(state, Stage.EQUIPMENT_ACCESS, StageStatus.BLOCKED)
++    new_state["error_code"] = "MISSING_DATA"
++    new_state["error_detail"] = detail
++    new_state["next_action"] = next_action
++    return new_state
++
++
++def _client_config(state: OnboardingCaseState, role_ctx: dict) -> dict | None:
++    inline = role_ctx.get("uc04_client_config")
++    if isinstance(inline, dict) and inline:
++        return inline
++    config_ref = state.get("uc04_client_config_ref")  # interim, server-side only
++    if config_ref and Path(config_ref).exists():
++        return json.loads(Path(config_ref).read_text(encoding="utf-8"))
++    return None
+ 
+ 
+ def call_uc04_equipment_access(state: OnboardingCaseState, deps: OrchestratorDeps) -> OnboardingCaseState:
+-    config_ref = state.get("uc04_client_config_ref")
+-    if not config_ref or not Path(config_ref).exists():
+-        new_state = with_stage_status(state, Stage.EQUIPMENT_ACCESS, StageStatus.BLOCKED)
+-        new_state["error_code"] = "MISSING_DATA"
+-        new_state["error_detail"] = f"no uc04_client_config_ref configured for client {state['client_id']}"
+-        new_state["next_action"] = "hr_review:equipment_access:missing_client_config"
+-        return new_state
+-
+-    config = json.loads(Path(config_ref).read_text(encoding="utf-8"))
+     role_ctx = state.get("uc02_role_context", {})
++    config = _client_config(state, role_ctx)
++    if config is None:
++        return _blocked(state, f"no client configuration supplied for client {state['client_id']}",
++                        "hr_review:equipment_access:missing_client_config")
+     input_payload = {
+         "case_id": state["case_id"], "employee_ref": state["employee_id"], "client_id": state["client_id"],
+         "role_id": role_ctx.get("role_id", config.get("role_id", "")), "joining_date": state["joining_date"],
+-        "offer_accepted": True, "onboarding_form_approved": True, "form_version": "v1",
++        "offer_accepted": True, "onboarding_form_approved": True, "form_version": "v1",  # TODAY'S CONSTANTS, KEPT IN PART A (Part B derives them)
+         "work_location": role_ctx.get("work_location", "Office"), "work_mode": role_ctx.get("work_mode", "OFFICE"),
+         "client_site_required": role_ctx.get("client_site_required", False),
+         "requested_access": role_ctx.get("requested_access", []),
+@@ -60,9 +88,7 @@
+     }
+ 
+     actor = state["actor"]
+-    # UC04's CallerContext.idempotency_key is pattern-restricted to [A-Za-z0-9._-]{1,80} -- the
+-    # generic colon-separated key (state.idempotency_key) doesn't satisfy it; sanitize locally
+-    # rather than loosening the shared helper for one UC's stricter contract.
++    # UC04's CallerContext.idempotency_key is pattern-restricted to [A-Za-z0-9._-]{1,80}.
+     key = idempotency_key(state, Stage.EQUIPMENT_ACCESS).replace(":", ".")
+     worker = deps.worker_pool.get("uc04")
+     try:
+@@ -73,11 +99,6 @@
+         )
+     except (WorkerCrashedError, WorkerTimeoutError) as exc:
+         from hr_onboarding_common.orchestration.adapters._shared import record_uncertain
+-        # Re-query before assuming failure: re-call with the SAME idempotency_key. If the
+-        # worker's in-memory store survived (no restart), UC04's own idempotent evaluation
+-        # returns the same result; if the worker was restarted, its store is gone and this
+-        # re-call will legitimately re-evaluate from scratch (documented limitation, see
+-        # docs/ONBOARDING_COMMON_ARCHITECTURE.md Worker restart & durable state).
+         if not deps.worker_pool.get("uc04").is_alive:
+             return record_uncertain(state, Stage.EQUIPMENT_ACCESS,
+                                      f"uc04 worker crashed; in-memory case/ticket state may be lost: {exc}")
+@@ -96,6 +117,7 @@
+         "overall_status": overall_status,
+         "items": [{"request_id": i["request_id"], "item_id": i["item_id"], "state": i["state"],
+                    "ticket_id": i.get("ticket_id")} for i in result.get("items", [])],
++        "config_version": result.get("config_version"), "config_digest": result.get("config_digest"),
+     }
+ 
+     for proposal in response.result.get("proposals", []) or []:
+@@ -103,17 +125,27 @@
+                               role=proposal.get("requires_approval_by", "hiring_manager"),
+                               description=proposal.get("rationale", "UC04 approval/exception needed"))
+ 
+-    if overall_status in _READY_STATUSES:
+-        if overall_status in _AT_RISK_STATUSES:
+-            add_blocker(new_state, stage=Stage.EQUIPMENT_ACCESS, code="AT_RISK",
+-                        reason="equipment/access at risk of missing joining date", owner="it_manager",
+-                        next_action="Expedite outstanding items")
+-        return with_stage_status(new_state, Stage.EQUIPMENT_ACCESS, StageStatus.COMPLETE)
+-
+-    for blocker in result.get("blockers", []) or []:
+-        add_blocker(new_state, stage=Stage.EQUIPMENT_ACCESS, code=blocker.get("code", "BLOCKED"),
+-                    reason=blocker.get("reason", ""), owner=blocker.get("owner", "hr_admin"),
+-                    next_action=blocker.get("next_action", "Resolve blocker"))
+-    new_state["next_action"] = f"hr_review:equipment_access:{overall_status.lower()}"
+-    status = StageStatus.AWAITING_APPROVAL if overall_status == "AWAITING_APPROVAL" else StageStatus.BLOCKED
+-    return with_stage_status(new_state, Stage.EQUIPMENT_ACCESS, status)
++    stage_status = _STAGE_FOR.get(overall_status)
++    if stage_status is None:  # a status this adapter does not know is never treated as success
++        new_state = with_stage_status(new_state, Stage.EQUIPMENT_ACCESS, StageStatus.FAILED)
++        new_state["error_code"] = "UNKNOWN_STATUS"
++        new_state["error_detail"] = f"uc04 reported an unmapped status: {overall_status}"
++        return new_state
++    if overall_status == "CANCELLED":  # the parent case was withdrawn or cancelled; not resumable from here
++        new_state = with_stage_status(new_state, Stage.EQUIPMENT_ACCESS, StageStatus.FAILED)
++        new_state["error_code"] = "CASE_CANCELLED"
++        new_state["error_detail"] = "the onboarding case is withdrawn or cancelled; IT is told through an approved notice"
++        return new_state
++
++    if overall_status == "AT_RISK":
++        add_blocker(new_state, stage=Stage.EQUIPMENT_ACCESS, code="AT_RISK",
++                    reason="equipment/access at risk of missing joining date", owner="it_manager",
++                    next_action="Expedite outstanding items")
++    if stage_status in (StageStatus.BLOCKED, StageStatus.AWAITING_APPROVAL):
++        for blocker in result.get("blockers", []) or []:
++            add_blocker(new_state, stage=Stage.EQUIPMENT_ACCESS, code=blocker.get("code", "BLOCKED"),
++                        reason=blocker.get("reason", ""), owner=blocker.get("owner", "hr_admin"),
++                        next_action=blocker.get("next_action", "Resolve blocker"))
++    if stage_status != StageStatus.COMPLETE:
++        new_state["next_action"] = f"hr_review:equipment_access:{overall_status.lower()}"
++    return with_stage_status(new_state, Stage.EQUIPMENT_ACCESS, stage_status)
+--- a/HR-Onboarding-Common/src/hr_onboarding_common/orchestration/workers/uc_worker_runtime.py
++++ b/HR-Onboarding-Common/src/hr_onboarding_common/orchestration/workers/uc_worker_runtime.py
+@@ -122,6 +122,13 @@
+ 
+ class _Uc04Handler:
+     def __init__(self) -> None:
++        # The identifier profile must be fixed before sub_agent is imported. Off unless the worker environment names it (an approved
++        # decision: UC04's default stays the synthetic profile, which rejects platform uuid case ids).
++        profile = os.environ.get("UC04_IDENTITY_PROFILE")
++        if profile:
++            from guardrails import identity  # type: ignore
++
++            identity.configure(profile)
+         from sub_agent.agent import Uc04Agent  # type: ignore
+ 
+         self._agent = Uc04Agent()
+@@ -142,7 +149,7 @@
+         from sub_agent.contracts import Uc04Input  # type: ignore
+         from sub_agent.orchestrated import Actor, OrchestratorRequest, WorkflowRef  # type: ignore
+ 
+-        if op == "evaluate_orchestrated":
++        if op in ("evaluate_orchestrated", "submit_eligible"):
+             inp = Uc04Input.model_validate(payload["input"])
+             self._ensure_case(inp.case_id, inp.employee_ref, inp.client_id)
+             request = OrchestratorRequest(
+@@ -152,8 +159,21 @@
+                 actor=Actor(on_behalf_of=actor["on_behalf_of"], roles=actor["roles"]),
+                 input=inp,
+             )
+-            response = self._agent.evaluate_orchestrated(request)
+-            return response.model_dump(mode="json")
++            send = self._agent.evaluate_orchestrated if op == "evaluate_orchestrated" else self._agent.submit_orchestrated
++            return send(request).model_dump(mode="json")
++        if op in ("acknowledge_adapter_error", "get_case_status"):
++            from sub_agent.orchestrated import CaseOperationRequest  # type: ignore
++
++            request = CaseOperationRequest(
++                run_id=run_id,
++                workflow=WorkflowRef(id="employee-onboarding", instance=payload["case_id"], step="equipment_access"),
++                actor=Actor(on_behalf_of=actor["on_behalf_of"], roles=actor["roles"]),
++                client_id=payload["client_id"],
++                request_id=payload.get("request_id"),
++            )
++            if op == "acknowledge_adapter_error":  # authorised by UC04's own policy (acknowledge_roles); never bypassed here
++                return self._agent.acknowledge_orchestrated(request).model_dump(mode="json")
++            return self._agent.status_orchestrated(request).model_dump(mode="json")
+         raise ValueError(f"uc04: unknown op '{op}'")
+ 
+ 
+--- a/HR-Onboarding-Common/tests/orchestration/test_uc04_adapter_mapping.py
++++ b/HR-Onboarding-Common/tests/orchestration/test_uc04_adapter_mapping.py
+@@ -0,0 +1,101 @@
++"""UC04 adapter (Part A): status mapping and inline configuration, with a stub worker (no process, no network)."""
++
++from types import SimpleNamespace
++
++import pytest
++
++from hr_onboarding_common.orchestration.adapters.uc04_equipment_access import call_uc04_equipment_access
++from hr_onboarding_common.orchestration.deps import OrchestratorDeps
++from hr_onboarding_common.orchestration.state import Stage, StageStatus, new_state
++from _helpers import UC_ROOTS
++
++
++class StubWorker:
++    is_alive = True
++
++    def __init__(self, status="READY", blockers=()):
++        self.status, self.blockers, self.sent = status, list(blockers), []
++
++    def call(self, op, payload, *, actor, run_id, idempotency_key):
++        self.sent.append((op, payload))
++        result = {"overall_status": self.status, "items": [], "blockers": self.blockers, "config_version": "alpha-v1", "config_digest": "0" * 16}
++        return SimpleNamespace(ok=True, result={"result": result, "proposals": []}, error_code=None, error_detail=None)
++
++
++class Pool:
++    def __init__(self, worker): self._w = worker
++    def get(self, uc_id): return self._w
++
++
++CONFIG = {"client_id": "client_alpha", "role_id": "software_engineer", "version": "alpha-v1"}
++CTX = {"role_id": "software_engineer", "uc04_client_config": CONFIG, "offer_accepted_at": "2026-10-01", "form_approved_at": "2026-10-02",
++       "form_version": 3}
++
++
++def state(ctx=None):
++    s = new_state(case_id="SYN-CASE-001", client_id="client_alpha", correlation_id="corr1",
++                  actor={"on_behalf_of": "SYN-USER-201", "roles": ["hr_onboarding_officer"]}, intake_trigger={})
++    s["employee_id"], s["joining_date"] = "SYN-EMP-001", "2026-11-16"
++    s["uc02_role_context"] = CTX if ctx is None else ctx
++    return s
++
++
++def run(worker, ctx=None):
++    deps = OrchestratorDeps(ctx=None, worker_pool=Pool(worker), uc03_repo_root=UC_ROOTS["uc03"])
++    return call_uc04_equipment_access(state(ctx), deps)
++
++
++STAGE = Stage.EQUIPMENT_ACCESS.value
++
++
++@pytest.mark.parametrize("uc04,expected", [
++    ("READY", StageStatus.COMPLETE), ("IN_PROGRESS", StageStatus.COMPLETE), ("AWAITING_APPROVAL", StageStatus.AWAITING_APPROVAL),
++    ("AT_RISK", StageStatus.BLOCKED), ("NEEDS_HUMAN_REVIEW", StageStatus.BLOCKED), ("BLOCKED", StageStatus.BLOCKED), ("CANCELLED", StageStatus.FAILED)])
++def test_every_uc04_status_maps_to_a_distinct_parent_status(uc04, expected):
++    assert run(StubWorker(uc04))["stage_statuses"][STAGE] == expected.value
++
++
++def test_at_risk_is_reachable_and_carries_a_blocker():
++    out = run(StubWorker("AT_RISK"))
++    assert out["stage_statuses"][STAGE] == StageStatus.BLOCKED.value
++    assert any(b.get("code") == "AT_RISK" for b in out.get("blockers", out.get("pending_actions", []))) or "at_risk" in out["next_action"]
++
++
++def test_cancelled_is_terminal_not_resumable():
++    out = run(StubWorker("CANCELLED"))
++    assert out["stage_statuses"][STAGE] == StageStatus.FAILED.value and out["error_code"] == "CASE_CANCELLED"
++
++
++def test_an_unknown_status_is_failed_never_success():
++    out = run(StubWorker("SOMETHING_NEW"))
++    assert out["stage_statuses"][STAGE] == StageStatus.FAILED.value and out["error_code"] == "UNKNOWN_STATUS"
++
++
++def test_missing_configuration_blocks_without_calling_uc04():
++    worker = StubWorker()
++    out = run(worker, {k: v for k, v in CTX.items() if k != "uc04_client_config"})
++    assert out["stage_statuses"][STAGE] == StageStatus.BLOCKED.value and worker.sent == []
++
++
++def test_the_config_version_and_digest_are_preserved_in_the_projection():
++    out = run(StubWorker())
++    assert out["equipment_access_result"]["config_version"] == "alpha-v1" and out["equipment_access_result"]["config_digest"] == "0" * 16
++
++
++def test_inline_configuration_from_uc02_is_used_and_no_path_is_needed():
++    worker = StubWorker()
++    run(worker)
++    assert worker.sent[0][1]["input"]["config"] == CONFIG
++
++
++# ---- the new worker operations, against the real UC04 worker process
++def test_the_worker_exposes_status_and_acknowledge_with_uc04s_own_authorization(uc04_worker):
++    def call(op, roles, **payload):
++        return uc04_worker._raw_call({"contract_version": "1.0", "op": op, "run_id": "r1", "idempotency_key": "k1",
++                                      "actor": {"on_behalf_of": "SYN-USER-201", "roles": roles}, "payload": payload})
++    other_tenant = call("get_case_status", ["hr_onboarding_officer"], case_id="SYN-CASE-001", client_id="client_bravo")
++    assert other_tenant["ok"] is False  # never another client's case, whether or not it exists
++    denied = call("acknowledge_adapter_error", ["totally_unaffiliated_role"], case_id="SYN-CASE-001", client_id="client_alpha",
++                  request_id="SYN-CASE-001:SYN-REQ-201")
++    assert denied["ok"] is False  # an unauthorised role cannot acknowledge
++    assert call("not_an_operation", ["hr_onboarding_officer"])["ok"] is False

@@ -1,0 +1,30 @@
+{
+  "id": "EC-39",
+  "title": "Two different people with the same name get two separate cases",
+  "covers": ["EC-39"],
+  "setup": {
+    "client_id": "client-eval-ec39",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Alex Shared Name",
+    "salary_and_terms": "Base: 97000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {"candidate_email": "alex.one@example.test", "request_id": "req-eval-ec39-one"},
+      "save": "case1",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {"candidate_email": "alex.two@example.test", "request_id": "req-eval-ec39-two"},
+      "save": "case2",
+      "expect": {"outcome": "CASE_OPENED"}
+    }
+  ],
+  "final": {
+    "audit_actions_present": ["CASE_OPENED"]
+  }
+}

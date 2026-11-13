@@ -1,0 +1,70 @@
+[project]
+name = "dact-uc04-equipment-access"
+version = "0.1.0"
+description = "UC-04 Equipment & Approved Access Management: deterministic onboarding sub-agent (local simulation)"
+readme = "README.md"
+requires-python = ">=3.12"
+# Core: what the business service and the advisory layer import (pydantic models, YAML skill frontmatter).
+dependencies = [
+    "pydantic>=2.10",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+# Local development API with Swagger UI (run_api.py). No LLM, cloud or database library: the core is local-only.
+api = [
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+]
+# Optional shared-gateway wiring for the advisory narrative (integrations/gateway/). Off by default; the core never imports it.
+# hr-onboarding-common is the shared Enterprise HR Agent package (path source below, same convention as UC05) and needs a version that has
+# hr_onboarding_common.llm.build_llm (the Prasanna branch's Common). litellm carries the same lower bound as Common's own pin.
+gateway = [
+    "hr-onboarding-common",
+    "litellm>=1.83.0",
+]
+# Packages kept for the planned integrations (orchestrator graph, Entra and Key Vault, search, tracing, LLM providers).
+# Nothing imports them yet and CI and the Docker image do not install them; the core must stay free of them (tests/test_packaging.py).
+# Same versions as the original dependency list. Whether to keep langchain-openai and anthropic next to a LiteLLM gateway is an open decision.
+integration = [
+    "langgraph>=0.2",
+    "langchain-core>=0.3",
+    "langchain-openai>=0.2",
+    "anthropic>=0.40",
+    "azure-search-documents>=11.6",
+    "azure-identity>=1.18",
+    "azure-keyvault-secrets>=4.8",
+    "opentelemetry-sdk>=1.27",
+    "opentelemetry-exporter-otlp>=1.27",
+    "pydantic-settings>=2.5",
+    "httpx>=0.27",
+    "python-dotenv>=1.0",
+]
+dev = [
+    "pytest>=8.0",
+    "httpx>=0.27",     # FastAPI TestClient, used by the API tests
+    "ruff>=0.7",
+]
+
+# The shared package lives next to this folder. The directory name is case-sensitive on Linux and macOS: it is HR-Onboarding-Common.
+[tool.uv.sources]
+hr-onboarding-common = { path = "../HR-Onboarding-Common" }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sub_agent"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+pythonpath = ["src", "tests", "."]
+testpaths = ["tests"]

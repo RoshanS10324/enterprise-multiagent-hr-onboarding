@@ -1,0 +1,89 @@
+{
+  "client_id": "CLIENT-ALPHA",
+  "role_id": "developer",
+  "version": "alpha-v1-client-alpha-dev",
+  "role_access_matrix": {
+    "state": "VERIFIED",
+    "value": [
+      "email-teams-account",
+      "source-control-access",
+      "ci-pipeline-access"
+    ]
+  },
+  "role_equipment_matrix": {
+    "state": "VERIFIED",
+    "value": [
+      "laptop-standard",
+      "headset-basic"
+    ]
+  },
+  "approver_config": {
+    "state": "VERIFIED",
+    "value": {
+      "ACCESS": {
+        "role": "hiring_manager",
+        "delegate_role": "hiring_manager_delegate"
+      },
+      "EQUIPMENT": {
+        "role": "hiring_manager",
+        "delegate_role": "hiring_manager_delegate"
+      },
+      "EXCEPTION": {
+        "role": "exception_approver",
+        "delegate_role": null
+      }
+    }
+  },
+  "lead_times": {
+    "state": "VERIFIED",
+    "value": {
+      "EQUIPMENT": 10,
+      "ACCESS": 5,
+      "CLIENT_SITE_CLEARANCE": 15
+    }
+  },
+  "work_calendar": {
+    "state": "VERIFIED",
+    "value": {
+      "weekend_days": [
+        5,
+        6
+      ],
+      "holidays": [
+        "2026-12-02",
+        "2026-12-03"
+      ]
+    }
+  },
+  "handover_rules": {
+    "state": "VERIFIED",
+    "value": {
+      "mode": "COLLECT",
+      "keep_reserved_on_missed_slot": true
+    }
+  },
+  "evidence_roles": {
+    "state": "VERIFIED",
+    "value": {
+      "PROVISIONING": [
+        "it_service_desk"
+      ],
+      "DELIVERY": [
+        "it_service_desk"
+      ],
+      "COLLECTION": [
+        "it_service_desk"
+      ],
+      "CLIENT_SITE_CLEARANCE": [
+        "account_manager"
+      ]
+    }
+  },
+  "country_rules": {
+    "state": "MISSING"
+  },
+  "client_site_rules": {
+    "state": "MISSING"
+  },
+  "client_overrides": {}
+}

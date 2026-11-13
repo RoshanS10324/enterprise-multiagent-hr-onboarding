@@ -1,0 +1,16 @@
+{
+  "include": [
+    "src",
+    "guardrails",
+    "hooks",
+    "context_layer",
+    "knowledge",
+    "mcp",
+    "tests"
+  ],
+  "extraPaths": ["."],
+  "pythonVersion": "3.11",
+  "typeCheckingMode": "basic",
+  "venvPath": ".",
+  "venv": ".venv"
+}

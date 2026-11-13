@@ -1,0 +1,33 @@
+{
+  "_mock_note": "MOCK DATA - fictional identifiers only. Not real employee data. Evidence REFERENCES only - never document contents.",
+  "evidence": [
+    {
+      "template_key": "visa_pack_handover",
+      "evidence_ref": "PRO-RECEIPT-M001"
+    },
+    {
+      "template_key": "background_verification",
+      "evidence_ref": "BV-CASE-M001"
+    },
+    {
+      "template_key": "salary_transfer_letter",
+      "evidence_ref": "LTR-STL-M001"
+    },
+    {
+      "template_key": "non_liability_letter",
+      "evidence_ref": "LTR-NLL-M001"
+    },
+    {
+      "template_key": "hr_system_activation",
+      "evidence_ref": "HRIS-ACT-M001"
+    },
+    {
+      "template_key": "medical_test",
+      "evidence_ref": "MED-REF-M001"
+    },
+    {
+      "template_key": "biometrics_capture",
+      "evidence_ref": "BIO-REF-M001"
+    }
+  ]
+}

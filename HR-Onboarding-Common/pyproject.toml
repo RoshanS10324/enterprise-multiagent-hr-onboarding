@@ -1,0 +1,50 @@
+[project]
+name = "hr-onboarding-common"
+version = "0.1.0"
+description = "Shared harness for the HR onboarding agent: contracts, LiteLLM gateway, guardrails, policy, HITL, audit, observability, knowledge retrieval"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "litellm>=1.83.0",
+    "pydantic>=2.10.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0.0",
+    "tenacity>=9.0.0",
+    "httpx>=0.28.0",
+    "opentelemetry-api>=1.20.0",
+    "opentelemetry-sdk>=1.20.0",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "tzdata>=2024.1",
+]
+
+[project.optional-dependencies]
+# Only needed to run the orchestrator (hr_onboarding_common.orchestration). The core package
+# (used as a dependency by UC02/UC05) stays free of a hard LangGraph requirement.
+orchestration = ["langgraph>=0.4.0"]
+
+[dependency-groups]
+# onboarding-task-management (UC02) has no colliding top-level module name and is imported
+# in-process by the orchestrator's UC02 adapter -- installed here for dev/test only.
+# UC03 ("dact") is deliberately NOT pip-installed: its own wheel config
+# (`packages = ["src"]`) omits the sibling `guardrails/` package its own code imports
+# (`from guardrails.access import ...`) -- its own tests only work via `pythonpath=["."]` at its
+# repo root. The UC03 adapter replicates that: it inserts UC03's repo root onto sys.path at call
+# time (via an explicit, configured path -- see orchestration/settings.py), not a pip install.
+# UC01/UC04/UC05 are deliberately NOT listed: they collide on the top-level module name
+# "sub_agent" and are never imported into this environment -- see orchestration/workers/.
+dev = ["pytest>=8.0", "langgraph>=0.4.0", "langgraph-checkpoint-sqlite>=2.0", "onboarding-task-management"]
+
+[tool.uv.sources]
+onboarding-task-management = { path = "../UC02_Onboarding_Task_Agent" }
+
+[tool.pytest.ini_options]
+addopts = "-q --import-mode=importlib"
+testpaths = ["tests"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hr_onboarding_common"]

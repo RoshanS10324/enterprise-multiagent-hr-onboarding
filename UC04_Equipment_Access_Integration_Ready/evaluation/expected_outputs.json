@@ -1,0 +1,59 @@
+{
+  "_note": "Hand-authored expectations for synthetic scenarios. Not generated from the code's output.",
+  "S01_awaiting_approval": {
+    "overall_status": "AWAITING_APPROVAL",
+    "items": {"SYN-REQ-101": "APPROVAL_PENDING", "SYN-REQ-102": "APPROVAL_PENDING", "SYN-REQ-201": "APPROVAL_PENDING", "SYN-REQ-202": "APPROVAL_PENDING"},
+    "exceptions": [], "blockers": [], "risks": [], "config_gaps": []
+  },
+  "S02_start_gate_blocked": {
+    "overall_status": "BLOCKED", "items": {}, "exceptions": [],
+    "blockers": ["START_GATE_OFFER_NOT_ACCEPTED"], "risks": [], "config_gaps": []
+  },
+  "S03_out_of_matrix_exception": {
+    "overall_status": "AWAITING_APPROVAL",
+    "items": {"SYN-REQ-101": "ELIGIBLE_FOR_SIMULATED_SUBMISSION", "SYN-REQ-103": "EXCEPTION_PENDING"},
+    "exceptions": ["SYN-REQ-103"], "blockers": [], "risks": [], "config_gaps": []
+  },
+  "S04_missing_access_matrix": {
+    "overall_status": "BLOCKED",
+    "items": {"SYN-REQ-101": "BLOCKED", "SYN-REQ-102": "BLOCKED", "SYN-REQ-201": "APPROVAL_PENDING", "SYN-REQ-202": "APPROVAL_PENDING"},
+    "exceptions": [], "blockers": ["CONFIG_MISSING:role_access_matrix"], "risks": [],
+    "config_gaps": ["CONFIG_MISSING:role_access_matrix"]
+  },
+  "S05_approved_not_ready": {
+    "overall_status": "IN_PROGRESS",
+    "items": {"SYN-REQ-101": "ELIGIBLE_FOR_SIMULATED_SUBMISSION", "SYN-REQ-102": "ELIGIBLE_FOR_SIMULATED_SUBMISSION", "SYN-REQ-201": "ELIGIBLE_FOR_SIMULATED_SUBMISSION", "SYN-REQ-202": "ELIGIBLE_FOR_SIMULATED_SUBMISSION"},
+    "exceptions": [], "blockers": [], "risks": [], "config_gaps": []
+  },
+  "S06_it_rejected": {
+    "overall_status": "NEEDS_HUMAN_REVIEW",
+    "items": {"SYN-REQ-101": "APPROVAL_PENDING", "SYN-REQ-102": "APPROVAL_PENDING", "SYN-REQ-201": "REJECTED_CORRECTION_REQUIRED", "SYN-REQ-202": "APPROVAL_PENDING"},
+    "exceptions": [], "blockers": ["IT_REJECTED"], "risks": [], "config_gaps": []
+  },
+  "S07_laptop_delayed": {
+    "overall_status": "AT_RISK",
+    "items": {"SYN-REQ-101": "APPROVAL_PENDING", "SYN-REQ-102": "APPROVAL_PENDING", "SYN-REQ-201": "IT_IN_PROGRESS", "SYN-REQ-202": "APPROVAL_PENDING"},
+    "exceptions": [], "blockers": [], "risks": ["EQUIPMENT_DELAYED_BEYOND_JOINING"], "config_gaps": []
+  },
+  "S08_ready": {
+    "overall_status": "READY",
+    "items": {"SYN-REQ-101": "ITEM_COMPLETED", "SYN-REQ-102": "ITEM_COMPLETED", "SYN-REQ-201": "ITEM_COMPLETED", "SYN-REQ-202": "ITEM_COMPLETED"},
+    "exceptions": [], "blockers": [], "risks": [], "config_gaps": []
+  },
+  "S09_clearance_late_flagged": {
+    "overall_status": "AT_RISK",
+    "items": {"SYN-REQ-101": "APPROVAL_PENDING", "SYN-REQ-102": "APPROVAL_PENDING", "SYN-REQ-201": "APPROVAL_PENDING", "SYN-REQ-202": "APPROVAL_PENDING"},
+    "exceptions": [], "blockers": [], "risks": ["CLIENT_SITE_CLEARANCE_LATE"], "config_gaps": []
+  },
+  "S10_withdrawn": {
+    "overall_status": "CANCELLED", "items": {}, "exceptions": [], "blockers": [], "risks": [], "config_gaps": []
+  },
+  "S11_client_bravo_monitor": {
+    "overall_status": "AWAITING_APPROVAL", "items": {"SYN-REQ-301": "APPROVAL_PENDING"},
+    "exceptions": [], "blockers": [], "risks": [], "config_gaps": []
+  },
+  "S12_client_alpha_monitor": {
+    "overall_status": "AWAITING_APPROVAL", "items": {"SYN-REQ-301": "APPROVAL_PENDING"},
+    "exceptions": ["SYN-REQ-301"], "blockers": [], "risks": [], "config_gaps": []
+  }
+}

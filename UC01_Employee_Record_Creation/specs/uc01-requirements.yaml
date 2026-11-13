@@ -1,0 +1,68 @@
+# UC-01 Employee Record Creation — mapped business requirements.
+#
+# The authoritative statement of scope, as given by the use-case owner.
+# Everything else in the repo points back at these ids: skills/ declares
+# which requirements each skill serves, and tests/test_llm.py fails if a
+# requirement has no skill covering it or a skill cites an id that is
+# not here.
+#
+# Wording is the owner's, kept verbatim. Do not reword to match the
+# implementation; if the two disagree, the implementation is what moves.
+
+use_case: UC-01
+title: Employee Record Creation
+owner: Member 1
+
+expected_output: >
+  One employee onboarding case with a reliable source record and
+  traceable status.
+
+requirements:
+  R1:
+    text: >
+      Start onboarding only after offer acceptance and approval of the
+      internal onboarding form.
+    note: >
+      Two conditions, both required. Either one alone holds the case
+      rather than opening it.
+
+  R2:
+    text: Create the onboarding case using the approved employee details.
+    note: >
+      Approved details only. A draft or superseded form version is never
+      what a case is created from.
+
+  R3:
+    text: >
+      Maintain the source details for designation, joining date, work
+      location and approved offer terms.
+    note: >
+      "Maintain" means the record stays correct over time, not just at
+      creation: the in-force form version is always the answer to
+      "what was approved", and superseded versions remain readable.
+      "Approved offer terms" is the salary field, which is held but
+      never transformed.
+
+  R4:
+    text: Prepare employee records for Zoho People and Zoho Payroll.
+    note: >
+      Prepare, then write on approval. Two systems, each with its own
+      record and its own idempotency key.
+
+  R5:
+    text: >
+      Handle duplicate requests, rehires, internal transfers and changes
+      to employee details.
+    note: >
+      Four distinct cases. The first three are detected at the start
+      gate and raised as variant notices; the fourth happens after the
+      case exists and goes through form versioning.
+
+  R6:
+    text: >
+      Flag discrepancies between the onboarding form, offer and other
+      records for HR approval.
+    note: >
+      Flag, never reconcile. The approved form is the source of truth
+      and a difference is a question for HR, not something to fix
+      silently.

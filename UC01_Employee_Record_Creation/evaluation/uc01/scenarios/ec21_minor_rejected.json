@@ -1,0 +1,37 @@
+{
+  "id": "EC-21",
+  "title": "Declared minor variant rejected: case goes inactive, prepare blocked",
+  "covers": ["EC-21"],
+  "setup": {
+    "client_id": "client-eval-ec21",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Sam Minor Declared",
+    "candidate_email": "sam.minordeclared@example.test",
+    "salary_and_terms": "Base: 60000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {"declared_variants": {"is_minor": true}},
+      "save": "case",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "decide_variant",
+      "as": "HR_OFFICER",
+      "args": {"approval_id": "$case.approvals_created.0", "approve": false, "note": "parental consent not on file"}
+    },
+    {
+      "action": "prepare",
+      "as": "HR_OFFICER",
+      "args": {"case_id": "$case.case.case_id"},
+      "expect": {"outcome": "BLOCKED_CASE_NOT_ACTIVE"}
+    }
+  ],
+  "final": {
+    "case_ref": "case",
+    "stage": "CASE_INACTIVE",
+    "audit_actions_present": ["VARIANT_REJECTED", "CASE_PUT_ON_HOLD", "HRIS_PREPARE_BLOCKED"]
+  }
+}

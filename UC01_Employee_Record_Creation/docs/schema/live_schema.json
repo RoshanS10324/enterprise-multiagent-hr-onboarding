@@ -1,0 +1,4330 @@
+{
+  "agent_runs": {
+    "run_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "agent_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "agent_version": {
+      "type": "text",
+      "nullable": false,
+      "default": "1.0.0",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "actor_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "advisor_mode": {
+      "type": "text",
+      "nullable": false,
+      "default": "offline",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "model_name": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "prompt_tokens": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "completion_tokens": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "proposal_count": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "action_count": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "exception_count": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "tool_calls": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "error_summary": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "started_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "finished_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "approval_requests": {
+    "request_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "gate": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "approver_role": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "requested_by": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "workflow_module": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "subject_ref": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "payload": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "rationale": {
+      "type": "text",
+      "nullable": false,
+      "default": "",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "confidence_score": {
+      "type": "numeric",
+      "nullable": false,
+      "default": 1.0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "outcome": {
+      "type": "text",
+      "nullable": false,
+      "default": "PENDING",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "decided_by": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "decided_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "decision_reason_code": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "decision_notes": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "final_payload": {
+      "type": "jsonb",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "apply_error": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "sla_due_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "(now() + '24:00:00'::interval)",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "audit_events": {
+    "event_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "actor_type": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "actor_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "actor_role": {
+      "type": "text",
+      "nullable": false,
+      "default": "system",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "action": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "outcome": {
+      "type": "text",
+      "nullable": false,
+      "default": "SUCCESS",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "detail": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "before_state": {
+      "type": "jsonb",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "after_state": {
+      "type": "jsonb",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "correlation_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "reference": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "occurred_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "task_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "sequence": {
+      "type": "int32",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "prev_hash": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "entry_hash": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "buddy_assignments": {
+    "assignment_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "buddy_employee_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "PROPOSED",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "match_score": {
+      "type": "numeric",
+      "nullable": false,
+      "default": 1.0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "matching_criteria": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "assigned_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "confirmed_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "buddy_profiles": {
+    "buddy_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "employee_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "full_name": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "department": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "location": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "max_active_buddies": {
+      "type": "int32",
+      "nullable": false,
+      "default": 2,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_active": {
+      "type": "boolean",
+      "nullable": false,
+      "default": true,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "profile_payload": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "candidate_documents": {
+    "document_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "document_type": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "document_ref": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "file_name": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "file_size_bytes": {
+      "type": "int64",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "mime_type": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "checksum_sha256": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "UPLOADED",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "uploaded_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "case_orchestration_state": {
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "correlation_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "workflow_status": {
+      "type": "text",
+      "nullable": false,
+      "default": "pending",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "overall_status": {
+      "type": "text",
+      "nullable": false,
+      "default": "in_progress",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "stage_statuses": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "branch_statuses": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "completed_stages": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "pending_actions": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "blockers": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "stage_outcomes": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "retry_metadata": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "verified_context": {
+      "type": "jsonb",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "orchestrator_context": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "last_error_code": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "last_error_detail": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "version": {
+      "type": "int32",
+      "nullable": false,
+      "default": 1,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "updated_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "client_config_versions": {
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "version": {
+      "type": "int32",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "effective_from": {
+      "type": "date",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "effective_to": {
+      "type": "date",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "draft",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "config_hash": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "approved_by": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "approved_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "client_configs": {
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "company_name": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "config_hash": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "working_days": {
+      "type": "integer[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "timezone": {
+      "type": "text",
+      "nullable": false,
+      "default": "Asia/Dubai",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "template_count": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "milestone_count": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "settings_payload": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_active": {
+      "type": "boolean",
+      "nullable": false,
+      "default": true,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "updated_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "client_document_requirements": {
+    "requirement_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "config_version": {
+      "type": "int32",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "service_category": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "requirement_key": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "document_type": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "description": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_mandatory": {
+      "type": "boolean",
+      "nullable": false,
+      "default": true,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "applicable_roles": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "applicable_grades": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "applicable_locations": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "applicable_projects": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "eligibility_rules": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "validation_profile": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_active": {
+      "type": "boolean",
+      "nullable": false,
+      "default": true,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "client_holidays": {
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "holiday_date": {
+      "type": "date",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "name": {
+      "type": "text",
+      "nullable": false,
+      "default": "Public Holiday",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_observed": {
+      "type": "boolean",
+      "nullable": false,
+      "default": true,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "client_milestone_templates": {
+    "milestone_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "config_version": {
+      "type": "int32",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "milestone_key": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "title": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "offset_days": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "required_task_keys": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "eligibility_rules": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_active": {
+      "type": "boolean",
+      "nullable": false,
+      "default": true,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "client_service_policies": {
+    "policy_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "config_version": {
+      "type": "int32",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "service_category": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "service_key": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_available": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_mandatory": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "eligibility_rules": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "policy_details": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "responsible_role": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "effective_from": {
+      "type": "date",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "effective_to": {
+      "type": "date",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_active": {
+      "type": "boolean",
+      "nullable": false,
+      "default": true,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "communications": {
+    "comm_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "comm_type": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "recipient_email": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "subject": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "body_text": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "body_html": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "DRAFT",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "review_gate_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "dispatched_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "document_validations": {
+    "validation_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "document_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "candidate_documents",
+        "document_id"
+      ],
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "extracted_name": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "extracted_expiry_date": {
+      "type": "date",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_readable": {
+      "type": "boolean",
+      "nullable": false,
+      "default": true,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "required_fields_present": {
+      "type": "boolean",
+      "nullable": false,
+      "default": true,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "extraction_confidence": {
+      "type": "numeric",
+      "nullable": false,
+      "default": 1.0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "extracted_fields": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "validation_findings": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "outstanding_requirements": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "compliance_item_status": {
+      "type": "text",
+      "nullable": false,
+      "default": "INCOMPLETE",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "visa_pack_status": {
+      "type": "text",
+      "nullable": false,
+      "default": "NOT_APPLICABLE",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "hr_review_status": {
+      "type": "text",
+      "nullable": false,
+      "default": "PENDING",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "injection_detected": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "draft_communication": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "validated_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "domain_events_outbox": {
+    "event_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "event_type": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "payload": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "occurred_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "published_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "publish_attempts": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "last_error": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "employee_number_counters": {
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "last_value": {
+      "type": "int64",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "prefix": {
+      "type": "text",
+      "nullable": false,
+      "default": "EMP-",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "padding": {
+      "type": "int32",
+      "nullable": false,
+      "default": 6,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "updated_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "equipment_handovers": {
+    "handover_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "request_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "provisioning_requests",
+        "request_id"
+      ],
+      "enum": null
+    },
+    "mode": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "tracking_number": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "courier_carrier": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "delivery_status": {
+      "type": "text",
+      "nullable": false,
+      "default": "SCHEDULED",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "scheduled_slot": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "recipient_signature_ref": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "confirmed_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "hris_sync_records": {
+    "record_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "employee_no": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "target_system": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "form_version": {
+      "type": "int32",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "prepared_payload": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "sensitive_field_names": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "external_ref": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "last_error": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "NOT_PREPARED",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "approved_by": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "approved_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "written_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "idempotency_key": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "updates_external_ref": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "intake_discrepancies": {
+    "discrepancy_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "field_name": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "value_form": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "value_other": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "other_source": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "form_version": {
+      "type": "int32",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "other_fingerprint": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "OPEN",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "decided_by": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "decided_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "decision_reason": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "joining_day_jobs": {
+    "job_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "run_date": {
+      "type": "date",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "PENDING",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "executed_cases_count": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "job_payload": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "started_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "finished_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "offer_forms": {
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "offer_ref": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "form_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_forms",
+        "form_id"
+      ],
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "offers": {
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "offer_ref": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "candidate_email": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "candidate_name": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "designation": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "hr_officer_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "SENT",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "accepted_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "offer_payload": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "onboarding_cases": {
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "employee_no": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "candidate_name": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "candidate_email": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "hr_officer_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "joining_date": {
+      "type": "date",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "work_location_type": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "location_name": {
+      "type": "text",
+      "nullable": false,
+      "default": "Headquarters",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "project_name": {
+      "type": "text",
+      "nullable": true,
+      "default": "Internal Operations",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "role_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "grade": {
+      "type": "text",
+      "nullable": true,
+      "default": "",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "department": {
+      "type": "text",
+      "nullable": true,
+      "default": "General",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "manager_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "nationality_group": {
+      "type": "text",
+      "nullable": true,
+      "default": "",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "variant_is_rehire": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "variant_is_internal_transfer": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "variant_is_agency_contractor": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "variant_is_minor": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "variant_is_resident": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "variant_is_remote": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "INTAKE_PENDING",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "current_stage": {
+      "type": "text",
+      "nullable": false,
+      "default": "INTAKE",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "current_form_version": {
+      "type": "int32",
+      "nullable": false,
+      "default": 1,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "folder_ref": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "opened_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "updated_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "completed_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "onboarding_attributes": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_deleted": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "reactivates_record_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "reactivates_external_ref": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "onboarding_forms": {
+    "form_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "version": {
+      "type": "int32",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "candidate_name": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "candidate_email": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "designation": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "joining_date": {
+      "type": "date",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "work_location_type": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "client_site_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "salary_and_terms_encrypted": {
+      "type": "bytea",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "DRAFT",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "approved_by": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "approved_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "change_reason": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "onboarding_reminders": {
+    "reminder_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "task_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_tasks",
+        "task_id"
+      ],
+      "enum": null
+    },
+    "reminder_type": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "recipient_role": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "recipient_ref": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "scheduled_for": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "draft",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "approval_request_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "approval_requests",
+        "request_id"
+      ],
+      "enum": null
+    },
+    "attempt_count": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "last_attempt_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "escalation_level": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "escalated_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "delivery_outcome": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "communication_id": {
+      "type": "uuid",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "communications",
+        "comm_id"
+      ],
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "updated_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "onboarding_status_updates": {
+    "update_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "task_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_tasks",
+        "task_id"
+      ],
+      "enum": null
+    },
+    "source": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "reported_outcome": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "applied_status": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "reference": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "blocking_reason": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "reported_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "applied_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "onboarding_tasks": {
+    "task_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "employee_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "template_key": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "plan_order": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "category": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "title": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "title_ar": {
+      "type": "text",
+      "nullable": false,
+      "default": "",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "owner_role": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "assigned_actor_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "blocked",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "due_date": {
+      "type": "date",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "started_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "completed_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "cancelled_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "evidence_required": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "evidence_ref": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "evidence_recorded_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "approval_role": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "notes": {
+      "type": "text",
+      "nullable": false,
+      "default": "",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "updated_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "description": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "priority": {
+      "type": "text",
+      "nullable": false,
+      "default": "normal",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "owner_type": {
+      "type": "text",
+      "nullable": false,
+      "default": "role",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "planned_start_date": {
+      "type": "date",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "blocked_reason": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "risk_status": {
+      "type": "text",
+      "nullable": false,
+      "default": "none",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "risk_reason": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "last_replanned_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "config_version": {
+      "type": "int32",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "assigned_team": {
+      "type": "text",
+      "nullable": false,
+      "default": "",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "assigned_by": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "assigned_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "sensitive_to": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "requires_attributes": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "external_outcome": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "external_source": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "external_reference": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "external_blocking_reason": {
+      "type": "text",
+      "nullable": false,
+      "default": "",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "external_updated_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status_summary": {
+      "type": "jsonb",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "orientation_sessions": {
+    "session_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "session_type": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "start_utc": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "end_utc": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "meeting_link": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "room_location": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "SCHEDULED",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "calendar_event_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "session_metadata": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "updated_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "pending_starts": {
+    "pending_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "offer_ref": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "reasons": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "WAITING",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "person_records": {
+    "record_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "email": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "id_number": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "full_name": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "kind": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "hris_external_ref": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "plan_revisions": {
+    "revision_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "revision": {
+      "type": "int32",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "drivers": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "added_task_ids": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "removed_task_ids": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "rescheduled_task_ids": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "retained_task_ids": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "approval_request_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "applied_by": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "applied_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "reason": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "previous_schedule": {
+      "type": "jsonb",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "new_schedule": {
+      "type": "jsonb",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "change_summary": {
+      "type": "jsonb",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "correlation_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "provisioning_requests": {
+    "request_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "item_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "item_kind": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "requested_by": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "client_site": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "state": {
+      "type": "text",
+      "nullable": false,
+      "default": "DRAFT_PREPARED",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "ticket_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "clearance_status": {
+      "type": "text",
+      "nullable": false,
+      "default": "NOT_REQUIRED",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_archived": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "updated_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "provisioning_tickets": {
+    "ticket_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "request_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "provisioning_requests",
+        "request_id"
+      ],
+      "enum": null
+    },
+    "external_system": {
+      "type": "text",
+      "nullable": false,
+      "default": "SERVICE_DESK",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "ticket_status": {
+      "type": "text",
+      "nullable": false,
+      "default": "OPEN",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "assigned_technician": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "payload": {
+      "type": "jsonb",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "resolved_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "role_access_matrix": {
+    "matrix_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "role_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "item_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "item_kind": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_mandatory": {
+      "type": "boolean",
+      "nullable": false,
+      "default": true,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "lead_time_days": {
+      "type": "int32",
+      "nullable": false,
+      "default": 5,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "approval_class": {
+      "type": "text",
+      "nullable": false,
+      "default": "STANDARD",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "session_participants": {
+    "participant_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "session_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "orientation_sessions",
+        "session_id"
+      ],
+      "enum": null
+    },
+    "actor_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "email": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "role": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "rsvp_status": {
+      "type": "text",
+      "nullable": false,
+      "default": "PENDING",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "proposed_new_time": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "response_note": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "responded_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "task_dependencies": {
+    "task_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": [
+        "onboarding_tasks",
+        "task_id"
+      ],
+      "enum": null
+    },
+    "depends_on_task_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": [
+        "onboarding_tasks",
+        "task_id"
+      ],
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "dependency_type": {
+      "type": "text",
+      "nullable": false,
+      "default": "finish_to_start",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "task_templates": {
+    "template_key": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "client_id": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": true,
+      "fk": [
+        "client_configs",
+        "client_id"
+      ],
+      "enum": null
+    },
+    "category": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "title": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "title_ar": {
+      "type": "text",
+      "nullable": false,
+      "default": "",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "owner_role": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "default_lead_days": {
+      "type": "int32",
+      "nullable": false,
+      "default": 0,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "evidence_required": {
+      "type": "boolean",
+      "nullable": false,
+      "default": false,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "requires_attributes": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "sensitive_to": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "approval_role": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "description": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "role_ids": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "grades": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "locations": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "projects": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "nationality_groups": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "depends_on_template_keys": {
+      "type": "text[]",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "offset_days": {
+      "type": "int32",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "default_priority": {
+      "type": "text",
+      "nullable": false,
+      "default": "normal",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "config_version": {
+      "type": "int32",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "is_active": {
+      "type": "boolean",
+      "nullable": false,
+      "default": true,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  },
+  "uc01_approvals": {
+    "approval_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": "gen_random_uuid()",
+      "pk": true,
+      "fk": null,
+      "enum": null
+    },
+    "case_id": {
+      "type": "uuid",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": [
+        "onboarding_cases",
+        "case_id"
+      ],
+      "enum": null
+    },
+    "checkpoint": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "subject_ref": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "requested_to": {
+      "type": "text",
+      "nullable": false,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "created_at": {
+      "type": "timestamp with time zone",
+      "nullable": false,
+      "default": "now()",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "requested_by": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "status": {
+      "type": "text",
+      "nullable": false,
+      "default": "PENDING",
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "decided_by": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "decided_at": {
+      "type": "timestamp with time zone",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "reason": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    },
+    "decision_note": {
+      "type": "text",
+      "nullable": true,
+      "default": null,
+      "pk": false,
+      "fk": null,
+      "enum": null
+    }
+  }
+}

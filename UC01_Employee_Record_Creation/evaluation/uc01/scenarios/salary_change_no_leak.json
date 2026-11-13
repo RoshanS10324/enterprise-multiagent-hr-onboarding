@@ -1,0 +1,65 @@
+{
+  "id": "SALARY-01",
+  "title": "Salary change through the full flow never leaks the salary text",
+  "covers": ["GR-18", "GR-21"],
+  "setup": {
+    "client_id": "client-eval-salary",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Pat Salary Change",
+    "candidate_email": "pat.salarychange@example.test",
+    "salary_and_terms": "Base: 120000 SYNTHETIC/yr; benefits: standard",
+    "extra_sensitive_texts": ["Base: 135000 SYNTHETIC/yr; benefits: platinum"]
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {},
+      "save": "case",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "propose_change",
+      "as": "HR_OFFICER",
+      "args": {
+        "case_id": "$case.case.case_id",
+        "requested_by": "hr-officer-eval-1",
+        "change_reason": "Finance approved a revised offer",
+        "salary_and_terms": "Base: 135000 SYNTHETIC/yr; benefits: platinum",
+        "approver_id": "hr-manager-eval-1"
+      },
+      "save": "propose1",
+      "expect": {"new_version": 2}
+    },
+    {
+      "action": "decide_change",
+      "as": "HR_MANAGER",
+      "args": {"approval_id": "$propose1.approval_id", "approve": true},
+      "expect": {"approved": true}
+    },
+    {
+      "action": "prepare",
+      "as": "HR_OFFICER",
+      "args": {"case_id": "$case.case.case_id"},
+      "save": "prep",
+      "expect": {"outcome": "PREPARED"}
+    },
+    {
+      "action": "decide_write",
+      "as": "HR_MANAGER",
+      "args": {"approval_id": "$prep.approval_id", "approve": true}
+    },
+    {
+      "action": "execute_write",
+      "as": "HR_MANAGER",
+      "args": {"case_id": "$case.case.case_id"},
+      "expect": {"completed": true}
+    }
+  ],
+  "final": {
+    "case_ref": "case",
+    "stage": "RECORD_CREATED",
+    "gateway_writes": 2,
+    "invariants_clean": true
+  }
+}

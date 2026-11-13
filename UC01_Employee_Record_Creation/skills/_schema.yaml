@@ -1,0 +1,28 @@
+# The shape every skill definition in this directory must follow.
+# Enforced by tests/test_llm.py.
+#
+# Keys, all required:
+#
+#   skill             Skill name. Must match the filename stem, and must
+#                     have a matching context file in
+#                     context_layer/skills/<name>.yaml.
+#   purpose           One line: what the skill does.
+#   business_requirements
+#                     Which ids from specs/uc01-requirements.yaml this
+#                     skill serves. Every requirement must be served by
+#                     at least one skill, and no skill may cite an id
+#                     that does not exist.
+#   when_to_use       The trigger. When this skill runs, not another.
+#   inputs            What the caller supplies.
+#   outputs           What comes back.
+#   approval          Human approval this skill waits on, by checkpoint
+#                     (HC_01_FORM, HC_04_DATA, HC_05_HRIS_WRITE,
+#                     HC_12_VARIANT), or `none`.
+#   llm_tasks         brain/tasks/ names this skill may call. Empty list
+#                     means the skill is fully deterministic.
+#   entry_point       The function or method that implements it.
+#   failure_modes     What goes wrong and what the skill does about it.
+#
+# skills/ is capability: what the agent can do.
+# context_layer/skills/ is context: what it can see while doing it.
+# The two are kept separate because widening them means different things.

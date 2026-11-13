@@ -1,0 +1,88 @@
+{
+  "_comment": "SYNTHETIC. One fictional employee. 'extracted' = what reading the onboarding form (template onboarding-form-2026) would return; loaded by sub_agent.documents.providers.MockExtractionProvider into the real OnboardingDocumentExtraction model. 'intake' = what the INTAKE CALLER supplies, because a form never contains it (email, placement, the internal form-approval attestation, and the UC-02 fields role_id/manager_id/location/project that the shared contract says the caller provides). Client CLIENT-ALPHA is UC-02's synthetic client: UC-02 has no configuration for any other synthetic client. Placeholders are used for every personal value; nothing here is a real person, number or document.",
+  "synthetic": true,
+  "template_id": "onboarding-form-2026",
+  "extracted": {
+    "employee": {
+      "employee_name": "Maya Synthetic",
+      "reporting_to": "SYN Head of Data Platforms",
+      "designation": "Synthetic Data Engineer",
+      "joining_date": "2027-02-01",
+      "probation_months": 6,
+      "final_salary": "SYNTHETIC: AED 17,000 per month"
+    },
+    "offer": {
+      "issuing_entity": "ACME/GLOBAL",
+      "other_promises": "None"
+    },
+    "employment": {
+      "visa_duration_years": 2,
+      "visa_location_category": "OUTSIDE_COUNTRY",
+      "visit_visa_entry_permit": "Entry permit via employer",
+      "direct_entry_permit": "Not required"
+    },
+    "documents": {
+      "passport": "RECEIVED",
+      "passport_cover": "RECEIVED",
+      "visa_copy": null,
+      "cancellation_paper": null,
+      "emirates_id": null,
+      "signed_offer_letter": "RECEIVED",
+      "photograph": "RECEIVED",
+      "degree_certificate": "RECEIVED"
+    },
+    "personal": {
+      "father_name": "SYNTHETIC-FATHER-NAME-07",
+      "mother_name": "SYNTHETIC-MOTHER-NAME-07",
+      "marital_status": "SINGLE",
+      "mobile_number": "SYNTHETIC-MOBILE-07"
+    },
+    "insurance": {
+      "plan": "WN",
+      "employee_insurance": "Census submitted",
+      "family_insurance": "Not applicable"
+    },
+    "benefits": {
+      "annual_employee_ticket": "DXB-COK, December",
+      "annual_family_ticket": "Not applicable",
+      "hotel_stay_days": 7,
+      "hotel_budget_and_location": "AED 450/night, Al Barsha"
+    },
+    "roles": {
+      "summary": "Owns data pipelines as Synthetic Data Engineer",
+      "is_example": false,
+      "responsibilities": [
+        "Build and operate the data pipelines owned by the Synthetic Data Engineer role.",
+        "Maintain data quality checks for the synthetic onboarding datasets.",
+        "Document pipeline runbooks for the data platform team."
+      ]
+    }
+  },
+  "intake": {
+    "client_id": "CLIENT-ALPHA",
+    "hr_officer_id": "SYN-HR-OFFICER-01",
+    "candidate_email": "maya.synthetic@example.invalid",
+    "offer_reference": "SYN-OFFER-ALPHA-0107",
+    "offer_accepted": true,
+    "work_location_type": "OFFICE",
+    "placement": {
+      "location_name": "SYN Abu Dhabi Office",
+      "department": "technology",
+      "grade": "G6",
+      "nationality_group": "SYN-GROUP-A",
+      "project_name": "zephyr"
+    },
+    "form_approval": {
+      "form_status": "APPROVED",
+      "approved_by": "SYN-HR-MANAGER-01",
+      "approved_at": "2026-11-01T09:00:00+00:00",
+      "approved_by_role": "hr_ops"
+    },
+    "uc02": {
+      "role_id": "data_engineer",
+      "manager_id": "SYN-MGR-001",
+      "location": "Abu Dhabi",
+      "project": "zephyr"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "_mock_note": "MOCK DATA - fictional identifiers only. Not real employee data.",
+  "decisions": [
+    {
+      "gate": "date_change_approval",
+      "requested_by": "U-HR-1",
+      "decided_by": "U-HR-2",
+      "outcome": "approved",
+      "reason": "business need evidenced"
+    },
+    {
+      "gate": "date_change_approval",
+      "requested_by": "U-HR-1",
+      "decided_by": "U-HR-2",
+      "outcome": "rejected",
+      "reason": "insufficient notice"
+    },
+    {
+      "gate": "cancellation_approval",
+      "requested_by": "U-HR-1",
+      "decided_by": "U-HR-2",
+      "outcome": "approved",
+      "reason": "candidate withdrew"
+    }
+  ]
+}

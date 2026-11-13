@@ -1,0 +1,139 @@
+# Policy envelope for the employee onboarding agent. Evaluated in code (ToolGateway/OnboardingToolRegistry),
+# never by the model. Autonomy levels: dact-business-framework/framework/autonomy-levels.yaml (not yet
+# available on this machine; placeholder ceiling L1, confirmed with the user in Phase 1).
+#
+# This file declares the envelope; code enforces it. ToolGateway checks `enabled` and the tool
+# allowlist on every call (workflow runs, /v1/onboarding/* routes and HITL decision application
+# alike); OnboardingToolRegistry adds tenant isolation; HITLInbox enforces gate roles;
+# services/scheduling.py enforces the specific team lead / buddy.
+# Removing a tool from this list makes every path that uses it fail closed.
+policy: employee-onboarding
+agent: employee-onboarding
+version: 12
+enabled: true                # kill switch
+approved_by: []               # filled at governance sign-off
+autonomy: L1                  # draft for approval: writes drafts/holds, HR approves every outcome
+ceiling: L1                   # the agent never sends a communication, signs, or confirms a booking itself
+tools:
+  read:
+    - onboarding.get_record
+    - onboarding.list_tasks
+    - onboarding.list_sessions
+    - onboarding.get_session
+    - onboarding.list_communication_drafts
+    - onboarding.get_client_config
+    - policy_kb.search
+    - scheduling.list_invitations
+    - scheduling.find_slot             # calendar availability search for workflow-drafted meetings
+    - onboarding.list_participant_responses
+    - onboarding.reconciliation_report # hr_admin only: what a crash left out of step (sub_agent/reconciliation.py)
+    - operations.list                  # hr_admin only: bookings/messages whose provider outcome is unknown
+  write:
+    - intake.process_offer_acceptance_event  # idempotent by event_id; creates a case, never overwrites one
+    - checklist.ensure_tasks
+    - policy_qa.answer_question        # answers from the HR policy, or opens a private HR escalation (HITL item)
+    - policy_qa.apply_escalation_decision  # HR resolved/closed an escalation; may deliver HR's reply once
+    - welcome.draft_communication      # creates a draft and its own HITL approval item; never sends
+    - scheduling.schedule_session      # creates a tentative calendar hold and its own HITL approval item
+    - scheduling.schedule_buddy_intro
+    - scheduling.record_participant_response  # a DECLINED response always opens an attendance_decision item
+    - scheduling.check_timeouts                # cancels stale PENDING bookings past their sla_hours
+    - scheduling.propose_buddy_assignment      # creates its own HITL approval item; never assigns directly
+    - joining_trigger.run                     # idempotent by existing draft; drafts only, never sends
+    - notifications.request_approval          # tells an approver an item is waiting; decides nothing
+    - notifications.conflict_superseded       # tells HR a declined-RSVP decision is no longer needed
+    - operations.resolve                      # hr_admin only: records HR's check of an uncertain booking/message
+    # Applying a human decision. Reached only from the HITL decision listener, after HITLInbox has
+    # checked the decider's role and tenant; listed so the kill switch and audit cover them too.
+    - scheduling.apply_decision               # confirm (approved) / release (rejected) a tentative booking
+    - scheduling.apply_attendance_decision    # keep / cancel / replan after a declined RSVP
+    - scheduling.apply_buddy_decision         # assign the approved buddy and notify buddy + new hire
+    - welcome.apply_decision                  # mark a welcome draft approved / rejected
+  write_requires_approval:
+    - comms.send_welcome_email         # sends the HITL-approved content once; only FakeNotifier exists
+gates:
+  comms_approval:
+    approver_role: hr_admin
+    description: HR reviews and approves every drafted communication before it is sent.
+  scheduling_approval:
+    approver_role: hr_admin  # the actual required role varies by session type; see settings below
+    description: >
+      Confirms every orientation/induction/team-intro/buddy-intro booking before it is final.
+      Orientation/induction: hr_admin. Team-intro: the employee's team_lead_id. Buddy-intro: the
+      employee's buddy_id. Enforced by code (UnauthorizedApproverError), not by this field alone.
+  attendance_decision:
+    approver_role: hr_admin
+    description: >
+      HR decides Don't Cancel (approve) / Cancel (reject) / Reschedule (edit with a new_start)
+      when a participant declines a booked session.
+  buddy_assignment:
+    approver_role: hr_admin
+    description: >
+      HR approves the proposed buddy (preferring a same-team candidate) before
+      OnboardingRecord.buddy_id is set and the buddy/new hire are notified.
+  hr_policy_escalation:
+    approver_role: hr_admin
+    description: >
+      Private HR escalation of an employee's policy question: compensation or employment terms, a
+      medical matter, an accessibility/workplace adjustment request, a question the HR policy does not
+      cover, or a language not enabled for policy Q&A. Holds no salary values or medical details.
+      Approve = resolved; edit with employee_message = resolved and reply delivered once; reject = closed.
+never_auto: [send_communication, confirm_booking]
+volume_ceiling:
+  per_run: 500
+thresholds: {}
+settings:
+  # Step 7: who may approve each session type's booking, by role. hr_admin is a pool (any
+  # hr_admin may decide); team_lead/buddy name one specific person, enforced in code against
+  # OnboardingRecord.team_lead_id/buddy_id (scheduling.UnauthorizedApproverError).
+  approver_role_by_session_type:
+    orientation: hr_admin
+    induction: hr_admin
+    team_intro: team_lead
+    buddy_intro: buddy
+  # Step 5: which roles must accept/tentatively-accept before a session's attendance counts as
+  # satisfied. A role with no configured requirement is never implicitly required.
+  attendance_requirements:
+    orientation: [employee]
+    induction: [employee]
+    team_intro: [employee, team_lead]
+    buddy_intro: [employee, buddy]
+  # Step 3: a proposed meeting time must fall within these hours, on a working day, in this
+  # timezone. UAE default weekend is Friday/Saturday (Python weekday(): Mon=0 ... Fri=4, Sat=5).
+  timezone: Asia/Dubai
+  office_hours:
+    start: "09:00"
+    end: "18:00"
+  weekend_weekdays: [4, 5]
+  holidays: []  # ISO date strings, e.g. "2026-12-02" (UAE National Day) -- none configured yet
+  # Every session (workflow-drafted, HR-chosen, buddy intro, replan) must fall on a local date
+  # (client timezone) from the joining date to joining date + 2 calendar days, inclusive -- business
+  # decision 2026-11-04. Enforced in code (scheduling.validate_session_time) before anything is booked
+  # or written; no slot inside the window -> scheduling_failed (HR), never a later date.
+  scheduling_window:
+    days_before_joining: 0
+    days_after_joining: 2
+  # Meetings the workflow drafts itself (sub_agent/agent.py): who is invited besides the new hire,
+  # resolved from the employee's record, and how far ahead to look for the first free in-hours
+  # slot on/after the joining date. Placeholder participants -- confirm with HR.
+  workflow:
+    session_participants:
+      induction: [team_lead]
+      team_intro: [team_lead]
+    slot_search_days: 14
+    slot_step_minutes: 30
+  # When attendees receive the calendar invitation. on_approval: the tentative hold is created
+  # silently and attendees are invited only when the approver confirms it. on_hold: invited with
+  # the hold -- only where the client's business rule allows invitations before approval.
+  invitations: on_approval
+  # HR policy Q&A (services/policy_assistant.py). The authoritative source is
+  # hr_onboarding_common/context_layer/HR_Policy_Consultants.md, which is written in English only, so
+  # English is the only enabled language; any other language is routed to HR. Enable another language
+  # only once answers in it have been reviewed (citations always stay verbatim in English).
+  policy_qa:
+    enabled_languages: [en]
+  # Delivery channels (connectors/notifications). Only FakeNotifier exists, so nothing is
+  # actually delivered on either channel yet.
+  notifications:
+    approval_channel: teams   # teams | email -- where approvers are told an item is waiting
+    employee_channel: email   # teams | email -- buddy-assignment notices to the buddy / new hire

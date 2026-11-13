@@ -1,0 +1,43 @@
+skill: case_status
+purpose: >
+  Answer "where is this case" for HR, the client, and auditors, and list
+  what is waiting on a decision.
+
+roles: [HR_OFFICER, HR_MANAGER, CLIENT_USER, AUDITOR]
+
+form_fields:
+  in_scope:
+    - joining_date
+    - work_location_type
+    - version
+    # Narrowed again by role: filled for HR_OFFICER, HR_MANAGER and
+    # CLIENT_USER, left None for AUDITOR, who needs the trail rather
+    # than the person.
+    - candidate_name
+  excluded:
+    # The widest audience of any skill, so the narrowest field set. An
+    # open discrepancy on salary surfaces as a field name and a source,
+    # never as either value.
+    - salary_and_terms
+    - candidate_email
+    - designation
+    - client_site_id
+    - status
+    - approved_by
+    - approved_at
+    - change_reason
+
+records: >
+  Cases within the viewer's client_ids, narrowed again by role: an
+  HR_OFFICER sees only cases assigned to them. A case that is not
+  visible and a case that does not exist return the same answer, so the
+  response cannot be used to probe for existence.
+
+tools: []  # Read-only over local state.
+
+withheld: >
+  No compensation, no bank or loan data, in any role -- including
+  AUDITOR. An auditor needs to see that a decision was made and by
+  whom, not what the figure was.
+
+enforced_by: src/sub_agent/access.py

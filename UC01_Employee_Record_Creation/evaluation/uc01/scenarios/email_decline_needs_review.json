@@ -1,0 +1,33 @@
+{
+  "id": "DL-01-DECLINE",
+  "title": "A decline/negotiation email from the correct sender needs HR review, no case opened",
+  "covers": ["DL-01"],
+  "setup": {
+    "client_id": "client-eval-email03",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Drew Decline Candidate",
+    "candidate_email": "drew.declinecandidate@example.test",
+    "salary_and_terms": "Base: 101000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {"action": "seed_offer", "as": "SYSTEM", "args": {"offer_ref": "OFFER-7003"}},
+    {
+      "action": "seed_form_for_offer",
+      "as": "SYSTEM",
+      "args": {"offer_ref": "OFFER-7003", "form_status": "APPROVED"}
+    },
+    {
+      "action": "inbound_email",
+      "as": "SYSTEM",
+      "args": {
+        "from": "drew.declinecandidate@example.test",
+        "subject": "Re: Your offer [OFFER-7003] - I must decline"
+      },
+      "save": "intake",
+      "expect": {"outcome": "NEEDS_HR_REVIEW", "review_code": "POSSIBLE_DECLINE_OR_NEGOTIATION"}
+    }
+  ],
+  "final": {
+    "audit_actions_present": ["INTAKE_NEEDS_REVIEW"]
+  }
+}

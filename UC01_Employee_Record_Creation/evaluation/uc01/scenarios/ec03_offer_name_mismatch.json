@@ -1,0 +1,61 @@
+{
+  "id": "EC-03",
+  "title": "Name mismatch against another HR record flagged and kept (form stays source of truth)",
+  "covers": [
+    "EC-03"
+  ],
+  "setup": {
+    "client_id": "client-eval-ec03",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Jordan A. Lee",
+    "candidate_email": "jordan.a.lee@example.test",
+    "salary_and_terms": "Base: 108000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {},
+      "save": "case",
+      "expect": {
+        "outcome": "CASE_OPENED"
+      }
+    },
+    {
+      "action": "compare",
+      "as": "HR_OFFICER",
+      "args": {
+        "case_id": "$case.case.case_id",
+        "snapshots": [
+          {
+            "source": "hr_system",
+            "values": {
+              "candidate_name": "Jordan Alexander Lee"
+            }
+          }
+        ]
+      },
+      "save": "compare1",
+      "expect": {
+        "already_known": 0
+      }
+    },
+    {
+      "action": "resolve",
+      "as": "HR_OFFICER",
+      "args": {
+        "discrepancy_id": "$compare1.new_discrepancies.0",
+        "decision": "KEEP_FORM_VALUE"
+      }
+    }
+  ],
+  "final": {
+    "case_ref": "case",
+    "stage": "READY_TO_PREPARE",
+    "audit_actions_present": [
+      "DISCREPANCY_FLAGGED",
+      "DISCREPANCY_DECIDED"
+    ],
+    "invariants_clean": true
+  }
+}

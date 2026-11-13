@@ -1,0 +1,188 @@
+%% UC-01 -> UC-02 -> UC-03 end-to-end onboarding workflow
+%% Sample employee: Arun Kumar / EMP-001 / CLIENT-ALPHA (fictional test data)
+%% Verified against branch `logesh` @ 1c073df on 2026-10-22.
+%%
+%% LEGEND
+%%   [IMPL]     = implemented and test-covered in this repository
+%%   [IMPL-OB]  = implemented, but on another branch (origin/Roshan), not integrated here
+%%   [PROPOSED] = NOT YET INTEGRATED - no code exists for this step
+%%   Diamonds   = decision points. Red = blocked/error. Orange = pending/human review. Green = complete.
+
+flowchart TD
+
+%% ---------------------------------------------------------------- Stage A
+    START(["Arun Kumar accepts offer<br/>EMP-001 . CLIENT-ALPHA"]):::startNode
+    A1["<b>Stage A - Offer acceptance</b><br/>Source system records acceptance<br/>employee_id: EMP-001<br/>offer_reference: OFR-EMP-001<br/>accepted: true<br/>accepted_at: 2026-10-01T09:00:00Z<br/><i>[PROPOSED - source system not in repo]</i>"]:::proposed
+    START --> A1
+
+%% ---------------------------------------------------------------- Stage B
+    subgraph UC01["UC-01 - Employee Record Creation &nbsp; [PROPOSED - NO CODE EXISTS]"]
+        direction TB
+        B1{"Offer accepted?"}:::decision
+        B2{"Onboarding form<br/>submitted AND approved?"}:::decision
+        B3{"Duplicate ACTIVE<br/>case for EMP-001?"}:::decision
+        B4{"Employee details consistent<br/>with offer and form?"}:::decision
+        B5["Create onboarding case<br/>CASE-EMP-001<br/>status: ACTIVE"]:::uc01
+        BP1["Remain PENDING<br/>await approval"]:::pending
+        BP2["Route to HR review<br/>data conflict"]:::pending
+        BP3["Duplicate handling rule<br/><i>[PROPOSED - rule not documented]</i>"]:::pending
+
+        B1 -- "no" --> BP1
+        B1 -- "yes" --> B2
+        B2 -- "no" --> BP1
+        B2 -- "yes" --> B3
+        B3 -- "yes" --> BP3
+        B3 -- "no" --> B4
+        B4 -- "no" --> BP2
+        B4 -- "yes" --> B5
+    end
+    A1 --> B1
+
+%% ---------------------------------------------------------------- Stage C
+    subgraph TRIG1["Trigger 1 - UC-01 to UC-02 &nbsp; [PROPOSED - NOT YET INTEGRATED]"]
+        direction TB
+        C1["No event bus, webhook or API exists.<br/>Today UC-02 is invoked ONLY as an<br/>in-process Python call:<br/><code>service.create_onboarding actor, trigger</code>"]:::trigger
+        C2["Map CASE-EMP-001 to OnboardingTrigger<br/>client_id, employee_id, joining_date,<br/>role_id, department, manager_id,<br/>location, project, offer, form"]:::trigger
+        C3{"PII filter<br/>drop name / nationality / grade"}:::decision
+        C4["<b>CONTRACT MISMATCH</b><br/>UC-02 has no field for<br/>employee name, grade or nationality<br/>by design"]:::error
+        C1 --> C2 --> C3
+        C3 -- "PII removed" --> C5["Validated trigger payload"]:::trigger
+        C3 -- "PII present" --> C4
+    end
+    B5 --> C1
+
+%% ---------------------------------------------------------------- Stage D
+    subgraph UC02["UC-02 - Onboarding Task Management &nbsp; [IMPL - this repository]"]
+        direction TB
+        D1{"Validate trigger<br/>offer accepted + form approved<br/>+ approved by HR role?"}:::decision
+        D1E["PreconditionError<br/>no plan generated"]:::error
+        D2{"Client config exists<br/>for CLIENT-ALPHA?"}:::decision
+        D2E["MissingConfigurationError<br/>tasks are never invented"]:::error
+        D3["Select applicable templates<br/>filter by location Dubai,<br/>project apollo, role backend_engineer"]:::uc02
+        D4["Generate checklist - 10 tasks<br/>assign owners<br/>compute due dates on UAE calendar<br/>apply dependencies"]:::uc02
+        D5["Compute parallel readiness<br/>4 dependency layers"]:::uc02
+        D6["ONB-CLIENT-ALPHA-EMP-001<br/>status: active . revision: 0"]:::uc02
+
+        D1 -- "fail" --> D1E
+        D1 -- "pass" --> D2
+        D2 -- "no" --> D2E
+        D2 -- "yes" --> D3 --> D4 --> D5 --> D6
+
+        subgraph PLAN["Generated plan - real output, joining 2026-11-16"]
+            direction TB
+            T1["hr_record_create . hr_ops<br/>due 2026-11-02 . READY"]:::ready
+            T2["collect_documents . hr_ops<br/>due 2026-11-04 . BLOCKED"]:::blocked
+            T3["visa_application . hr_ops<br/>due 2026-11-05 . BLOCKED"]:::blocked
+            T4["it_laptop . it_manager<br/>due 2026-11-09 . BLOCKED"]:::blocked
+            T5["payroll_setup . finance<br/>due 2026-11-10 . BLOCKED"]:::blocked
+            T6["it_accounts . it_manager<br/>due 2026-11-11 . BLOCKED"]:::blocked
+            T7["access_apollo . it_manager<br/>due 2026-11-12 . BLOCKED"]:::blocked
+            T8["desk_allocation . facilities<br/>due 2026-11-12 . BLOCKED"]:::blocked
+            T9["orientation_schedule . hr_ops<br/>due 2026-11-16 . BLOCKED"]:::blocked
+            T10["policy_ack . employee<br/>due 2026-11-18 . BLOCKED"]:::blocked
+
+            T1 --> T2
+            T1 --> T4
+            T1 --> T8
+            T1 --> T9
+            T2 --> T3
+            T2 --> T5
+            T4 --> T6 --> T7
+            T9 --> T10
+        end
+        D6 --> T1
+
+        D7["Track status and joining risk<br/>overdue detection . milestones<br/>reminder DRAFTS only - never sent"]:::uc02
+    end
+    C5 --> D1
+
+%% ---------------------------------------------------------------- Stage E
+    subgraph TRIG2["Trigger 2 - UC-02 to UC-03 &nbsp; [PROPOSED - NOT YET INTEGRATED]"]
+        direction TB
+        E0{"Prerequisite met?<br/>hr_record_create COMPLETE"}:::decision
+        E0B["collect_documents stays BLOCKED<br/>UC-03 is NOT called"]:::blocked
+        E1["collect_documents becomes READY"]:::ready
+        E2["Build DocumentValidationRequest<br/>case_id, client_id, employee_id,<br/>document_type, document_ref,<br/>correlation_id"]:::trigger
+        E3["<b>BLOCKER</b><br/>UC-03 requires employee_name_form<br/>UC-02 cannot supply it"]:::error
+        E4["POST /onboarding/uc03/validate<br/>one call PER document type"]:::trigger
+
+        E0 -- "no" --> E0B
+        E0 -- "yes" --> E1 --> E2 --> E3
+        E2 --> E4
+    end
+    T1 -.->|"on completion"| E0
+
+%% ---------------------------------------------------------------- Stage F
+    subgraph UC03["UC-03 - Document and Information Validation &nbsp; [IMPL-OB - origin/Roshan only]"]
+        direction TB
+        F1{"Start conditions<br/>offer accepted +<br/>form approved?"}:::decision
+        F1H["ON_HOLD<br/>no validation performed"]:::pending
+        F2["Validate each document<br/>extraction . name match . expiry"]:::uc03
+        F3["identity_document: ACCEPTED"]:::done
+        F4["education_certificate: ACCEPTED"]:::done
+        F5["signed_offer: ACCEPTED"]:::done
+        F6["experience_letter: MISSING"]:::error
+        F7{"Any finding needing<br/>human judgement?"}:::decision
+        F8["HR_REVIEW_REQUIRED"]:::pending
+        F9["Result set + outstanding_requirements<br/>required_next_action"]:::uc03
+
+        F1 -- "no" --> F1H
+        F1 -- "yes" --> F2
+        F2 --> F3 & F4 & F5 & F6
+        F3 & F4 & F5 & F6 --> F7
+        F7 -- "yes" --> F8 --> F9
+        F7 -- "no" --> F9
+    end
+    E4 --> F1
+
+%% ---------------------------------------------------------------- Stage G
+    subgraph TRIG3["Trigger 3 - UC-03 back to UC-02 &nbsp; [PROPOSED - NOT YET INTEGRATED]"]
+        direction TB
+        G1["DocumentValidationResult<br/>experience_letter MISSING<br/>outstanding_requirements: 1"]:::trigger
+        G2{"All required documents<br/>ACCEPTED?"}:::decision
+        G3["collect_documents NOT completed<br/>stays READY / IN_PROGRESS<br/><b>UC-02 has no action_required status</b>"]:::pending
+        G4["visa_application stays BLOCKED<br/>prerequisite unmet - enforced today"]:::blocked
+        G5["HR supplies missing document<br/>re-validate<br/><i>[PROPOSED - no retry mechanism]</i>"]:::pending
+        G6["collect_documents -> COMPLETE<br/>visa_application -> READY"]:::done
+
+        G1 --> G2
+        G2 -- "no" --> G3 --> G4 --> G5 --> G1
+        G2 -- "yes" --> G6
+    end
+    F9 --> G1
+    G3 -.-> D7
+    G6 -.-> D7
+
+%% ---------------------------------------------------------------- Stage H
+    subgraph OUT["Stage H - Final outcome"]
+        direction TB
+        H1{"All required tasks COMPLETE<br/>and milestones achieved?"}:::decision
+        H2["Onboarding may progress<br/>day_one_ready achieved<br/>handover to UC-06"]:::done
+        H3["Tasks pending / blocked<br/>or awaiting HR action<br/>NOT onboarded"]:::pending
+        H1 -- "yes" --> H2
+        H1 -- "no" --> H3
+    end
+    D7 --> H1
+
+%% ---------------------------------------------------------------- Styling
+    classDef uc01 fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a8a
+    classDef trigger fill:#fef3c7,stroke:#d97706,stroke-width:2px,color:#78350f
+    classDef uc02 fill:#ede9fe,stroke:#7c3aed,stroke-width:2px,color:#4c1d95
+    classDef uc03 fill:#ccfbf1,stroke:#0d9488,stroke-width:2px,color:#134e4a
+    classDef pending fill:#ffedd5,stroke:#ea580c,stroke-width:2px,color:#7c2d12
+    classDef error fill:#fee2e2,stroke:#dc2626,stroke-width:2px,color:#7f1d1d
+    classDef done fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#14532d
+    classDef blocked fill:#fee2e2,stroke:#dc2626,stroke-width:1px,color:#7f1d1d
+    classDef ready fill:#dcfce7,stroke:#16a34a,stroke-width:1px,color:#14532d
+    classDef decision fill:#f1f5f9,stroke:#475569,stroke-width:2px,color:#0f172a
+    classDef proposed fill:#fef3c7,stroke:#d97706,stroke-width:2px,stroke-dasharray:5 5,color:#78350f
+    classDef startNode fill:#e0f2fe,stroke:#0284c7,stroke-width:3px,color:#075985
+
+    style UC01 fill:#eff6ff,stroke:#2563eb,stroke-width:3px,stroke-dasharray:8 4
+    style TRIG1 fill:#fffbeb,stroke:#d97706,stroke-width:3px,stroke-dasharray:8 4
+    style UC02 fill:#f5f3ff,stroke:#7c3aed,stroke-width:3px
+    style TRIG2 fill:#fffbeb,stroke:#d97706,stroke-width:3px,stroke-dasharray:8 4
+    style UC03 fill:#f0fdfa,stroke:#0d9488,stroke-width:3px,stroke-dasharray:8 4
+    style TRIG3 fill:#fffbeb,stroke:#d97706,stroke-width:3px,stroke-dasharray:8 4
+    style PLAN fill:#faf5ff,stroke:#a78bfa,stroke-width:2px
+    style OUT fill:#f8fafc,stroke:#475569,stroke-width:2px

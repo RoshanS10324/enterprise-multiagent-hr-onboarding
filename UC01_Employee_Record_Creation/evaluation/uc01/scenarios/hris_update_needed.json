@@ -1,0 +1,121 @@
+{
+  "id": "HRIS-UPDATE-01",
+  "title": "Form change after the record was written updates the employee in place",
+  "covers": [],
+  "setup": {
+    "client_id": "client-eval-upd01",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Jamie Post Write Change",
+    "candidate_email": "jamie.postwritechange@example.test",
+    "salary_and_terms": "Base: 103000 SYNTHETIC/yr; benefits: standard",
+    "designation": "Engineer I"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {},
+      "save": "case",
+      "expect": {
+        "outcome": "CASE_OPENED"
+      }
+    },
+    {
+      "action": "prepare",
+      "as": "HR_OFFICER",
+      "args": {
+        "case_id": "$case.case.case_id"
+      },
+      "save": "prep",
+      "expect": {
+        "outcome": "PREPARED"
+      }
+    },
+    {
+      "action": "decide_write",
+      "as": "HR_MANAGER",
+      "args": {
+        "approval_id": "$prep.approval_id",
+        "approve": true
+      }
+    },
+    {
+      "action": "execute_write",
+      "as": "HR_MANAGER",
+      "args": {
+        "case_id": "$case.case.case_id"
+      },
+      "expect": {
+        "completed": true
+      }
+    },
+    {
+      "action": "propose_change",
+      "as": "HR_OFFICER",
+      "args": {
+        "case_id": "$case.case.case_id",
+        "requested_by": "hr-officer-eval-1",
+        "change_reason": "Promotion effective immediately",
+        "designation": "Engineer II",
+        "approver_id": "hr-manager-eval-1"
+      },
+      "save": "propose1",
+      "expect": {
+        "new_version": 2
+      }
+    },
+    {
+      "action": "decide_change",
+      "as": "HR_MANAGER",
+      "args": {
+        "approval_id": "$propose1.approval_id",
+        "approve": true
+      },
+      "expect": {
+        "approved": true,
+        "form_version": 2
+      }
+    },
+    {
+      "action": "prepare",
+      "as": "HR_OFFICER",
+      "args": {
+        "case_id": "$case.case.case_id"
+      },
+      "expect": {
+        "outcome": "PREPARED_UPDATE"
+      },
+      "save": "prepare2"
+    },
+    {
+      "action": "decide_write",
+      "as": "HR_MANAGER",
+      "args": {
+        "approval_id": "$prepare2.approval_id",
+        "approve": true
+      }
+    },
+    {
+      "action": "execute_write",
+      "as": "HR_MANAGER",
+      "args": {
+        "case_id": "$case.case.case_id"
+      },
+      "expect": {
+        "completed": true
+      }
+    }
+  ],
+  "final": {
+    "case_ref": "case",
+    "stage": "RECORD_CREATED",
+    "gateway_writes": 2,
+    "audit_actions_present": [
+      "FORM_CHANGE_APPROVED",
+      "HRIS_PREPARED",
+      "HRIS_RECORD_SUPERSEDED",
+      "HRIS_WRITE_SUCCEEDED"
+    ],
+    "invariants_clean": true
+  }
+}

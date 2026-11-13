@@ -1,0 +1,24 @@
+{
+  "id": "EC-20",
+  "title": "Hiring freeze: start gate pauses, no case created",
+  "covers": ["EC-20"],
+  "setup": {
+    "client_id": "client-eval-ec20",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Casey Frozen",
+    "candidate_email": "casey.frozen@example.test",
+    "salary_and_terms": "Base: 98000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {"hiring_freeze": true},
+      "save": "case",
+      "expect": {"outcome": "PAUSED"}
+    }
+  ],
+  "final": {
+    "audit_actions_present": ["START_GATE_EVALUATED"]
+  }
+}

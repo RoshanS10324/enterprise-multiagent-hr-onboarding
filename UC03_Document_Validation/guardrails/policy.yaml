@@ -1,0 +1,13 @@
+guardrails:
+  injection:
+    enabled: true
+    action: block          # block | warn | log
+  pii:
+    enabled: true
+    action: redact
+  content_safety:
+    enabled: true
+    action: block
+  bias:
+    enabled: true
+    action: warn

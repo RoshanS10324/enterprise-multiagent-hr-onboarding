@@ -1,0 +1,503 @@
+{
+ "onboarding_cases": {
+  "columns": {
+   "case_id": "uuid",
+   "client_id": "text",
+   "employee_no": "text",
+   "candidate_name": "text",
+   "candidate_email": "text",
+   "hr_officer_id": "text",
+   "joining_date": "date",
+   "work_location_type": "text",
+   "location_name": "text",
+   "project_name": "text",
+   "role_id": "text",
+   "grade": "text",
+   "department": "text",
+   "manager_id": "text",
+   "nationality_group": "text",
+   "variant_is_rehire": "boolean",
+   "variant_is_internal_transfer": "boolean",
+   "variant_is_agency_contractor": "boolean",
+   "variant_is_minor": "boolean",
+   "variant_is_resident": "boolean",
+   "variant_is_remote": "boolean",
+   "status": "text",
+   "current_stage": "text",
+   "current_form_version": "int32",
+   "folder_ref": "text",
+   "opened_at": "timestamp with time zone",
+   "updated_at": "timestamp with time zone",
+   "completed_at": "timestamp with time zone",
+   "onboarding_attributes": "text[]",
+   "is_deleted": "boolean",
+   "reactivates_record_id": "text",
+   "reactivates_external_ref": "text"
+  },
+  "required": [
+   "client_id",
+   "candidate_name",
+   "candidate_email",
+   "hr_officer_id",
+   "joining_date",
+   "work_location_type",
+   "onboarding_attributes"
+  ]
+ },
+ "onboarding_tasks": {
+  "columns": {
+   "task_id": "text",
+   "case_id": "uuid",
+   "client_id": "text",
+   "employee_id": "text",
+   "template_key": "text",
+   "plan_order": "int32",
+   "category": "text",
+   "title": "text",
+   "title_ar": "text",
+   "owner_role": "text",
+   "assigned_actor_id": "text",
+   "status": "text",
+   "due_date": "date",
+   "started_at": "timestamp with time zone",
+   "completed_at": "timestamp with time zone",
+   "cancelled_at": "timestamp with time zone",
+   "evidence_required": "boolean",
+   "evidence_ref": "text",
+   "evidence_recorded_at": "timestamp with time zone",
+   "approval_role": "text",
+   "notes": "text",
+   "created_at": "timestamp with time zone",
+   "updated_at": "timestamp with time zone",
+   "description": "text",
+   "priority": "text",
+   "owner_type": "text",
+   "planned_start_date": "date",
+   "blocked_reason": "text",
+   "risk_status": "text",
+   "risk_reason": "text",
+   "last_replanned_at": "timestamp with time zone",
+   "config_version": "int32",
+   "assigned_team": "text",
+   "assigned_by": "text",
+   "assigned_at": "timestamp with time zone",
+   "sensitive_to": "text[]",
+   "requires_attributes": "text[]",
+   "external_outcome": "text",
+   "external_source": "text",
+   "external_reference": "text",
+   "external_blocking_reason": "text",
+   "external_updated_at": "timestamp with time zone",
+   "status_summary": "jsonb"
+  },
+  "required": [
+   "task_id",
+   "case_id",
+   "client_id",
+   "employee_id",
+   "template_key",
+   "category",
+   "title",
+   "owner_role",
+   "due_date",
+   "sensitive_to",
+   "requires_attributes"
+  ]
+ },
+ "task_dependencies": {
+  "columns": {
+   "task_id": "text",
+   "depends_on_task_id": "text",
+   "client_id": "text",
+   "dependency_type": "text"
+  },
+  "required": [
+   "task_id",
+   "depends_on_task_id"
+  ]
+ },
+ "plan_revisions": {
+  "columns": {
+   "revision_id": "uuid",
+   "case_id": "uuid",
+   "revision": "int32",
+   "client_id": "text",
+   "drivers": "text[]",
+   "added_task_ids": "text[]",
+   "removed_task_ids": "text[]",
+   "rescheduled_task_ids": "text[]",
+   "retained_task_ids": "text[]",
+   "approval_request_id": "text",
+   "applied_by": "text",
+   "applied_at": "timestamp with time zone",
+   "reason": "text",
+   "previous_schedule": "jsonb",
+   "new_schedule": "jsonb",
+   "change_summary": "jsonb",
+   "correlation_id": "text"
+  },
+  "required": [
+   "case_id",
+   "revision",
+   "client_id",
+   "drivers",
+   "added_task_ids",
+   "removed_task_ids",
+   "rescheduled_task_ids",
+   "retained_task_ids",
+   "applied_by"
+  ]
+ },
+ "approval_requests": {
+  "columns": {
+   "request_id": "text",
+   "case_id": "uuid",
+   "client_id": "text",
+   "gate": "text",
+   "approver_role": "text",
+   "requested_by": "text",
+   "workflow_module": "text",
+   "subject_ref": "text",
+   "payload": "jsonb",
+   "rationale": "text",
+   "confidence_score": "numeric",
+   "outcome": "text",
+   "decided_by": "text",
+   "decided_at": "timestamp with time zone",
+   "decision_reason_code": "text",
+   "decision_notes": "text",
+   "final_payload": "jsonb",
+   "apply_error": "text",
+   "sla_due_at": "timestamp with time zone",
+   "created_at": "timestamp with time zone"
+  },
+  "required": [
+   "request_id",
+   "client_id",
+   "gate",
+   "approver_role",
+   "requested_by",
+   "workflow_module",
+   "subject_ref",
+   "payload"
+  ]
+ },
+ "audit_events": {
+  "columns": {
+   "event_id": "uuid",
+   "case_id": "uuid",
+   "client_id": "text",
+   "actor_type": "text",
+   "actor_id": "text",
+   "actor_role": "text",
+   "action": "text",
+   "outcome": "text",
+   "detail": "jsonb",
+   "before_state": "jsonb",
+   "after_state": "jsonb",
+   "correlation_id": "text",
+   "reference": "text",
+   "occurred_at": "timestamp with time zone",
+   "task_id": "text",
+   "sequence": "int32",
+   "prev_hash": "text",
+   "entry_hash": "text"
+  },
+  "required": [
+   "client_id",
+   "actor_type",
+   "actor_id",
+   "action",
+   "detail"
+  ]
+ },
+ "agent_runs": {
+  "columns": {
+   "run_id": "text",
+   "case_id": "uuid",
+   "client_id": "text",
+   "agent_id": "text",
+   "agent_version": "text",
+   "actor_id": "text",
+   "status": "text",
+   "advisor_mode": "text",
+   "model_name": "text",
+   "prompt_tokens": "int32",
+   "completion_tokens": "int32",
+   "proposal_count": "int32",
+   "action_count": "int32",
+   "exception_count": "int32",
+   "tool_calls": "text[]",
+   "error_summary": "text",
+   "started_at": "timestamp with time zone",
+   "finished_at": "timestamp with time zone"
+  },
+  "required": [
+   "run_id",
+   "client_id",
+   "agent_id",
+   "actor_id",
+   "status",
+   "tool_calls"
+  ]
+ },
+ "client_configs": {
+  "columns": {
+   "client_id": "text",
+   "company_name": "text",
+   "config_hash": "text",
+   "working_days": "integer[]",
+   "timezone": "text",
+   "template_count": "int32",
+   "milestone_count": "int32",
+   "settings_payload": "jsonb",
+   "is_active": "boolean",
+   "created_at": "timestamp with time zone",
+   "updated_at": "timestamp with time zone"
+  },
+  "required": [
+   "client_id",
+   "company_name",
+   "config_hash",
+   "working_days",
+   "settings_payload"
+  ]
+ },
+ "client_config_versions": {
+  "columns": {
+   "client_id": "text",
+   "version": "int32",
+   "effective_from": "date",
+   "effective_to": "date",
+   "status": "text",
+   "config_hash": "text",
+   "approved_by": "text",
+   "approved_at": "timestamp with time zone",
+   "created_at": "timestamp with time zone"
+  },
+  "required": [
+   "client_id",
+   "version",
+   "effective_from",
+   "config_hash"
+  ]
+ },
+ "task_templates": {
+  "columns": {
+   "template_key": "text",
+   "client_id": "text",
+   "category": "text",
+   "title": "text",
+   "title_ar": "text",
+   "owner_role": "text",
+   "default_lead_days": "int32",
+   "evidence_required": "boolean",
+   "requires_attributes": "text[]",
+   "sensitive_to": "text[]",
+   "approval_role": "text",
+   "description": "text",
+   "role_ids": "text[]",
+   "grades": "text[]",
+   "locations": "text[]",
+   "projects": "text[]",
+   "nationality_groups": "text[]",
+   "depends_on_template_keys": "text[]",
+   "offset_days": "int32",
+   "default_priority": "text",
+   "config_version": "int32",
+   "is_active": "boolean"
+  },
+  "required": [
+   "template_key",
+   "client_id",
+   "category",
+   "title",
+   "owner_role",
+   "requires_attributes",
+   "sensitive_to",
+   "role_ids",
+   "grades",
+   "locations",
+   "projects",
+   "nationality_groups",
+   "depends_on_template_keys"
+  ]
+ },
+ "client_document_requirements": {
+  "columns": {
+   "requirement_id": "uuid",
+   "client_id": "text",
+   "config_version": "int32",
+   "service_category": "text",
+   "requirement_key": "text",
+   "document_type": "text",
+   "description": "text",
+   "is_mandatory": "boolean",
+   "applicable_roles": "text[]",
+   "applicable_grades": "text[]",
+   "applicable_locations": "text[]",
+   "applicable_projects": "text[]",
+   "eligibility_rules": "jsonb",
+   "validation_profile": "jsonb",
+   "is_active": "boolean",
+   "created_at": "timestamp with time zone"
+  },
+  "required": [
+   "client_id",
+   "config_version",
+   "service_category",
+   "requirement_key",
+   "document_type",
+   "applicable_roles",
+   "applicable_grades",
+   "applicable_locations",
+   "applicable_projects",
+   "eligibility_rules",
+   "validation_profile"
+  ]
+ },
+ "client_milestone_templates": {
+  "columns": {
+   "milestone_id": "uuid",
+   "client_id": "text",
+   "config_version": "int32",
+   "milestone_key": "text",
+   "title": "text",
+   "offset_days": "int32",
+   "required_task_keys": "text[]",
+   "eligibility_rules": "jsonb",
+   "is_active": "boolean"
+  },
+  "required": [
+   "client_id",
+   "config_version",
+   "milestone_key",
+   "title",
+   "required_task_keys",
+   "eligibility_rules"
+  ]
+ },
+ "client_holidays": {
+  "columns": {
+   "client_id": "text",
+   "holiday_date": "date",
+   "name": "text",
+   "is_observed": "boolean"
+  },
+  "required": [
+   "client_id",
+   "holiday_date"
+  ]
+ },
+ "client_service_policies": {
+  "columns": {
+   "policy_id": "uuid",
+   "client_id": "text",
+   "config_version": "int32",
+   "service_category": "text",
+   "service_key": "text",
+   "is_available": "boolean",
+   "is_mandatory": "boolean",
+   "eligibility_rules": "jsonb",
+   "policy_details": "jsonb",
+   "responsible_role": "text",
+   "effective_from": "date",
+   "effective_to": "date",
+   "is_active": "boolean",
+   "created_at": "timestamp with time zone"
+  },
+  "required": [
+   "client_id",
+   "config_version",
+   "service_category",
+   "service_key",
+   "eligibility_rules",
+   "policy_details"
+  ]
+ },
+ "onboarding_forms": {
+  "columns": {
+   "form_id": "uuid",
+   "client_id": "text",
+   "case_id": "uuid",
+   "version": "int32",
+   "candidate_name": "text",
+   "candidate_email": "text",
+   "designation": "text",
+   "joining_date": "date",
+   "work_location_type": "text",
+   "client_site_id": "text",
+   "salary_and_terms_encrypted": "bytea",
+   "status": "text",
+   "approved_by": "text",
+   "approved_at": "timestamp with time zone",
+   "change_reason": "text",
+   "created_at": "timestamp with time zone"
+  },
+  "required": [
+   "client_id",
+   "version",
+   "candidate_name",
+   "candidate_email",
+   "designation",
+   "joining_date",
+   "work_location_type",
+   "salary_and_terms_encrypted"
+  ]
+ },
+ "offers": {
+  "columns": {
+   "client_id": "text",
+   "offer_ref": "text",
+   "candidate_email": "text",
+   "candidate_name": "text",
+   "designation": "text",
+   "hr_officer_id": "text",
+   "status": "text",
+   "accepted_at": "timestamp with time zone",
+   "offer_payload": "jsonb",
+   "created_at": "timestamp with time zone"
+  },
+  "required": [
+   "client_id",
+   "offer_ref",
+   "candidate_email",
+   "candidate_name",
+   "designation",
+   "hr_officer_id",
+   "offer_payload"
+  ]
+ },
+ "offer_forms": {
+  "columns": {
+   "client_id": "text",
+   "offer_ref": "text",
+   "form_id": "uuid",
+   "created_at": "timestamp with time zone"
+  },
+  "required": [
+   "client_id",
+   "offer_ref",
+   "form_id"
+  ]
+ },
+ "role_access_matrix": {
+  "columns": {
+   "matrix_id": "uuid",
+   "client_id": "text",
+   "role_id": "text",
+   "item_id": "text",
+   "item_kind": "text",
+   "is_mandatory": "boolean",
+   "lead_time_days": "int32",
+   "approval_class": "text",
+   "created_at": "timestamp with time zone"
+  },
+  "required": [
+   "client_id",
+   "role_id",
+   "item_id",
+   "item_kind"
+  ]
+ }
+}

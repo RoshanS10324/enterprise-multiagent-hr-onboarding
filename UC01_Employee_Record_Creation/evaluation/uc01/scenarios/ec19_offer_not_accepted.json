@@ -1,0 +1,24 @@
+{
+  "id": "EC-19",
+  "title": "Offer not accepted: start gate holds, no case created",
+  "covers": ["EC-19"],
+  "setup": {
+    "client_id": "client-eval-ec19",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Jordan Not Accepted",
+    "candidate_email": "jordan.notaccepted@example.test",
+    "salary_and_terms": "Base: 95000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {"offer_accepted": false},
+      "save": "case",
+      "expect": {"outcome": "HELD"}
+    }
+  ],
+  "final": {
+    "audit_actions_present": ["START_GATE_EVALUATED"]
+  }
+}

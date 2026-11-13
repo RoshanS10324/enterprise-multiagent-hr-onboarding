@@ -1,0 +1,112 @@
+%% UC-01 -> UC-02 -> UC-03 message/event exchange
+%% Sample employee: Arun Kumar / EMP-001 / CLIENT-ALPHA (fictional test data)
+%% Verified against branch `logesh` @ 1c073df on 2026-10-22.
+%%
+%% Solid arrow  ->>  = call that exists today
+%% Dashed arrow -->> = response
+%% Any step marked [PROPOSED] has NO implementation in this repository.
+
+sequenceDiagram
+    autonumber
+    actor EMP as Arun Kumar<br/>EMP-001
+    participant SRC as Offer / ATS source<br/>[PROPOSED]
+    participant UC1 as UC-01<br/>Employee Record Creation<br/>[PROPOSED - no code]
+    participant UC2 as UC-02<br/>OnboardingService<br/>[IMPLEMENTED]
+    participant CFG as ClientOnboardingConfig<br/>CLIENT-ALPHA [IMPLEMENTED]
+    participant AUD as AuditLog<br/>in-memory [IMPLEMENTED]
+    participant UC3 as UC-03<br/>Document Validation API<br/>[origin/Roshan only]
+
+    rect rgb(219, 234, 254)
+    note over EMP,UC1: Stage A + B - offer acceptance and case creation [PROPOSED]
+    EMP->>SRC: Accept offer OFR-EMP-001
+    SRC-->>UC1: offer_accepted=true<br/>accepted_at=2026-10-01T09:00:00Z
+    UC1->>UC1: Check offer accepted
+    UC1->>UC1: Check form submitted + approved
+    UC1->>UC1: Check duplicate ACTIVE case
+    UC1->>UC1: Check details consistent
+    alt Any check fails
+        UC1-->>SRC: PENDING or HR_REVIEW<br/>no case created
+    else All checks pass
+        UC1->>UC1: Create CASE-EMP-001
+    end
+    end
+
+    rect rgb(254, 243, 199)
+    note over UC1,UC2: Trigger 1 [PROPOSED - NOT YET INTEGRATED]
+    note right of UC1: No event bus, queue or webhook exists.<br/>Today the only entry point is an<br/>in-process Python call.
+    UC1->>UC2: create_onboarding(actor, OnboardingTrigger)<br/>client_id, employee_id, joining_date,<br/>role_id, department, manager_id,<br/>location, project, offer, form
+    note right of UC2: PII filter - name, grade and<br/>nationality are NOT carried.
+    end
+
+    rect rgb(237, 233, 254)
+    note over UC2,AUD: Stage D - task generation [IMPLEMENTED, 288 tests]
+    UC2->>UC2: validate_preconditions()
+    alt offer not accepted or form not approved
+        UC2-->>UC1: PreconditionError
+    else preconditions pass
+        UC2->>CFG: registry.get("CLIENT-ALPHA")
+        alt no configuration
+            CFG-->>UC2: MissingConfigurationError
+        else configuration found
+            CFG-->>UC2: 12 task templates + 4 milestones
+            UC2->>UC2: applicable(location=Dubai,<br/>project=apollo, role=backend_engineer)
+            UC2->>UC2: build_tasks() - 10 tasks,<br/>UAE business-day due dates
+            UC2->>UC2: recompute_readiness()
+            UC2->>AUD: record("onboarding.create", task_count=10)
+            UC2-->>UC1: OnboardingRecord<br/>ONB-CLIENT-ALPHA-EMP-001
+        end
+    end
+    end
+
+    rect rgb(237, 233, 254)
+    note over UC2: Only hr_record_create is READY.<br/>The other 9 tasks are BLOCKED.
+    UC2->>UC2: complete_task(hr_ops, hr_record_create)
+    UC2->>AUD: record("task.complete")
+    UC2->>UC2: collect_documents, it_laptop,<br/>desk_allocation, orientation_schedule<br/>all become READY in parallel
+    end
+
+    rect rgb(254, 243, 199)
+    note over UC2,UC3: Trigger 2 [PROPOSED - NOT YET INTEGRATED]
+    note right of UC2: UC-02 makes no outbound calls.<br/>It has no HTTP client and no API layer.
+    UC2-)UC3: POST /onboarding/uc03/validate<br/>DocumentValidationRequest<br/>case_id, client_id, employee_id,<br/>document_type, document_ref, correlation_id
+    note right of UC3: CONTRACT MISMATCH<br/>employee_name_form is REQUIRED by UC-03<br/>but does not exist in any UC-02 model.<br/>One call is needed PER document type.
+    end
+
+    rect rgb(204, 251, 241)
+    note over UC3: Stage F - validation [IMPLEMENTED on origin/Roshan]
+    UC3->>UC3: verify_start_conditions()
+    alt offer/form not approved
+        UC3-->>UC2: ON_HOLD, next_action = NONE
+    else start conditions met
+        UC3->>UC3: validate identity_document -> ACCEPTED
+        UC3->>UC3: validate education_certificate -> ACCEPTED
+        UC3->>UC3: validate signed_offer -> ACCEPTED
+        UC3->>UC3: validate experience_letter -> MISSING
+        opt human judgement needed
+            UC3->>UC3: route_to_hr() -> HR_REVIEW_REQUIRED
+        end
+    end
+    end
+
+    rect rgb(254, 243, 199)
+    note over UC3,UC2: Trigger 3 [PROPOSED - NOT YET INTEGRATED]
+    UC3--)UC2: DocumentValidationResult<br/>document_status=MISSING<br/>outstanding_requirements=[experience_letter]<br/>required_next_action=...
+    end
+
+    rect rgb(255, 237, 213)
+    note over UC2: Stage G - UC-02 reaction
+    note right of UC2: UC-02 has NO action_required status.<br/>Supported: blocked / ready / in_progress /<br/>complete / cancelled.
+    UC2->>UC2: collect_documents NOT completed<br/>stays READY or IN_PROGRESS
+    UC2->>UC2: visa_application stays BLOCKED<br/>(prerequisite enforced today)
+    UC2->>UC2: build_reminder_drafts() - DRAFT ONLY,<br/>delivery_status = draft_not_sent
+    end
+
+    rect rgb(220, 252, 231)
+    note over EMP,UC3: Stage H - resolution
+    EMP->>UC3: Provide missing experience_letter<br/>[PROPOSED - no retry mechanism exists]
+    UC3--)UC2: experience_letter ACCEPTED
+    UC2->>UC2: complete_task(hr_ops, collect_documents)
+    UC2->>UC2: visa_application and payroll_setup -> READY
+    UC2->>AUD: record("task.complete")
+    note right of UC2: Onboarding progresses only when every<br/>required task is COMPLETE and the<br/>day_one_ready milestone is achieved.
+    end

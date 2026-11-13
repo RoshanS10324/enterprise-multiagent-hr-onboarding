@@ -1,0 +1,34 @@
+{
+  "_comment": "SYNTHETIC. What the INTAKE CALLER supplies for the populated synthetic onboarding form (documents/SYNTHETIC_onboarding_form_2026_populated.docx, fictional employee 'Omar Synthetic') when it is run against the shared dev project: the form-approval attestation, the placement location (never read from the document, decision D3), and the UC-02 fields UC-01 does not carry (role_id, manager_id, location, project, opt-in checklist attributes). UC-02 never infers attributes; the ones listed are those the form itself supports (visa from outside the country, annual tickets, hotel stay, insurance). No background-verification attribute is listed because the form does not state one. role_id 'data_engineer' is the caller's choice from the roles SYN-UAE-TEST's approved UC-02 configuration knows. Department and grade are deliberately absent: UC-01 takes them from the document. 'project' is null ON PURPOSE: the onboarding form has no project field, the employee record's project_name is empty and SYN-UAE-TEST's approved UC-02 configuration names no project, so there is no source for it. The handoff stops with HR_INPUT_REQUIRED ['project'] before calling UC-02 until HR supplies one here (or in the placement); no value is invented.",
+  "synthetic": true,
+  "document": "documents/SYNTHETIC_onboarding_form_2026_populated.docx",
+  "intake": {
+    "client_id": "SYN-UAE-TEST",
+    "hr_officer_id": "SYN-HR-OFFICER-31",
+    "candidate_email": "omar.synthetic@example.invalid",
+    "offer_reference": "SYN-OFFER-UAE-0031",
+    "offer_accepted": true,
+    "work_location_type": "OFFICE",
+    "placement": {
+      "location_name": "SYN Dubai Office"
+    },
+    "form_approval": {
+      "form_status": "APPROVED",
+      "approved_by": "SYN-HR-MANAGER-31",
+      "approved_at": "2026-11-01T09:00:00+00:00",
+      "approved_by_role": "hr_ops"
+    },
+    "uc02": {
+      "role_id": "data_engineer",
+      "manager_id": "SYN-MGR-031",
+      "location": "Dubai",
+      "project": null,
+      "attributes": [
+        "location_status:overseas",
+        "needs_travel",
+        "needs_accommodation",
+        "insurance_required"
+      ]
+    }
+  }
+}

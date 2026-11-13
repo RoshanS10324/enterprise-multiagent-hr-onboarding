@@ -1,0 +1,1849 @@
+{
+  "sub_agent.intake.email_intake.IntakeRejection": {
+    "$defs": {
+      "IntakeRejectionCode": {
+        "enum": [
+          "NOT_AN_EMAIL",
+          "NO_OFFER_REF",
+          "MULTIPLE_OFFER_REFS",
+          "UNKNOWN_OFFER",
+          "AMBIGUOUS_OFFER_REF",
+          "SENDER_MISMATCH",
+          "OFFER_WITHDRAWN"
+        ],
+        "title": "IntakeRejectionCode",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "code": {
+        "$ref": "#/$defs/IntakeRejectionCode"
+      }
+    },
+    "required": [
+      "code"
+    ],
+    "title": "IntakeRejection",
+    "type": "object"
+  },
+  "sub_agent.intake.email_intake.IntakeResult": {
+    "$defs": {
+      "IntakeOutcome": {
+        "enum": [
+          "CASE_OPENED",
+          "LINKED_EXISTING",
+          "WAITING_FOR_FORM",
+          "PAUSED",
+          "REJECTED",
+          "DUPLICATE_ACCEPTANCE",
+          "NOTHING_PENDING",
+          "NEEDS_HR_REVIEW"
+        ],
+        "title": "IntakeOutcome",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "outcome": {
+        "$ref": "#/$defs/IntakeOutcome"
+      },
+      "case_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Case Id"
+      },
+      "employee_no": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Employee No"
+      },
+      "rejection_code": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Rejection Code"
+      },
+      "review_code": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Review Code"
+      },
+      "pending_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Pending Id"
+      },
+      "reasons": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Reasons",
+        "type": "array"
+      }
+    },
+    "required": [
+      "outcome"
+    ],
+    "title": "IntakeResult",
+    "type": "object"
+  },
+  "sub_agent.intake.email_intake.ParsedAcceptance": {
+    "properties": {
+      "sender_email": {
+        "title": "Sender Email",
+        "type": "string"
+      },
+      "offer_ref": {
+        "title": "Offer Ref",
+        "type": "string"
+      },
+      "subject": {
+        "title": "Subject",
+        "type": "string"
+      }
+    },
+    "required": [
+      "sender_email",
+      "offer_ref",
+      "subject"
+    ],
+    "title": "ParsedAcceptance",
+    "type": "object"
+  },
+  "sub_agent.models.approval.Approval": {
+    "$defs": {
+      "ApprovalStatus": {
+        "enum": [
+          "PENDING",
+          "APPROVED",
+          "EDITED_AND_APPROVED",
+          "REJECTED",
+          "EXPIRED",
+          "ESCALATED",
+          "CANCELLED"
+        ],
+        "title": "ApprovalStatus",
+        "type": "string"
+      },
+      "Checkpoint": {
+        "enum": [
+          "HC_01_FORM",
+          "HC_04_DATA",
+          "HC_05_HRIS_WRITE",
+          "HC_12_VARIANT"
+        ],
+        "title": "Checkpoint",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "approval_id": {
+        "title": "Approval Id",
+        "type": "string"
+      },
+      "case_id": {
+        "title": "Case Id",
+        "type": "string"
+      },
+      "checkpoint": {
+        "$ref": "#/$defs/Checkpoint"
+      },
+      "subject_ref": {
+        "title": "Subject Ref",
+        "type": "string"
+      },
+      "requested_to": {
+        "title": "Requested To",
+        "type": "string"
+      },
+      "created_at": {
+        "format": "date-time",
+        "title": "Created At",
+        "type": "string"
+      },
+      "requested_by": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Requested By"
+      },
+      "status": {
+        "$ref": "#/$defs/ApprovalStatus",
+        "default": "PENDING"
+      },
+      "decided_by": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Decided By"
+      },
+      "decided_at": {
+        "anyOf": [
+          {
+            "format": "date-time",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Decided At"
+      },
+      "reason": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Reason"
+      },
+      "decision_note": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Decision Note"
+      }
+    },
+    "required": [
+      "case_id",
+      "checkpoint",
+      "subject_ref",
+      "requested_to"
+    ],
+    "title": "Approval",
+    "type": "object"
+  },
+  "sub_agent.models.audit_entry.AuditEntry": {
+    "$defs": {
+      "ActorType": {
+        "enum": [
+          "AGENT",
+          "HUMAN",
+          "SYSTEM"
+        ],
+        "title": "ActorType",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "log_id": {
+        "title": "Log Id",
+        "type": "string"
+      },
+      "case_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Case Id"
+      },
+      "request_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Request Id"
+      },
+      "actor_type": {
+        "$ref": "#/$defs/ActorType"
+      },
+      "actor_id": {
+        "title": "Actor Id",
+        "type": "string"
+      },
+      "action": {
+        "title": "Action",
+        "type": "string"
+      },
+      "before": {
+        "anyOf": [
+          {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Before"
+      },
+      "after": {
+        "anyOf": [
+          {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "After"
+      },
+      "timestamp": {
+        "format": "date-time",
+        "title": "Timestamp",
+        "type": "string"
+      },
+      "reference": {
+        "title": "Reference",
+        "type": "string"
+      }
+    },
+    "required": [
+      "actor_type",
+      "actor_id",
+      "action",
+      "reference"
+    ],
+    "title": "AuditEntry",
+    "type": "object"
+  },
+  "sub_agent.models.case.Case": {
+    "$defs": {
+      "CaseStatus": {
+        "enum": [
+          "HELD",
+          "PLAN_PENDING",
+          "PLAN_APPROVED",
+          "IN_PROGRESS",
+          "AT_RISK",
+          "READY_FOR_DAY_ONE",
+          "ONBOARDED",
+          "ON_HOLD",
+          "WITHDRAWN",
+          "CLOSED"
+        ],
+        "title": "CaseStatus",
+        "type": "string"
+      },
+      "VariantFlags": {
+        "properties": {
+          "is_rehire": {
+            "default": false,
+            "title": "Is Rehire",
+            "type": "boolean"
+          },
+          "is_internal_transfer": {
+            "default": false,
+            "title": "Is Internal Transfer",
+            "type": "boolean"
+          },
+          "is_agency_contractor": {
+            "default": false,
+            "title": "Is Agency Contractor",
+            "type": "boolean"
+          },
+          "is_minor": {
+            "default": false,
+            "title": "Is Minor",
+            "type": "boolean"
+          },
+          "is_uae_resident": {
+            "default": false,
+            "title": "Is Uae Resident",
+            "type": "boolean"
+          },
+          "is_remote": {
+            "default": false,
+            "title": "Is Remote",
+            "type": "boolean"
+          }
+        },
+        "title": "VariantFlags",
+        "type": "object"
+      },
+      "WorkLocationType": {
+        "enum": [
+          "OFFICE",
+          "CLIENT_SITE"
+        ],
+        "title": "WorkLocationType",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "case_id": {
+        "title": "Case Id",
+        "type": "string"
+      },
+      "client_id": {
+        "title": "Client Id",
+        "type": "string"
+      },
+      "employee_no": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Employee No"
+      },
+      "candidate_name": {
+        "title": "Candidate Name",
+        "type": "string"
+      },
+      "candidate_email": {
+        "title": "Candidate Email",
+        "type": "string"
+      },
+      "hr_officer_id": {
+        "title": "Hr Officer Id",
+        "type": "string"
+      },
+      "joining_date": {
+        "format": "date",
+        "title": "Joining Date",
+        "type": "string"
+      },
+      "work_location_type": {
+        "$ref": "#/$defs/WorkLocationType"
+      },
+      "variants": {
+        "$ref": "#/$defs/VariantFlags"
+      },
+      "status": {
+        "$ref": "#/$defs/CaseStatus",
+        "default": "PLAN_PENDING"
+      },
+      "current_form_version": {
+        "minimum": 1,
+        "title": "Current Form Version",
+        "type": "integer"
+      },
+      "opened_at": {
+        "format": "date-time",
+        "title": "Opened At",
+        "type": "string"
+      },
+      "folder_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Folder Ref"
+      }
+    },
+    "required": [
+      "client_id",
+      "candidate_name",
+      "candidate_email",
+      "hr_officer_id",
+      "joining_date",
+      "work_location_type",
+      "current_form_version"
+    ],
+    "title": "Case",
+    "type": "object"
+  },
+  "sub_agent.models.case_status_view.CaseStatusView": {
+    "$defs": {
+      "CaseStage": {
+        "enum": [
+          "CASE_INACTIVE",
+          "READY_TO_PREPARE",
+          "VARIANT_DECISION_PENDING",
+          "DISCREPANCIES_OPEN",
+          "FORM_CHANGE_PENDING",
+          "HRIS_UPDATE_NEEDED",
+          "HRIS_APPROVAL_PENDING",
+          "HRIS_APPROVED_NOT_WRITTEN",
+          "WRITE_FAILED",
+          "HRIS_REJECTED",
+          "RECORD_CREATED"
+        ],
+        "title": "CaseStage",
+        "type": "string"
+      },
+      "Checkpoint": {
+        "enum": [
+          "HC_01_FORM",
+          "HC_04_DATA",
+          "HC_05_HRIS_WRITE",
+          "HC_12_VARIANT"
+        ],
+        "title": "Checkpoint",
+        "type": "string"
+      },
+      "HrisRecordStatus": {
+        "enum": [
+          "NOT_PREPARED",
+          "PREPARED",
+          "MISMATCH",
+          "AWAITING_APPROVAL",
+          "APPROVED",
+          "WRITTEN",
+          "BLOCKED",
+          "CORRECTED",
+          "FAILED",
+          "REJECTED",
+          "STALE"
+        ],
+        "title": "HrisRecordStatus",
+        "type": "string"
+      },
+      "HrisStatusView": {
+        "properties": {
+          "system": {
+            "$ref": "#/$defs/HrisSystem"
+          },
+          "status": {
+            "$ref": "#/$defs/HrisRecordStatus"
+          }
+        },
+        "required": [
+          "system",
+          "status"
+        ],
+        "title": "HrisStatusView",
+        "type": "object"
+      },
+      "HrisSystem": {
+        "enum": [
+          "ZOHO_PEOPLE",
+          "ZOHO_PAYROLL"
+        ],
+        "title": "HrisSystem",
+        "type": "string"
+      },
+      "OpenDiscrepancyView": {
+        "properties": {
+          "discrepancy_id": {
+            "title": "Discrepancy Id",
+            "type": "string"
+          },
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "other_source": {
+            "title": "Other Source",
+            "type": "string"
+          }
+        },
+        "required": [
+          "discrepancy_id",
+          "field",
+          "other_source"
+        ],
+        "title": "OpenDiscrepancyView",
+        "type": "object"
+      },
+      "PendingApprovalView": {
+        "properties": {
+          "approval_id": {
+            "title": "Approval Id",
+            "type": "string"
+          },
+          "checkpoint": {
+            "$ref": "#/$defs/Checkpoint"
+          },
+          "requested_to": {
+            "title": "Requested To",
+            "type": "string"
+          },
+          "subject_ref_kind": {
+            "title": "Subject Ref Kind",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "approval_id",
+          "checkpoint",
+          "requested_to",
+          "subject_ref_kind",
+          "created_at"
+        ],
+        "title": "PendingApprovalView",
+        "type": "object"
+      },
+      "WorkLocationType": {
+        "enum": [
+          "OFFICE",
+          "CLIENT_SITE"
+        ],
+        "title": "WorkLocationType",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "case_id": {
+        "title": "Case Id",
+        "type": "string"
+      },
+      "employee_no": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Employee No"
+      },
+      "stage": {
+        "$ref": "#/$defs/CaseStage"
+      },
+      "form_version_in_force": {
+        "title": "Form Version In Force",
+        "type": "integer"
+      },
+      "joining_date": {
+        "format": "date",
+        "title": "Joining Date",
+        "type": "string"
+      },
+      "work_location_type": {
+        "$ref": "#/$defs/WorkLocationType"
+      },
+      "candidate_name": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Candidate Name"
+      },
+      "open_discrepancies": {
+        "items": {
+          "$ref": "#/$defs/OpenDiscrepancyView"
+        },
+        "title": "Open Discrepancies",
+        "type": "array"
+      },
+      "pending_approvals": {
+        "items": {
+          "$ref": "#/$defs/PendingApprovalView"
+        },
+        "title": "Pending Approvals",
+        "type": "array"
+      },
+      "hris": {
+        "items": {
+          "$ref": "#/$defs/HrisStatusView"
+        },
+        "title": "Hris",
+        "type": "array"
+      },
+      "warnings": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Warnings",
+        "type": "array"
+      }
+    },
+    "required": [
+      "case_id",
+      "stage",
+      "form_version_in_force",
+      "joining_date",
+      "work_location_type"
+    ],
+    "title": "CaseStatusView",
+    "type": "object"
+  },
+  "sub_agent.models.case_status_view.HrisStatusView": {
+    "$defs": {
+      "HrisRecordStatus": {
+        "enum": [
+          "NOT_PREPARED",
+          "PREPARED",
+          "MISMATCH",
+          "AWAITING_APPROVAL",
+          "APPROVED",
+          "WRITTEN",
+          "BLOCKED",
+          "CORRECTED",
+          "FAILED",
+          "REJECTED",
+          "STALE"
+        ],
+        "title": "HrisRecordStatus",
+        "type": "string"
+      },
+      "HrisSystem": {
+        "enum": [
+          "ZOHO_PEOPLE",
+          "ZOHO_PAYROLL"
+        ],
+        "title": "HrisSystem",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "system": {
+        "$ref": "#/$defs/HrisSystem"
+      },
+      "status": {
+        "$ref": "#/$defs/HrisRecordStatus"
+      }
+    },
+    "required": [
+      "system",
+      "status"
+    ],
+    "title": "HrisStatusView",
+    "type": "object"
+  },
+  "sub_agent.models.case_status_view.OpenDiscrepancyView": {
+    "properties": {
+      "discrepancy_id": {
+        "title": "Discrepancy Id",
+        "type": "string"
+      },
+      "field": {
+        "title": "Field",
+        "type": "string"
+      },
+      "other_source": {
+        "title": "Other Source",
+        "type": "string"
+      }
+    },
+    "required": [
+      "discrepancy_id",
+      "field",
+      "other_source"
+    ],
+    "title": "OpenDiscrepancyView",
+    "type": "object"
+  },
+  "sub_agent.models.case_status_view.PendingApprovalView": {
+    "$defs": {
+      "Checkpoint": {
+        "enum": [
+          "HC_01_FORM",
+          "HC_04_DATA",
+          "HC_05_HRIS_WRITE",
+          "HC_12_VARIANT"
+        ],
+        "title": "Checkpoint",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "approval_id": {
+        "title": "Approval Id",
+        "type": "string"
+      },
+      "checkpoint": {
+        "$ref": "#/$defs/Checkpoint"
+      },
+      "requested_to": {
+        "title": "Requested To",
+        "type": "string"
+      },
+      "subject_ref_kind": {
+        "title": "Subject Ref Kind",
+        "type": "string"
+      },
+      "created_at": {
+        "format": "date-time",
+        "title": "Created At",
+        "type": "string"
+      }
+    },
+    "required": [
+      "approval_id",
+      "checkpoint",
+      "requested_to",
+      "subject_ref_kind",
+      "created_at"
+    ],
+    "title": "PendingApprovalView",
+    "type": "object"
+  },
+  "sub_agent.models.discrepancy.Discrepancy": {
+    "$defs": {
+      "DiscrepancyStatus": {
+        "enum": [
+          "OPEN",
+          "RESOLVED",
+          "ACCEPTED_AS_CHANGE",
+          "STALE"
+        ],
+        "title": "DiscrepancyStatus",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "discrepancy_id": {
+        "title": "Discrepancy Id",
+        "type": "string"
+      },
+      "case_id": {
+        "title": "Case Id",
+        "type": "string"
+      },
+      "field": {
+        "title": "Field",
+        "type": "string"
+      },
+      "value_form": {
+        "title": "Value Form",
+        "type": "string"
+      },
+      "value_other": {
+        "title": "Value Other",
+        "type": "string"
+      },
+      "other_source": {
+        "title": "Other Source",
+        "type": "string"
+      },
+      "form_version": {
+        "title": "Form Version",
+        "type": "integer"
+      },
+      "status": {
+        "$ref": "#/$defs/DiscrepancyStatus",
+        "default": "OPEN"
+      },
+      "decided_by": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Decided By"
+      },
+      "decided_at": {
+        "anyOf": [
+          {
+            "format": "date-time",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Decided At"
+      },
+      "other_fingerprint": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Other Fingerprint"
+      }
+    },
+    "required": [
+      "case_id",
+      "field",
+      "value_form",
+      "value_other",
+      "other_source",
+      "form_version"
+    ],
+    "title": "Discrepancy",
+    "type": "object"
+  },
+  "sub_agent.models.events.CaseOpenedEvent": {
+    "$defs": {
+      "VariantFlags": {
+        "properties": {
+          "is_rehire": {
+            "default": false,
+            "title": "Is Rehire",
+            "type": "boolean"
+          },
+          "is_internal_transfer": {
+            "default": false,
+            "title": "Is Internal Transfer",
+            "type": "boolean"
+          },
+          "is_agency_contractor": {
+            "default": false,
+            "title": "Is Agency Contractor",
+            "type": "boolean"
+          },
+          "is_minor": {
+            "default": false,
+            "title": "Is Minor",
+            "type": "boolean"
+          },
+          "is_uae_resident": {
+            "default": false,
+            "title": "Is Uae Resident",
+            "type": "boolean"
+          },
+          "is_remote": {
+            "default": false,
+            "title": "Is Remote",
+            "type": "boolean"
+          }
+        },
+        "title": "VariantFlags",
+        "type": "object"
+      },
+      "WorkLocationType": {
+        "enum": [
+          "OFFICE",
+          "CLIENT_SITE"
+        ],
+        "title": "WorkLocationType",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "event_id": {
+        "title": "Event Id",
+        "type": "string"
+      },
+      "case_id": {
+        "title": "Case Id",
+        "type": "string"
+      },
+      "client_id": {
+        "title": "Client Id",
+        "type": "string"
+      },
+      "form_version": {
+        "title": "Form Version",
+        "type": "integer"
+      },
+      "joining_date": {
+        "format": "date",
+        "title": "Joining Date",
+        "type": "string"
+      },
+      "work_location_type": {
+        "$ref": "#/$defs/WorkLocationType"
+      },
+      "variants": {
+        "$ref": "#/$defs/VariantFlags"
+      },
+      "occurred_at": {
+        "format": "date-time",
+        "title": "Occurred At",
+        "type": "string"
+      }
+    },
+    "required": [
+      "case_id",
+      "client_id",
+      "form_version",
+      "joining_date",
+      "work_location_type",
+      "variants"
+    ],
+    "title": "CaseOpenedEvent",
+    "type": "object"
+  },
+  "sub_agent.models.events.EmployeeRecordCreatedEvent": {
+    "properties": {
+      "event_id": {
+        "title": "Event Id",
+        "type": "string"
+      },
+      "case_id": {
+        "title": "Case Id",
+        "type": "string"
+      },
+      "client_id": {
+        "title": "Client Id",
+        "type": "string"
+      },
+      "employee_no": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Employee No"
+      },
+      "form_version": {
+        "title": "Form Version",
+        "type": "integer"
+      },
+      "occurred_at": {
+        "format": "date-time",
+        "title": "Occurred At",
+        "type": "string"
+      }
+    },
+    "required": [
+      "case_id",
+      "client_id",
+      "form_version"
+    ],
+    "title": "EmployeeRecordCreatedEvent",
+    "type": "object"
+  },
+  "sub_agent.models.events.FormChangedEvent": {
+    "properties": {
+      "event_id": {
+        "title": "Event Id",
+        "type": "string"
+      },
+      "case_id": {
+        "title": "Case Id",
+        "type": "string"
+      },
+      "client_id": {
+        "title": "Client Id",
+        "type": "string"
+      },
+      "old_version": {
+        "title": "Old Version",
+        "type": "integer"
+      },
+      "new_version": {
+        "title": "New Version",
+        "type": "integer"
+      },
+      "changed_fields": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Changed Fields",
+        "type": "array"
+      },
+      "joining_date_changed": {
+        "title": "Joining Date Changed",
+        "type": "boolean"
+      },
+      "occurred_at": {
+        "format": "date-time",
+        "title": "Occurred At",
+        "type": "string"
+      }
+    },
+    "required": [
+      "case_id",
+      "client_id",
+      "old_version",
+      "new_version",
+      "changed_fields",
+      "joining_date_changed"
+    ],
+    "title": "FormChangedEvent",
+    "type": "object"
+  },
+  "sub_agent.models.form_change.FormChangeRequest": {
+    "$defs": {
+      "WorkLocationType": {
+        "enum": [
+          "OFFICE",
+          "CLIENT_SITE"
+        ],
+        "title": "WorkLocationType",
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "case_id": {
+        "title": "Case Id",
+        "type": "string"
+      },
+      "requested_by": {
+        "title": "Requested By",
+        "type": "string"
+      },
+      "change_reason": {
+        "title": "Change Reason",
+        "type": "string"
+      },
+      "source_discrepancy_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Source Discrepancy Id"
+      },
+      "candidate_name": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Candidate Name"
+      },
+      "designation": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Designation"
+      },
+      "joining_date": {
+        "anyOf": [
+          {
+            "format": "date",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Joining Date"
+      },
+      "work_location_type": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/WorkLocationType"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "client_site_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Client Site Id"
+      },
+      "salary_and_terms": {
+        "anyOf": [
+          {
+            "format": "password",
+            "type": "string",
+            "writeOnly": true
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Salary And Terms"
+      }
+    },
+    "required": [
+      "case_id",
+      "requested_by",
+      "change_reason"
+    ],
+    "title": "FormChangeRequest",
+    "type": "object"
+  },
+  "sub_agent.models.hris_record.HrisRecord": {
+    "$defs": {
+      "HrisRecordStatus": {
+        "enum": [
+          "NOT_PREPARED",
+          "PREPARED",
+          "MISMATCH",
+          "AWAITING_APPROVAL",
+          "APPROVED",
+          "WRITTEN",
+          "BLOCKED",
+          "CORRECTED",
+          "FAILED",
+          "REJECTED",
+          "STALE"
+        ],
+        "title": "HrisRecordStatus",
+        "type": "string"
+      },
+      "HrisSystem": {
+        "enum": [
+          "ZOHO_PEOPLE",
+          "ZOHO_PAYROLL"
+        ],
+        "title": "HrisSystem",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "record_id": {
+        "title": "Record Id",
+        "type": "string"
+      },
+      "case_id": {
+        "title": "Case Id",
+        "type": "string"
+      },
+      "client_id": {
+        "title": "Client Id",
+        "type": "string"
+      },
+      "employee_no": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Employee No"
+      },
+      "system": {
+        "$ref": "#/$defs/HrisSystem"
+      },
+      "form_version": {
+        "minimum": 1,
+        "title": "Form Version",
+        "type": "integer"
+      },
+      "prepared_payload": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "title": "Prepared Payload",
+        "type": "object"
+      },
+      "sensitive_field_names": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Sensitive Field Names",
+        "type": "array"
+      },
+      "comparison_result": {
+        "anyOf": [
+          {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Comparison Result"
+      },
+      "external_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "External Ref"
+      },
+      "last_error": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Last Error"
+      },
+      "status": {
+        "$ref": "#/$defs/HrisRecordStatus",
+        "default": "NOT_PREPARED"
+      },
+      "approved_by": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Approved By"
+      },
+      "approved_at": {
+        "anyOf": [
+          {
+            "format": "date-time",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Approved At"
+      },
+      "idempotency_key": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Idempotency Key"
+      }
+    },
+    "required": [
+      "case_id",
+      "client_id",
+      "system",
+      "form_version"
+    ],
+    "title": "HrisRecord",
+    "type": "object"
+  },
+  "sub_agent.models.offer.OfferAcceptedEvent": {
+    "properties": {
+      "event_id": {
+        "title": "Event Id",
+        "type": "string"
+      },
+      "client_id": {
+        "title": "Client Id",
+        "type": "string"
+      },
+      "offer_ref": {
+        "title": "Offer Ref",
+        "type": "string"
+      },
+      "accepted_at": {
+        "format": "date-time",
+        "title": "Accepted At",
+        "type": "string"
+      },
+      "source": {
+        "default": "email",
+        "title": "Source",
+        "type": "string"
+      }
+    },
+    "required": [
+      "client_id",
+      "offer_ref",
+      "accepted_at"
+    ],
+    "title": "OfferAcceptedEvent",
+    "type": "object"
+  },
+  "sub_agent.models.offer.OfferRecord": {
+    "$defs": {
+      "OfferStatus": {
+        "enum": [
+          "SENT",
+          "ACCEPTED",
+          "WITHDRAWN"
+        ],
+        "title": "OfferStatus",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "client_id": {
+        "title": "Client Id",
+        "type": "string"
+      },
+      "offer_ref": {
+        "title": "Offer Ref",
+        "type": "string"
+      },
+      "candidate_email": {
+        "title": "Candidate Email",
+        "type": "string"
+      },
+      "hr_officer_id": {
+        "title": "Hr Officer Id",
+        "type": "string"
+      },
+      "status": {
+        "$ref": "#/$defs/OfferStatus",
+        "default": "SENT"
+      },
+      "accepted_at": {
+        "anyOf": [
+          {
+            "format": "date-time",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Accepted At"
+      }
+    },
+    "required": [
+      "client_id",
+      "offer_ref",
+      "candidate_email",
+      "hr_officer_id"
+    ],
+    "title": "OfferRecord",
+    "type": "object"
+  },
+  "sub_agent.models.onboarding_form.OnboardingForm": {
+    "$defs": {
+      "FormStatus": {
+        "enum": [
+          "DRAFT",
+          "AWAITING_APPROVAL",
+          "APPROVED",
+          "SUPERSEDED",
+          "REJECTED"
+        ],
+        "title": "FormStatus",
+        "type": "string"
+      },
+      "WorkLocationType": {
+        "enum": [
+          "OFFICE",
+          "CLIENT_SITE"
+        ],
+        "title": "WorkLocationType",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "form_id": {
+        "title": "Form Id",
+        "type": "string"
+      },
+      "client_id": {
+        "title": "Client Id",
+        "type": "string"
+      },
+      "case_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Case Id"
+      },
+      "version": {
+        "minimum": 1,
+        "title": "Version",
+        "type": "integer"
+      },
+      "candidate_name": {
+        "title": "Candidate Name",
+        "type": "string"
+      },
+      "candidate_email": {
+        "title": "Candidate Email",
+        "type": "string"
+      },
+      "designation": {
+        "title": "Designation",
+        "type": "string"
+      },
+      "joining_date": {
+        "format": "date",
+        "title": "Joining Date",
+        "type": "string"
+      },
+      "work_location_type": {
+        "$ref": "#/$defs/WorkLocationType"
+      },
+      "client_site_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Client Site Id"
+      },
+      "salary_and_terms": {
+        "format": "password",
+        "title": "Salary And Terms",
+        "type": "string",
+        "writeOnly": true
+      },
+      "status": {
+        "$ref": "#/$defs/FormStatus",
+        "default": "DRAFT"
+      },
+      "approved_by": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Approved By"
+      },
+      "approved_at": {
+        "anyOf": [
+          {
+            "format": "date-time",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Approved At"
+      },
+      "change_reason": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Change Reason"
+      }
+    },
+    "required": [
+      "client_id",
+      "version",
+      "candidate_name",
+      "candidate_email",
+      "designation",
+      "joining_date",
+      "work_location_type",
+      "salary_and_terms"
+    ],
+    "title": "OnboardingForm",
+    "type": "object"
+  },
+  "sub_agent.models.pending_start.PendingStart": {
+    "$defs": {
+      "PendingStartStatus": {
+        "enum": [
+          "WAITING",
+          "STARTED",
+          "CANCELLED"
+        ],
+        "title": "PendingStartStatus",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "pending_id": {
+        "title": "Pending Id",
+        "type": "string"
+      },
+      "client_id": {
+        "title": "Client Id",
+        "type": "string"
+      },
+      "offer_ref": {
+        "title": "Offer Ref",
+        "type": "string"
+      },
+      "reasons": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Reasons",
+        "type": "array"
+      },
+      "created_at": {
+        "format": "date-time",
+        "title": "Created At",
+        "type": "string"
+      },
+      "status": {
+        "$ref": "#/$defs/PendingStartStatus",
+        "default": "WAITING"
+      }
+    },
+    "required": [
+      "client_id",
+      "offer_ref"
+    ],
+    "title": "PendingStart",
+    "type": "object"
+  },
+  "sub_agent.models.person_record.PersonRecord": {
+    "$defs": {
+      "PersonRecordKind": {
+        "enum": [
+          "OPEN_CASE",
+          "PAST_EMPLOYEE",
+          "CURRENT_EMPLOYEE"
+        ],
+        "title": "PersonRecordKind",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "record_id": {
+        "title": "Record Id",
+        "type": "string"
+      },
+      "client_id": {
+        "title": "Client Id",
+        "type": "string"
+      },
+      "email": {
+        "title": "Email",
+        "type": "string"
+      },
+      "id_number": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Id Number"
+      },
+      "full_name": {
+        "title": "Full Name",
+        "type": "string"
+      },
+      "kind": {
+        "$ref": "#/$defs/PersonRecordKind"
+      },
+      "case_id": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Case Id"
+      }
+    },
+    "required": [
+      "client_id",
+      "email",
+      "full_name",
+      "kind"
+    ],
+    "title": "PersonRecord",
+    "type": "object"
+  },
+  "sub_agent.models.source_snapshot.SourceSnapshot": {
+    "properties": {
+      "source": {
+        "title": "Source",
+        "type": "string"
+      },
+      "values": {
+        "additionalProperties": {
+          "type": "string"
+        },
+        "title": "Values",
+        "type": "object"
+      }
+    },
+    "required": [
+      "source",
+      "values"
+    ],
+    "title": "SourceSnapshot",
+    "type": "object"
+  },
+  "sub_agent.models.variant_flags.VariantFlags": {
+    "properties": {
+      "is_rehire": {
+        "default": false,
+        "title": "Is Rehire",
+        "type": "boolean"
+      },
+      "is_internal_transfer": {
+        "default": false,
+        "title": "Is Internal Transfer",
+        "type": "boolean"
+      },
+      "is_agency_contractor": {
+        "default": false,
+        "title": "Is Agency Contractor",
+        "type": "boolean"
+      },
+      "is_minor": {
+        "default": false,
+        "title": "Is Minor",
+        "type": "boolean"
+      },
+      "is_uae_resident": {
+        "default": false,
+        "title": "Is Uae Resident",
+        "type": "boolean"
+      },
+      "is_remote": {
+        "default": false,
+        "title": "Is Remote",
+        "type": "boolean"
+      }
+    },
+    "title": "VariantFlags",
+    "type": "object"
+  },
+  "sub_agent.models.viewer.Viewer": {
+    "$defs": {
+      "Role": {
+        "enum": [
+          "HR_OFFICER",
+          "HR_MANAGER",
+          "CLIENT_USER",
+          "AUDITOR"
+        ],
+        "title": "Role",
+        "type": "string"
+      }
+    },
+    "properties": {
+      "user_id": {
+        "title": "User Id",
+        "type": "string"
+      },
+      "role": {
+        "$ref": "#/$defs/Role"
+      },
+      "client_ids": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Client Ids",
+        "type": "array",
+        "uniqueItems": true
+      }
+    },
+    "required": [
+      "user_id",
+      "role",
+      "client_ids"
+    ],
+    "title": "Viewer",
+    "type": "object"
+  }
+}

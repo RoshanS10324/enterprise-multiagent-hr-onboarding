@@ -1,0 +1,43 @@
+skill: prepare_employee_record
+purpose: >
+  Build the Zoho People and Zoho Payroll payloads from the in-force
+  approved form, ready for a person to approve before anything is
+  written.
+
+# From specs/uc01-requirements.yaml. Every requirement must be served
+# by at least one skill; tests/test_llm.py fails if one is orphaned.
+business_requirements: [R3, R4]
+# R4's prepare half. Reads the in-force source details (R3) and maps
+# them to the two Zoho systems.
+
+when_to_use: >
+  A case is open, its form version is in force, and outstanding
+  discrepancies are resolved. Re-run after any approved form change,
+  since a payload prepared from a superseded version must not be
+  written.
+
+inputs:
+  - case_id
+
+outputs:
+  - an HrisRecord per target system, holding non-sensitive fields only
+  - PREPARED_UPDATE instead of PREPARED when the employee already
+    exists in the target system (post-write change, rehire, transfer),
+    with updates_external_ref set so the write never creates a second
+  - the names (never values) of the sensitive fields that will be sent
+  - an idempotency key derived from case, system, and form version
+  - a HC_05_HRIS_WRITE approval
+
+approval: HC_05_HRIS_WRITE
+
+llm_tasks: []   # Fully deterministic. Field mapping is a table, not a judgement.
+
+entry_point: sub_agent.service.CaseService.prepare_hris
+
+failure_modes:
+  - Form version no longer in force -> VERSION_NOT_IN_FORCE at write
+    time; the record must be re-prepared.
+  - Open discrepancy on a mapped field -> prepare is refused until HR
+    resolves it.
+  - Salary never enters the prepared payload; it is rebuilt from the
+    form at write time and is never persisted.

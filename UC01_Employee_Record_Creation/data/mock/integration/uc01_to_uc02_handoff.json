@@ -1,0 +1,23 @@
+{
+ "_comment": "SYNTHETIC handoff captured from scripts/e2e_uc01_to_uc02.py; no salary, no document numbers.",
+ "OnboardingCaseInput": {
+  "client_id": "CLIENT-ALPHA",
+  "hr_officer_id": "SYN-HR-OFFICER-01",
+  "offer_accepted": true,
+  "offer_reference": "SYN-OFFER-ALPHA-0001",
+  "candidate_name": "Aisha Synthetic",
+  "candidate_email": "aisha.synthetic@example.invalid",
+  "designation": "Synthetic Data Engineer",
+  "joining_date": "2027-01-11",
+  "work_location_type": "OFFICE",
+  "role_id": "data_engineer",
+  "department": "technology",
+  "manager_id": "SYN-MGR-001",
+  "location": "Abu Dhabi",
+  "project": "zephyr",
+  "offer_accepted_at": "2026-11-01T09:00:00+00:00",
+  "form_approved_at": "2026-11-01T09:00:00+00:00",
+  "form_approved_by_role": "hr_ops",
+  "employee_id": "EMP-000001"
+ }
+}

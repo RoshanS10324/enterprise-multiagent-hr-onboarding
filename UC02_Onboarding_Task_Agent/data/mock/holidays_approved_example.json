@@ -1,0 +1,13 @@
+{
+  "_mock_note": "MOCK DATA - fictional identifiers only. Not real employee data. Illustrates an APPROVED calendar fixture shape.",
+  "approved": true,
+  "source": "EXAMPLE ONLY - replace with Legal/HR approved data before use",
+  "coverage_start": "2026-01-01",
+  "coverage_end": "2026-12-31",
+  "holidays": [
+    "2026-01-01",
+    "2026-12-01",
+    "2026-12-02",
+    "2026-12-03"
+  ]
+}

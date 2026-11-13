@@ -1,0 +1,37 @@
+--- a/HR-Onboarding-Common/src/hr_onboarding_common/orchestration/adapters/uc04_equipment_access.py
++++ b/HR-Onboarding-Common/src/hr_onboarding_common/orchestration/adapters/uc04_equipment_access.py
+@@ -42,7 +42,7 @@
+ _STAGE_FOR = {
+     "READY": StageStatus.COMPLETE,
+     "AWAITING_APPROVAL": StageStatus.AWAITING_APPROVAL,
+-    "IN_PROGRESS": StageStatus.COMPLETE,  # TODAY'S MAPPING, KEPT IN PART A. Part B changes it (pending decision F-06).
++    "IN_PROGRESS": StageStatus.IN_PROGRESS,
+     "AT_RISK": StageStatus.BLOCKED,
+     "NEEDS_HUMAN_REVIEW": StageStatus.BLOCKED,
+     "BLOCKED": StageStatus.BLOCKED,
+@@ -74,10 +74,14 @@
+     if config is None:
+         return _blocked(state, f"no client configuration supplied for client {state['client_id']}",
+                         "hr_review:equipment_access:missing_client_config")
++    if not role_ctx.get("form_version"):
++        return _blocked(state, "uc02_role_context missing required fields: ['form_version']", "hr_review:equipment_access:missing_parent_context")
++
+     input_payload = {
+         "case_id": state["case_id"], "employee_ref": state["employee_id"], "client_id": state["client_id"],
+         "role_id": role_ctx.get("role_id", config.get("role_id", "")), "joining_date": state["joining_date"],
+-        "offer_accepted": True, "onboarding_form_approved": True, "form_version": "v1",  # TODAY'S CONSTANTS, KEPT IN PART A (Part B derives them)
++        "offer_accepted": bool(role_ctx.get("offer_accepted_at")), "onboarding_form_approved": bool(role_ctx.get("form_approved_at")),
++        "form_version": str(role_ctx["form_version"]),
+         "work_location": role_ctx.get("work_location", "Office"), "work_mode": role_ctx.get("work_mode", "OFFICE"),
+         "client_site_required": role_ctx.get("client_site_required", False),
+         "requested_access": role_ctx.get("requested_access", []),
+--- a/HR-Onboarding-Common/src/hr_onboarding_common/orchestration/api.py
++++ b/HR-Onboarding-Common/src/hr_onboarding_common/orchestration/api.py
+@@ -78,7 +78,6 @@
+     manager_id: str | None = Field(default=None, max_length=100)
+     location: str | None = Field(default=None, max_length=100)
+     project: str | None = Field(default=None, max_length=100)
+-    uc04_client_config_ref: str | None = Field(default=None, max_length=500)
+     employee_id: str | None = Field(default=None, max_length=64,
+                                     description="the canonical (HRMS) employee id, if known (else resolved from "
+                                                 "UC01's employee_no through the tenant's identity scheme)")

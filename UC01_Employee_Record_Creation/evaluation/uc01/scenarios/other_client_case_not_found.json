@@ -1,0 +1,30 @@
+{
+  "id": "ACCESS-01",
+  "title": "Another client's user gets CaseNotFoundError",
+  "covers": ["GR-16"],
+  "setup": {
+    "client_id": "client-eval-acc01",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Taylor Other Client",
+    "candidate_email": "taylor.otherclient@example.test",
+    "salary_and_terms": "Base: 94000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {},
+      "save": "case",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "status",
+      "as": "OTHER_CLIENT",
+      "args": {"case_id": "$case.case.case_id"},
+      "expect": {"error": true, "error_type": "CaseNotFoundError"}
+    }
+  ],
+  "final": {
+    "audit_actions_present": ["CASE_OPENED", "ACCESS_DENIED"]
+  }
+}

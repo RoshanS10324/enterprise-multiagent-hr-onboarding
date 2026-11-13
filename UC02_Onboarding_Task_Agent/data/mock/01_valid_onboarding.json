@@ -1,0 +1,25 @@
+{
+  "client_id": "CLIENT-ALPHA",
+  "employee_id": "EMP-M01",
+  "joining_date": "2026-11-16",
+  "role_id": "backend_engineer",
+  "department": "technology",
+  "manager_id": "MGR-CLIENT-ALPHA",
+  "location": "Dubai",
+  "project": "apollo",
+  "offer": {
+    "employee_id": "EMP-M01",
+    "accepted": true,
+    "accepted_at": "2026-10-01T09:00:00+00:00",
+    "offer_reference": "OFR-EMP-001"
+  },
+  "form": {
+    "employee_id": "EMP-M01",
+    "submitted": true,
+    "approved": true,
+    "approved_by_role": "hr_ops",
+    "approved_at": "2026-10-02T09:00:00+00:00",
+    "missing_fields": []
+  },
+  "_mock_note": "MOCK DATA - fictional identifiers only. Not real employee data."
+}

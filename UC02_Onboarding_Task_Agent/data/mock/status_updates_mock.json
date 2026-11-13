@@ -1,0 +1,178 @@
+{
+  "_mock_note": "MOCK DATA - fictional identifiers only. Not real employee data. References are ticket/document IDENTIFIERS only - never document contents.",
+  "_critical": "NO REAL CROSS-USE-CASE INTEGRATION EXISTS. These are the status reports UC-03 / UC-04 / UC-05 / operations WOULD send. Applying one proves UC-02 handled a report correctly; it proves nothing about a document being validated, a laptop being shipped or a visa being filed.",
+  "_usage": "template_key resolves to a task id as '<onboarding_id>#<template_key>'. Intended for the EMP-M07 persona in 07_full_relocation.json. 'occurred_at' is explicit because UC-02 reads no clock on an inbound path.",
+  "_outcomes": {
+    "resolving": ["completed", "valid"],
+    "in_progress": ["in_progress"],
+    "unresolved": ["invalid", "requires_review", "suspected_fraud", "delayed"],
+    "_note": "An unresolved outcome leaves the prerequisite unresolved, so dependants stay blocked by the ordinary dependency rules. UC-02 never promotes 'invalid' to 'suspected_fraud' - only an explicit report carries that meaning."
+  },
+
+  "accepted_updates": [
+    {
+      "_scenario": "15 - successful UC-03 document validation",
+      "source": "uc03_document_validation",
+      "template_key": "collect_documents",
+      "outcome": "valid",
+      "occurred_at": "2026-11-02T09:00:00+00:00",
+      "reference": "MOCK-UC03_DOCUMENT_VALIDATION-collect_documents-2",
+      "expect": "task complete; background_verification, payroll_setup, visa_application and visa_pack_handover become ready"
+    },
+    {
+      "_scenario": "16 - successful UC-04 equipment provisioning",
+      "source": "uc04_equipment_access",
+      "template_key": "it_laptop",
+      "outcome": "completed",
+      "occurred_at": "2026-11-03T09:00:00+00:00",
+      "reference": "MOCK-UC04-LAPTOP-0001",
+      "expect": "task complete; it_accounts becomes ready"
+    },
+    {
+      "_scenario": "17 - successful UC-05 orientation",
+      "source": "uc05_orientation",
+      "template_key": "orientation_schedule",
+      "outcome": "completed",
+      "occurred_at": "2026-11-04T09:00:00+00:00",
+      "reference": "MOCK-UC05-ORIENT-0001",
+      "expect": "task complete; policy_ack becomes ready"
+    },
+    {
+      "_scenario": "equipment work started but not finished",
+      "source": "uc04_equipment_access",
+      "template_key": "it_accounts",
+      "outcome": "in_progress",
+      "occurred_at": "2026-11-05T09:00:00+00:00",
+      "reference": "MOCK-UC04-ACCT-0001",
+      "expect": "task in_progress; NOT complete; dependants stay blocked"
+    },
+    {
+      "_scenario": "9 - invalid document (NOT fraud)",
+      "source": "uc03_document_validation",
+      "template_key": "collect_documents",
+      "outcome": "invalid",
+      "occurred_at": "2026-11-01T09:00:00+00:00",
+      "reference": "MOCK-UC03-DOC-0001",
+      "blocking_reason": "identity document scan unreadable; re-submission requested",
+      "expect": "task stays open; follow-up flag 'external_unresolved'; dependants stay blocked"
+    },
+    {
+      "_scenario": "10 - EXPLICITLY simulated suspected fraud",
+      "_warning": "This outcome is present only because this fixture states it. It is never inferred from 'invalid'.",
+      "source": "uc03_document_validation",
+      "template_key": "background_verification",
+      "outcome": "suspected_fraud",
+      "occurred_at": "2026-11-06T09:00:00+00:00",
+      "reference": "MOCK-UC03-BV-0001",
+      "blocking_reason": "credential could not be confirmed with issuing body; referred to HR per escalation policy",
+      "expect": "task stays open; follow-up flag raised; no automatic completion of anything"
+    },
+    {
+      "_scenario": "12 - delayed external task",
+      "source": "uc04_equipment_access",
+      "template_key": "desk_allocation",
+      "outcome": "delayed",
+      "occurred_at": "2026-11-07T09:00:00+00:00",
+      "reference": "MOCK-UC04-DESK-0001",
+      "blocking_reason": "furniture delivery slipped to week 47",
+      "expect": "task stays open; follow-up flag 'external_unresolved' naming the assignee"
+    },
+    {
+      "_scenario": "visa processing reported by the operational team",
+      "source": "operations",
+      "template_key": "visa_processing",
+      "outcome": "in_progress",
+      "occurred_at": "2026-11-08T09:00:00+00:00",
+      "reference": "MOCK-OPS-VISA-0001",
+      "expect": "recorded; not treated as complete"
+    },
+    {
+      "_scenario": "medical test completed by the operational team",
+      "source": "operations",
+      "template_key": "medical_test",
+      "outcome": "completed",
+      "occurred_at": "2026-11-09T09:00:00+00:00",
+      "reference": "MOCK-OPS-MED-0001",
+      "expect": "task complete; biometrics_capture becomes ready"
+    },
+    {
+      "_scenario": "19 - corrected document, then successful validation",
+      "_note": "A distinct report from the 'invalid' one above, so it is a correction rather than a replay.",
+      "source": "uc03_document_validation",
+      "template_key": "collect_documents",
+      "outcome": "valid",
+      "occurred_at": "2026-11-10T09:00:00+00:00",
+      "reference": "MOCK-UC03-DOC-0002",
+      "expect": "task complete; downstream readiness recalculated"
+    }
+  ],
+
+  "rejected_updates": [
+    {
+      "_scenario": "18 - unknown task id",
+      "source": "uc03_document_validation",
+      "template_key": "no_such_template",
+      "outcome": "valid",
+      "occurred_at": "2026-11-11T09:00:00+00:00",
+      "expect_rejection_code": "unknown_task"
+    },
+    {
+      "_scenario": "wrong workflow for the task - prevents updating the wrong kind of work",
+      "source": "uc03_document_validation",
+      "template_key": "it_laptop",
+      "outcome": "completed",
+      "occurred_at": "2026-11-11T09:00:00+00:00",
+      "expect_rejection_code": "source_not_responsible"
+    },
+    {
+      "_scenario": "only the validating workflow may allege fraud",
+      "source": "uc04_equipment_access",
+      "template_key": "it_laptop",
+      "outcome": "suspected_fraud",
+      "occurred_at": "2026-11-11T09:00:00+00:00",
+      "blocking_reason": "asserted by the wrong workflow",
+      "expect_rejection_code": "fraud_not_reportable_by_source"
+    },
+    {
+      "_scenario": "unresolved outcome with no reason given",
+      "source": "uc03_document_validation",
+      "template_key": "collect_documents",
+      "outcome": "invalid",
+      "occurred_at": "2026-11-11T09:00:00+00:00",
+      "blocking_reason": "",
+      "expect_rejection_code": "missing_blocking_reason"
+    },
+    {
+      "_scenario": "completion of an evidence-required task with no reference (UC02-BR-12)",
+      "source": "operations",
+      "template_key": "visa_pack_handover",
+      "outcome": "completed",
+      "occurred_at": "2026-11-11T09:00:00+00:00",
+      "reference": null,
+      "expect_rejection_code": "missing_evidence_reference"
+    },
+    {
+      "_scenario": "11 - completion attempted while a prerequisite is unresolved",
+      "source": "uc04_equipment_access",
+      "template_key": "it_accounts",
+      "outcome": "completed",
+      "occurred_at": "2026-11-11T09:00:00+00:00",
+      "reference": "MOCK-UC04-ACCT-0009",
+      "expect_rejection_code": "prerequisites_unmet",
+      "_precondition": "it_laptop not yet complete"
+    }
+  ],
+
+  "duplicate_updates": {
+    "_scenario": "18 - duplicate status update handled idempotently",
+    "_how": "update_id is derived from (task, source, outcome, attempt), so re-sending the same logical report replays rather than creating a second update.",
+    "replay": {
+      "expect": "accepted=true, duplicate_replay=true, no second state change, no second unblocking"
+    },
+    "conflict": {
+      "_scenario": "same update_id aimed at a different task",
+      "expect_rejection_code": "duplicate_update_id_different_task",
+      "_why": "applying it would move a task the first delivery never touched"
+    }
+  }
+}

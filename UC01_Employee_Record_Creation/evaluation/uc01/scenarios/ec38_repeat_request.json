@@ -1,0 +1,33 @@
+{
+  "id": "EC-38",
+  "title": "Repeat request for the same candidate links the existing case",
+  "covers": ["EC-38", "T1-05"],
+  "setup": {
+    "client_id": "client-eval-ec38",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Morgan Repeat Request",
+    "candidate_email": "morgan.repeatrequest@example.test",
+    "salary_and_terms": "Base: 102000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {},
+      "save": "case1",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {"request_id": "req-eval-ec38-second"},
+      "save": "case2",
+      "expect": {"outcome": "LINKED_EXISTING"}
+    }
+  ],
+  "final": {
+    "case_ref": "case1",
+    "audit_actions_present": ["CASE_OPENED", "REQUEST_LINKED_TO_EXISTING_CASE"],
+    "invariants_clean": true
+  }
+}

@@ -1,0 +1,104 @@
+# Policy envelope for the central onboarding orchestrator. Evaluated in code (ToolGateway +
+# orchestration/adapters/_shared.require_role), never by the model. Modeled directly on
+# UC05_Orientation-Schedule-Agent/guardrails/policy.yaml.
+#
+# This envelope owns exactly two cross-stage decisions that don't belong to any single UC agent
+# (intake_mismatch_review, day_one_signoff). It never decides a UC's OWN internal approval (UC02
+# re-plans, UC03 HR review, UC04 exceptions, UC05 scheduling/comms) -- those stay with that UC's
+# own mechanism; this orchestrator only surfaces them for visibility (state.pending_approvals).
+policy: employee-onboarding-orchestrator
+agent: onboarding-orchestrator
+version: 1
+enabled: true                # kill switch
+approved_by: []                # filled at governance sign-off
+autonomy: L1                   # draft for approval: the orchestrator proposes, HR approves every outcome
+ceiling: L1                    # the orchestrator never marks a case complete or clears a mismatch itself
+tools:
+  read:
+    - uc01.get_status
+    - uc02.get_checklist
+    - uc03.get_case_status
+    - uc04.get_case_status
+    - uc05.get_workflow_status
+  write:
+    - orchestrator.advance_case
+    - orchestrator.resume_case
+    - orchestrator.trigger_joining_day      # records the joining-day event; UC05 drafts, HR approves
+    - orchestrator.relay_decision           # hands an authenticated person's decision to UC05's own inbox
+    - orchestrator.request_uc05_operation   # HR corrections: reschedule, buddy intro, re-propose, redraft, resolve
+    - orchestrator.submit_documents         # references + extraction metadata only, never document contents
+    - orchestrator.review_documents         # relays an authenticated HR reviewer's decision as UC03's input
+    - orchestrator.retry_stage              # re-runs a stage that failed technically; completed stages skip
+  write_requires_approval: []
+gates:
+  onboarding_form_approval:
+    # Must be a role UC02 accepts as the form's approver (UC02 contracts.ADMIN_ROLES: hr_ops, hr_lead):
+    # UC02 receives this role from the decision and refuses to plan for any other
+    # (tests/orchestration/test_form_approval_gate.py keeps the two in step). hr_lead, not hr_ops: the
+    # approver must see whom it approves, and hr_ops is a reader without names (case_identity_reader_roles).
+    approver_role: hr_lead
+    separation_of_duties: true
+    description: >
+      An authorized HR lead approves an internal onboarding form before UC01 opens the employee record.
+      Separation of duties as in UC01's own form checkpoint HC_01_FORM (UC01 policy/uc01_policy.toml,
+      separation_of_duties = true): the person who submitted the form never decides it. UC01's proposed
+      HC_01_FORM roles (HR_MANAGER / CLIENT_USER) differ from UC02's accepted approver roles; UC01's owner
+      should align its proposed list with the role decided here.
+  intake_mismatch_review:
+    approver_role: hr_admin
+    description: >
+      HR reviews an offer/form mismatch, unverified acceptance, or ambiguous duplicate flagged by
+      UC01 before intake may proceed to task planning.
+  day_one_signoff:
+    approver_role: hr_admin
+    description: >
+      HR confirms Day-1 readiness once all five stages report COMPLETE. The case is never marked
+      complete solely because every agent call returned successfully.
+never_auto: [mark_case_complete, clear_intake_mismatch]
+volume_ceiling:
+  per_run: 1
+thresholds: {}
+settings:
+  # Defense-in-depth boundary checks run by the orchestrator itself BEFORE calling UC01/UC02,
+  # which do not enforce caller identity at their own entry points (verified, not assumed -- see
+  # docs/ONBOARDING_COMMON_ARCHITECTURE.md). UC03/UC04/UC05 enforce their own and need no
+  # orchestrator-side duplicate check.
+  intake_trigger_roles: [hr_admin, hr_onboarding_officer]
+  task_planning_trigger_roles: [hr_admin, hr_onboarding_officer, hr_ops]
+  # UC02's real DATE_CHANGE gate (service.request_change), relayed through the orchestrator.
+  uc02_date_change_roles: [hr_admin, hr_onboarding_officer, hr_ops]
+  # UC03 document collection (opens UC03's collection for the plan version and sends the mock
+  # request): the request itself is sent by the orchestration adapter, so the boundary check applies.
+  # UC02's replanning (replan_tasks) runs under task_planning_trigger_roles.
+  document_collection_trigger_roles: [hr_admin, hr_onboarding_officer, hr_ops]
+  # HR changes to a plan's document requirements (raised to UC03, applied by a UC02 replan).
+  document_requirement_change_roles: [hr_admin]
+  # The orchestrator's own service/API boundary (orchestration/api.py). Every check fails closed
+  # when its list is missing. Approval decisions need no orchestrator role: the deciding person is
+  # authenticated, and the owning inbox (the orchestrator's, or UC05's) checks the approver role,
+  # the tenant and -- for UC05 team/buddy introductions -- the specific person on record.
+  case_operator_roles: [hr_admin, hr_onboarding_officer]          # start / resume a case
+  # hr_lead reads cases (and names, below) because it approves the internal onboarding form
+  # (gate onboarding_form_approval) and must see what it approves.
+  case_reader_roles: [hr_admin, hr_onboarding_officer, hr_ops, hr_lead]    # read a case's status
+  # The approvals inbox (GET /approvals). A team lead, buddy or hiring manager sees ONLY the approvals that name them
+  # as the person on record, or (none named) that need their role -- and no case list; the roles above see every
+  # pending approval of the tenant.
+  approval_inbox_roles: [hr_admin, hr_onboarding_officer, hr_ops, hr_lead, team_lead, buddy, hiring_manager]
+  # Who may state on POST /cases that the form was ALREADY approved (form_approved_at /
+  # form_approved_by_role): only a trusted integration relaying UC01's own HC_01_FORM decision. Empty:
+  # nobody -- a person's internal onboarding form always goes to the onboarding_form_approval gate.
+  form_approval_attestor_roles: []
+  # The candidate's name in case summaries/profiles (GET /cases, /cases/{id}/profile). Without it the
+  # name is omitted; email and id number are never returned by any route.
+  case_identity_reader_roles: [hr_admin, hr_onboarding_officer, hr_lead]
+  # A short-lived signed URL to a stored document's file (GET .../documents/{type}/url).
+  document_viewer_roles: [hr_admin, hr_onboarding_officer]
+  joining_day_trigger_roles: [hr_admin, hr_onboarding_officer, onboarding_scheduler]
+  uc05_operation_roles: [hr_admin, hr_onboarding_officer]         # resolve_operation also needs hr_admin (UC05)
+  document_submitter_roles: [hr_admin, hr_onboarding_officer]     # supply / mark available required documents
+  # UC03 verifies a document only with hr_review_status=APPROVED, an input its caller supplies; only
+  # these roles may supply it (the reviewer is recorded and audited).
+  document_review_roles: [hr_admin]
+  stage_retry_roles: [hr_admin, hr_onboarding_officer]            # retry a stage that failed technically
+  stage_max_attempts: 3   # technical failures of one stage before it becomes FAILED (RETRY_LIMIT_REACHED)

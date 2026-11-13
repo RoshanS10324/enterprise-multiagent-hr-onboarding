@@ -1,0 +1,48 @@
+{
+  "id": "EC-11",
+  "title": "Joining date changed after case opened: new version, re-approval, event",
+  "covers": ["EC-11", "EC-35"],
+  "setup": {
+    "client_id": "client-eval-ec11",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Drew Date Change",
+    "candidate_email": "drew.datechange@example.test",
+    "salary_and_terms": "Base: 101000 SYNTHETIC/yr; benefits: standard",
+    "joining_date": "2026-03-02"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {},
+      "save": "case",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "propose_change",
+      "as": "HR_OFFICER",
+      "args": {
+        "case_id": "$case.case.case_id",
+        "requested_by": "hr-officer-eval-1",
+        "change_reason": "Candidate asked to push start date back two weeks",
+        "joining_date": "2026-03-16",
+        "approver_id": "hr-manager-eval-1"
+      },
+      "save": "propose1",
+      "expect": {"new_version": 2}
+    },
+    {
+      "action": "decide_change",
+      "as": "HR_MANAGER",
+      "args": {"approval_id": "$propose1.approval_id", "approve": true},
+      "expect": {"approved": true, "form_version": 2}
+    }
+  ],
+  "final": {
+    "case_ref": "case",
+    "stage": "READY_TO_PREPARE",
+    "events": {"FormChangedEvent": 1},
+    "audit_actions_present": ["FORM_CHANGE_PROPOSED", "FORM_CHANGE_APPROVED", "FORM_SUPERSEDED"],
+    "invariants_clean": true
+  }
+}

@@ -1,0 +1,3078 @@
+{
+  "schema_version": "1.0.0",
+  "client_master": {
+    "client_id": "CLIENT_CANADA",
+    "client_name": "Canada Mock Technologies Inc",
+    "client_status": "active",
+    "country": {
+      "code": "CA",
+      "name": "Canada"
+    },
+    "supported_locations": [
+      {
+        "code": "CA",
+        "name": "Canada",
+        "country_code": "CA",
+        "work_location_type": "OFFICE"
+      }
+    ],
+    "timezone": "America/Toronto",
+    "configuration_version": 2,
+    "effective_from": "2026-11-04",
+    "effective_until": null,
+    "approval_status": "approved",
+    "approved_by": "synthetic-fixture (development placeholder; not a client approval)",
+    "approved_at": "2026-11-04T00:00:00+00:00",
+    "data_origin": "synthetic",
+    "created_at": "2026-11-04T00:00:00+00:00",
+    "updated_at": "2026-11-04T00:00:00+00:00",
+    "synthetic_notice": "SYNTHETIC / MOCK configuration for an existing mock client. Not an approved client policy, not legal advice.",
+    "scenario": "Domestic employment, Canada; province not stored (synthetic)",
+    "environment": "mock",
+    "synthetic": true,
+    "existing_client_record": true,
+    "data_source": "Existing mock client row (client_configs, read-only 2026-11-04) + synthetic test assumptions authored for UC-02 verification; not supplied or approved by the client"
+  },
+  "shared_configuration": {
+    "calendar": {
+      "timezone": "America/Toronto",
+      "working_days": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "sla_calendar": "working_days",
+      "holidays": [
+        {
+          "date": "2026-12-25",
+          "name": "[SAMPLE] Christmas Day (synthetic; not an authoritative calendar)",
+          "observed": true
+        },
+        {
+          "date": "2026-12-28",
+          "name": "[SAMPLE] Boxing Day (observed) (synthetic; not an authoritative calendar)",
+          "observed": true
+        },
+        {
+          "date": "2027-01-01",
+          "name": "[SAMPLE] New Year's Day (synthetic; not an authoritative calendar)",
+          "observed": true
+        }
+      ],
+      "weekend_days": [
+        6,
+        7
+      ],
+      "working_hours": {
+        "start": "09:00",
+        "end": "17:00"
+      },
+      "observed_holiday_rule": "synthetic: next working day when on a weekend",
+      "holiday_source_note": "[SAMPLE] dates; federal/provincial holidays awaiting confirmation"
+    },
+    "approval_matrix": [
+      {
+        "action": "plan_approval",
+        "approver_role": "hr_ops",
+        "delegate_role": "hr_manager",
+        "separation_of_duties": true,
+        "approval_type": "plan_approval",
+        "approval_sequence": 1,
+        "responsible_team": "HR Operations (synthetic)",
+        "escalation_owner": "hr_manager",
+        "reminder_interval_working_days": 1,
+        "notification_event": "plan_approval.requested",
+        "rejection_handling": "reason_required_then_stop_or_rework",
+        "change_request_handling": "new_version_and_new_request",
+        "approval_evidence": "signed_callback_with_approver_and_timestamp"
+      },
+      {
+        "action": "send_to_joiner",
+        "approver_role": "hr_officer",
+        "delegate_role": "hr_ops",
+        "separation_of_duties": true,
+        "approval_type": "send_to_joiner",
+        "approval_sequence": 2,
+        "responsible_team": "HR Onboarding Officer (synthetic)",
+        "escalation_owner": "hr_ops",
+        "reminder_interval_working_days": 1,
+        "notification_event": "send_to_joiner.requested",
+        "rejection_handling": "reason_required_then_stop_or_rework",
+        "change_request_handling": "new_version_and_new_request",
+        "approval_evidence": "signed_callback_with_approver_and_timestamp"
+      },
+      {
+        "action": "permit_support",
+        "approver_role": "hr_manager",
+        "delegate_role": null,
+        "separation_of_duties": true,
+        "approval_type": "permit_support",
+        "approval_sequence": 3,
+        "responsible_team": "Immigration / Global Mobility (synthetic)",
+        "escalation_owner": "hr_lead",
+        "reminder_interval_working_days": 1,
+        "notification_event": "permit_support.requested",
+        "rejection_handling": "reason_required_then_stop_or_rework",
+        "change_request_handling": "new_version_and_new_request",
+        "approval_evidence": "signed_callback_with_approver_and_timestamp"
+      },
+      {
+        "action": "payroll_record",
+        "approver_role": "hr_manager",
+        "delegate_role": "hr_lead",
+        "separation_of_duties": true,
+        "approval_type": "payroll_record",
+        "approval_sequence": 4,
+        "responsible_team": "Payroll (synthetic)",
+        "escalation_owner": "hr_lead",
+        "reminder_interval_working_days": 1,
+        "notification_event": "payroll_record.requested",
+        "rejection_handling": "reason_required_then_stop_or_rework",
+        "change_request_handling": "new_version_and_new_request",
+        "approval_evidence": "signed_callback_with_approver_and_timestamp"
+      },
+      {
+        "action": "access_request",
+        "approver_role": "manager",
+        "delegate_role": "hr_ops",
+        "separation_of_duties": true,
+        "approval_type": "access_request",
+        "approval_sequence": 5,
+        "responsible_team": "IT Service Desk (synthetic)",
+        "escalation_owner": "hr_ops",
+        "reminder_interval_working_days": 1,
+        "notification_event": "access_request.requested",
+        "rejection_handling": "reason_required_then_stop_or_rework",
+        "change_request_handling": "new_version_and_new_request",
+        "approval_evidence": "signed_callback_with_approver_and_timestamp"
+      }
+    ],
+    "notification_templates": [
+      {
+        "key": "hr_review_email",
+        "audience": "internal",
+        "channel": "email",
+        "language": "en",
+        "approval_required": true,
+        "template_ref": "template-library://CLIENT_CANADA/hr_review_email"
+      },
+      {
+        "key": "team_assignment",
+        "audience": "internal",
+        "channel": "email",
+        "language": "en",
+        "approval_required": true,
+        "template_ref": "template-library://CLIENT_CANADA/team_assignment"
+      },
+      {
+        "key": "document_request",
+        "audience": "joiner",
+        "channel": "email",
+        "language": "en",
+        "approval_required": true,
+        "template_ref": "template-library://CLIENT_CANADA/document_request"
+      },
+      {
+        "key": "replacement_request",
+        "audience": "joiner",
+        "channel": "email",
+        "language": "en",
+        "approval_required": true,
+        "template_ref": "template-library://CLIENT_CANADA/replacement_request"
+      },
+      {
+        "key": "hr_notice",
+        "audience": "internal",
+        "channel": "email",
+        "language": "en",
+        "approval_required": true,
+        "template_ref": "template-library://CLIENT_CANADA/hr_notice"
+      }
+    ],
+    "recipient_mapping_refs": [
+      {
+        "role_or_team": "hr_ops",
+        "reference_key": "recipient-map://CLIENT_CANADA/hr_ops"
+      },
+      {
+        "role_or_team": "hr_officer",
+        "reference_key": "recipient-map://CLIENT_CANADA/hr_officer"
+      },
+      {
+        "role_or_team": "pro",
+        "reference_key": "recipient-map://CLIENT_CANADA/pro"
+      },
+      {
+        "role_or_team": "facilities",
+        "reference_key": "recipient-map://CLIENT_CANADA/facilities"
+      },
+      {
+        "role_or_team": "finance",
+        "reference_key": "recipient-map://CLIENT_CANADA/finance"
+      },
+      {
+        "role_or_team": "it_manager",
+        "reference_key": "recipient-map://CLIENT_CANADA/it_manager"
+      },
+      {
+        "role_or_team": "manager",
+        "reference_key": "recipient-map://CLIENT_CANADA/manager"
+      },
+      {
+        "role_or_team": "employee",
+        "reference_key": "recipient-map://CLIENT_CANADA/employee"
+      },
+      {
+        "role_or_team": "immigration",
+        "reference_key": "recipient-map://CLIENT_CANADA/immigration"
+      },
+      {
+        "role_or_team": "benefits",
+        "reference_key": "recipient-map://CLIENT_CANADA/benefits"
+      },
+      {
+        "role_or_team": "security",
+        "reference_key": "recipient-map://CLIENT_CANADA/security"
+      },
+      {
+        "role_or_team": "facilities_access",
+        "reference_key": "recipient-map://CLIENT_CANADA/facilities_access"
+      },
+      {
+        "role_or_team": "training",
+        "reference_key": "recipient-map://CLIENT_CANADA/training"
+      }
+    ],
+    "escalation_rules": [
+      {
+        "rule_key": "approval_stalled",
+        "trigger": "approval_pending_past_due",
+        "after_working_days": 1,
+        "escalate_to_role": "hr_ops",
+        "channel": "teams"
+      },
+      {
+        "rule_key": "joining_date_at_risk",
+        "trigger": "task_threatens_joining_date",
+        "after_working_days": 0,
+        "escalate_to_role": "hr_officer",
+        "channel": "teams"
+      }
+    ],
+    "retry_policy": {
+      "max_attempts": 3,
+      "backoff_seconds": [
+        30,
+        120,
+        600
+      ]
+    },
+    "event_types": [
+      {
+        "event": "employee_created",
+        "producer": "UC-01",
+        "consumers": [
+          "UC-02"
+        ],
+        "idempotency_key_field": "event_id"
+      },
+      {
+        "event": "plan_approval_decision",
+        "producer": "approval_portal",
+        "consumers": [
+          "UC-02"
+        ],
+        "idempotency_key_field": "callback_id"
+      },
+      {
+        "event": "document_status_update",
+        "producer": "UC-03",
+        "consumers": [
+          "UC-02"
+        ],
+        "idempotency_key_field": "update_id"
+      },
+      {
+        "event": "downstream_trigger",
+        "producer": "UC-02",
+        "consumers": [
+          "UC-04",
+          "UC-05"
+        ],
+        "idempotency_key_field": "trigger_id"
+      },
+      {
+        "event": "downstream_status",
+        "producer": "UC-04|UC-05",
+        "consumers": [
+          "UC-02"
+        ],
+        "idempotency_key_field": "event_id"
+      }
+    ],
+    "integration_contract_refs": [
+      {
+        "contract": "uc01_employee_event",
+        "document": "UC02_Onboarding_Task_Agent/docs/UC02_INTEGRATION_CHECKLIST.md#2"
+      },
+      {
+        "contract": "uc02_downstream_trigger",
+        "document": "UC02_Onboarding_Task_Agent/docs/UC02_INTEGRATION_CHECKLIST.md#2"
+      },
+      {
+        "contract": "client_configuration_retrieval",
+        "document": "docs/CLIENT_CONFIGURATION_INTEGRATION_CONTRACTS.md"
+      }
+    ]
+  },
+  "uc01_employee_record": {
+    "employee_fields": [
+      {
+        "field": "client_id",
+        "label": "Client",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "candidate_name",
+        "label": "Candidate name",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "candidate_email",
+        "label": "Candidate email",
+        "required": true,
+        "type": "email",
+        "sensitive": false
+      },
+      {
+        "field": "designation",
+        "label": "Designation",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "joining_date",
+        "label": "Date of joining",
+        "required": true,
+        "type": "date",
+        "sensitive": false
+      },
+      {
+        "field": "work_location_type",
+        "label": "Work location type",
+        "required": true,
+        "type": "enum",
+        "values": [
+          "OFFICE",
+          "CLIENT_SITE"
+        ],
+        "sensitive": false
+      },
+      {
+        "field": "salary_and_terms",
+        "label": "Salary and terms",
+        "required": true,
+        "type": "secret",
+        "sensitive": true
+      },
+      {
+        "field": "legal_name",
+        "label": "Legal name",
+        "required": true,
+        "type": "string",
+        "sensitive": true
+      },
+      {
+        "field": "date_of_birth",
+        "label": "Date of birth",
+        "required": true,
+        "type": "date",
+        "sensitive": true
+      },
+      {
+        "field": "nationality",
+        "label": "Nationality",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "country_of_residence",
+        "label": "Country of residence",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "contact_details",
+        "label": "Contact details",
+        "required": true,
+        "type": "string",
+        "sensitive": true
+      },
+      {
+        "field": "emergency_contact",
+        "label": "Emergency contact",
+        "required": false,
+        "type": "string",
+        "sensitive": true
+      },
+      {
+        "field": "employee_id",
+        "label": "Employee id",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "job_title",
+        "label": "Job title",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "role_id",
+        "label": "Role id",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "grade",
+        "label": "Grade",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "department",
+        "label": "Department",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "reporting_manager_id",
+        "label": "Reporting manager id",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "employment_type",
+        "label": "Employment type",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "work_country",
+        "label": "Work country",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "work_location",
+        "label": "Work location",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "work_arrangement",
+        "label": "Work arrangement",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "joining_date",
+        "label": "Joining date",
+        "required": true,
+        "type": "date",
+        "sensitive": false
+      },
+      {
+        "field": "contract_type",
+        "label": "Contract type",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "probation_period",
+        "label": "Probation period",
+        "required": false,
+        "type": "string",
+        "sensitive": false
+      },
+      {
+        "field": "working_days_and_hours",
+        "label": "Working days and hours",
+        "required": true,
+        "type": "string",
+        "sensitive": false
+      }
+    ],
+    "supported_roles": [
+      {
+        "role_id": "software_engineer",
+        "label": "Software Engineer"
+      },
+      {
+        "role_id": "customer_success_specialist",
+        "label": "Customer Success Specialist"
+      },
+      {
+        "role_id": "finance_analyst",
+        "label": "Finance Analyst"
+      }
+    ],
+    "grades": [
+      {
+        "grade_id": "L1",
+        "band_order": 0
+      },
+      {
+        "grade_id": "L2",
+        "band_order": 1
+      },
+      {
+        "grade_id": "L3",
+        "band_order": 2
+      },
+      {
+        "grade_id": "L4",
+        "band_order": 3
+      },
+      {
+        "grade_id": "L5",
+        "band_order": 4
+      }
+    ],
+    "nationality_groups": [
+      {
+        "group_code": "NG-CA-SYN",
+        "label": "Canadian (synthetic grouping)",
+        "nationality_codes": [
+          "CA"
+        ]
+      },
+      {
+        "group_code": "NG-INTL-SYN",
+        "label": "Other nationalities (synthetic grouping)",
+        "nationality_codes": [
+          "IN",
+          "US",
+          "GB",
+          "PH",
+          "FR",
+          "CN"
+        ]
+      }
+    ],
+    "employment_types": [
+      "full_time",
+      "part_time",
+      "contract"
+    ],
+    "work_location_types": [
+      "OFFICE",
+      "CLIENT_SITE"
+    ],
+    "eligibility_rules": [
+      {
+        "rule_key": "offer_not_accepted",
+        "outcome": "hold",
+        "reason": "Framework DL-01: start only when the offer is accepted"
+      },
+      {
+        "rule_key": "form_not_approved",
+        "outcome": "hold",
+        "reason": "Framework DL-01: start only when the onboarding form is approved"
+      }
+    ],
+    "field_validation": {
+      "candidate_email": {
+        "format": "email"
+      },
+      "joining_date": {
+        "must_be_future": true
+      }
+    },
+    "onboarding_record_requirements": {
+      "offer_accepted_required": true,
+      "approved_form_required": true,
+      "form_approved_by_hr_role": true
+    },
+    "trigger_event": {
+      "event_type": "employee_created",
+      "required_fields": [
+        "event_id",
+        "client_id",
+        "case_id",
+        "employee_id",
+        "joining_date",
+        "occurred_at"
+      ],
+      "idempotency_key_field": "event_id"
+    },
+    "duplicate_prevention": {
+      "scope": "client",
+      "match_on": [
+        "candidate_email",
+        "id_number"
+      ],
+      "on_open_case": "link_existing",
+      "name_only_match": "notify_hr_non_blocking"
+    },
+    "uc02_handoff_mapping": [
+      {
+        "uc02_field": "client_id",
+        "source": "uc01.client_id",
+        "required": true
+      },
+      {
+        "uc02_field": "case_id",
+        "source": "uc01.case_id",
+        "required": true
+      },
+      {
+        "uc02_field": "employee_id",
+        "source": "uc01.employee_no",
+        "required": true
+      },
+      {
+        "uc02_field": "joining_date",
+        "source": "uc01.joining_date",
+        "required": true
+      },
+      {
+        "uc02_field": "role_id",
+        "source": "uc01.designation->role_id",
+        "required": true
+      },
+      {
+        "uc02_field": "grade",
+        "source": "uc01.grade",
+        "required": true
+      },
+      {
+        "uc02_field": "nationality_group",
+        "source": "config.nationality_groups[nationality_code]",
+        "required": true
+      },
+      {
+        "uc02_field": "location",
+        "source": "uc01.location",
+        "required": true
+      },
+      {
+        "uc02_field": "employment_type",
+        "source": "uc01.employment_type",
+        "required": true
+      },
+      {
+        "uc02_field": "attributes",
+        "source": "uc01.variant_flags + derived",
+        "required": false
+      }
+    ],
+    "work_locations": [
+      {
+        "code": "CA",
+        "name": "Canada",
+        "country_code": "CA"
+      }
+    ],
+    "checklist_attributes": [
+      {
+        "family": "work_authorization",
+        "values": [
+          "citizen",
+          "permanent_resident",
+          "work_permit_holder",
+          "permit_required"
+        ],
+        "required": true,
+        "reason": "decides whether permit tasks apply; missing status must go to HR review (synthetic)"
+      },
+      {
+        "family": "work_province",
+        "values": [],
+        "required": true,
+        "reason": "provincial tax and safety items depend on it; not stored"
+      },
+      {
+        "family": "work_arrangement",
+        "values": [
+          "onsite",
+          "hybrid",
+          "remote"
+        ],
+        "required": false,
+        "reason": "remote equipment and policy"
+      }
+    ],
+    "required_for_checklist": [
+      "client_id",
+      "joining_date",
+      "role_id",
+      "grade",
+      "work_location",
+      "nationality_group",
+      "employment_type",
+      "work_authorization",
+      "work_province"
+    ],
+    "contract_types": [
+      "permanent",
+      "fixed_term"
+    ],
+    "work_arrangements": [
+      "onsite",
+      "hybrid",
+      "remote"
+    ],
+    "probation": {
+      "months": "awaiting_confirmation"
+    },
+    "working_hours": {
+      "weekly_hours": "awaiting_confirmation"
+    }
+  },
+  "uc02_onboarding_tasks": {
+    "task_templates": [
+      {
+        "template_key": "hr_record_create",
+        "category": "hr_record",
+        "title": "Hr record create",
+        "description": "hr record create (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "hr_ops",
+        "responsible_team": "HR Operations (synthetic)",
+        "priority": "normal",
+        "depends_on": [],
+        "parallel_group": "g0",
+        "offset_days": -10,
+        "sla_working_days": 3,
+        "evidence_required": false,
+        "approval_role": null,
+        "downstream_use_case": null,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "collect_documents",
+        "category": "document_collection",
+        "title": "Collect documents",
+        "description": "collect documents (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "hr_ops",
+        "responsible_team": "HR Operations (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "hr_record_create"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -8,
+        "sla_working_days": 3,
+        "evidence_required": false,
+        "approval_role": null,
+        "downstream_use_case": "UC-03",
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "work_authorization_check",
+        "category": "hr_record",
+        "title": "Work authorization check",
+        "description": "work authorization check - rule awaiting_confirmation with the responsible owner (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "hr_officer",
+        "responsible_team": "Immigration / Global Mobility (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "collect_documents"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -8,
+        "sla_working_days": 3,
+        "evidence_required": true,
+        "approval_role": null,
+        "downstream_use_case": null,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": true
+      },
+      {
+        "template_key": "work_permit_verification",
+        "category": "visa",
+        "title": "Work permit verification",
+        "description": "work permit verification (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "hr_officer",
+        "responsible_team": "Immigration / Global Mobility (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "work_authorization_check"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -7,
+        "sla_working_days": 3,
+        "evidence_required": true,
+        "approval_role": null,
+        "downstream_use_case": null,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [
+            "work_authorization:work_permit_holder"
+          ],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "work_permit_application_support",
+        "category": "visa",
+        "title": "Work permit application support",
+        "description": "work permit application support - rule awaiting_confirmation with the responsible owner (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "hr_officer",
+        "responsible_team": "Immigration / Global Mobility (synthetic)",
+        "priority": "critical",
+        "depends_on": [
+          "work_authorization_check"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -15,
+        "sla_working_days": 3,
+        "evidence_required": false,
+        "approval_role": "hr_manager",
+        "downstream_use_case": null,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [
+            "work_authorization:permit_required"
+          ],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": true
+      },
+      {
+        "template_key": "background_verification",
+        "category": "background_verification",
+        "title": "Background verification",
+        "description": "background verification (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "hr_officer",
+        "responsible_team": "HR Onboarding Officer (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "collect_documents"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -7,
+        "sla_working_days": 3,
+        "evidence_required": false,
+        "approval_role": null,
+        "downstream_use_case": null,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "reference_check",
+        "category": "background_verification",
+        "title": "Reference check",
+        "description": "reference check (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "hr_officer",
+        "responsible_team": "HR Onboarding Officer (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "collect_documents"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -6,
+        "sla_working_days": 3,
+        "evidence_required": false,
+        "approval_role": null,
+        "downstream_use_case": null,
+        "applicability": {
+          "roles": [],
+          "grades": [
+            "L4",
+            "L5"
+          ],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "tax_onboarding_forms",
+        "category": "payroll",
+        "title": "Tax onboarding forms",
+        "description": "tax onboarding forms - rule awaiting_confirmation with the responsible owner (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "finance",
+        "responsible_team": "Payroll (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "collect_documents"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -5,
+        "sla_working_days": 3,
+        "evidence_required": true,
+        "approval_role": null,
+        "downstream_use_case": null,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": true
+      },
+      {
+        "template_key": "direct_deposit_setup",
+        "category": "payroll",
+        "title": "Direct deposit setup",
+        "description": "direct deposit setup (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "finance",
+        "responsible_team": "Payroll (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "collect_documents"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -4,
+        "sla_working_days": 3,
+        "evidence_required": true,
+        "approval_role": null,
+        "downstream_use_case": null,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "payroll_setup",
+        "category": "payroll",
+        "title": "Payroll setup",
+        "description": "payroll setup (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "finance",
+        "responsible_team": "Payroll (synthetic)",
+        "priority": "high",
+        "depends_on": [
+          "tax_onboarding_forms",
+          "direct_deposit_setup"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -3,
+        "sla_working_days": 3,
+        "evidence_required": false,
+        "approval_role": "hr_manager",
+        "downstream_use_case": null,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "benefits_enrolment",
+        "category": "insurance",
+        "title": "Benefits enrolment",
+        "description": "benefits enrolment (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "hr_ops",
+        "responsible_team": "Benefits Administration (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "collect_documents"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -3,
+        "sla_working_days": 3,
+        "evidence_required": false,
+        "approval_role": null,
+        "downstream_use_case": null,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [
+            "full_time"
+          ],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "laptop_request",
+        "category": "it_provisioning",
+        "title": "Laptop request",
+        "description": "laptop request (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "it_manager",
+        "responsible_team": "IT Service Desk (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "hr_record_create"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -6,
+        "sla_working_days": 3,
+        "evidence_required": false,
+        "approval_role": "manager",
+        "downstream_use_case": "UC-04",
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "system_access",
+        "category": "access_management",
+        "title": "System access",
+        "description": "system access (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "it_manager",
+        "responsible_team": "IT Service Desk (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "laptop_request"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -2,
+        "sla_working_days": 3,
+        "evidence_required": true,
+        "approval_role": "manager",
+        "downstream_use_case": "UC-04",
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "remote_equipment_shipping",
+        "category": "it_provisioning",
+        "title": "Remote equipment shipping",
+        "description": "remote equipment shipping (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "it_manager",
+        "responsible_team": "IT Service Desk (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "laptop_request"
+        ],
+        "parallel_group": "g0",
+        "offset_days": -8,
+        "sla_working_days": 3,
+        "evidence_required": false,
+        "approval_role": null,
+        "downstream_use_case": "UC-04",
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [
+            "work_arrangement:remote"
+          ],
+          "excludes_attributes": []
+        },
+        "blocking": false,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "company_induction",
+        "category": "orientation",
+        "title": "Company induction",
+        "description": "company induction (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "hr_ops",
+        "responsible_team": "Learning and Development (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "hr_record_create"
+        ],
+        "parallel_group": "g0",
+        "offset_days": 0,
+        "sla_working_days": 3,
+        "evidence_required": false,
+        "approval_role": null,
+        "downstream_use_case": "UC-05",
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "department_orientation",
+        "category": "orientation",
+        "title": "Department orientation",
+        "description": "department orientation (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "manager",
+        "responsible_team": "Hiring Manager (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "company_induction"
+        ],
+        "parallel_group": "g0",
+        "offset_days": 1,
+        "sla_working_days": 3,
+        "evidence_required": false,
+        "approval_role": null,
+        "downstream_use_case": "UC-05",
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "workplace_health_and_safety_training",
+        "category": "orientation",
+        "title": "Workplace health and safety training",
+        "description": "workplace health and safety training - rule awaiting_confirmation with the responsible owner (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "hr_ops",
+        "responsible_team": "Learning and Development (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "company_induction"
+        ],
+        "parallel_group": "g0",
+        "offset_days": 3,
+        "sla_working_days": 3,
+        "evidence_required": true,
+        "approval_role": null,
+        "downstream_use_case": "UC-05",
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": true
+      },
+      {
+        "template_key": "information_security_training",
+        "category": "orientation",
+        "title": "Information security training",
+        "description": "information security training (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "hr_ops",
+        "responsible_team": "Information Security (synthetic)",
+        "priority": "normal",
+        "depends_on": [
+          "company_induction"
+        ],
+        "parallel_group": "g0",
+        "offset_days": 3,
+        "sla_working_days": 3,
+        "evidence_required": true,
+        "approval_role": null,
+        "downstream_use_case": "UC-05",
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "template_key": "policy_acknowledgement",
+        "category": "policy_acknowledgement",
+        "title": "Policy acknowledgement",
+        "description": "policy acknowledgement (SYNTHETIC ASSUMPTION - not an approved client policy)",
+        "owner_role": "employee",
+        "responsible_team": "Employee",
+        "priority": "normal",
+        "depends_on": [
+          "company_induction"
+        ],
+        "parallel_group": "g0",
+        "offset_days": 2,
+        "sla_working_days": 3,
+        "evidence_required": true,
+        "approval_role": null,
+        "downstream_use_case": "UC-05",
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "blocking": true,
+        "awaiting_confirmation": false
+      }
+    ],
+    "assignment_rules": [
+      {
+        "category": "hr_record",
+        "team": "HR Operations (synthetic)",
+        "downstream_use_case": null,
+        "mode": "role",
+        "escalation_owner": "hr_officer"
+      },
+      {
+        "category": "document_collection",
+        "team": "HR Operations (synthetic)",
+        "downstream_use_case": "UC-03",
+        "mode": "use_case",
+        "escalation_owner": "hr_officer"
+      },
+      {
+        "category": "visa",
+        "team": "Immigration / Global Mobility (synthetic)",
+        "downstream_use_case": null,
+        "mode": "role",
+        "escalation_owner": "hr_officer"
+      },
+      {
+        "category": "background_verification",
+        "team": "HR Onboarding Officer (synthetic)",
+        "downstream_use_case": null,
+        "mode": "role",
+        "escalation_owner": "hr_officer"
+      },
+      {
+        "category": "payroll",
+        "team": "Payroll (synthetic)",
+        "downstream_use_case": null,
+        "mode": "role",
+        "escalation_owner": "hr_officer"
+      },
+      {
+        "category": "insurance",
+        "team": "Benefits Administration (synthetic)",
+        "downstream_use_case": null,
+        "mode": "role",
+        "escalation_owner": "hr_officer"
+      },
+      {
+        "category": "it_provisioning",
+        "team": "IT Service Desk (synthetic)",
+        "downstream_use_case": "UC-04",
+        "mode": "use_case",
+        "escalation_owner": "hr_officer"
+      },
+      {
+        "category": "access_management",
+        "team": "IT Service Desk (synthetic)",
+        "downstream_use_case": "UC-04",
+        "mode": "use_case",
+        "escalation_owner": "hr_officer"
+      },
+      {
+        "category": "orientation",
+        "team": "Learning and Development (synthetic)",
+        "downstream_use_case": "UC-05",
+        "mode": "use_case",
+        "escalation_owner": "hr_officer"
+      },
+      {
+        "category": "policy_acknowledgement",
+        "team": "Employee",
+        "downstream_use_case": "UC-05",
+        "mode": "use_case",
+        "escalation_owner": "hr_officer"
+      }
+    ],
+    "document_gates": [
+      {
+        "gate_key": "mandatory_documents",
+        "requires": "all_mandatory_documents_verified",
+        "blocks_downstream": [
+          "UC-04",
+          "UC-05"
+        ]
+      }
+    ],
+    "hr_approval": {
+      "plan_approval_required": true,
+      "approver_role": "hr_ops",
+      "delegate_role": "hr_manager",
+      "sla_hours": 24
+    },
+    "due_date_calculation": {
+      "reference": "joining_date",
+      "direction": "backwards",
+      "calendar": "shared_configuration.calendar",
+      "default_sla_working_days": 3
+    },
+    "reminders": {
+      "first_after_working_days": 2,
+      "repeat_every_working_days": 3,
+      "handover_to_hr_call_after": 3
+    },
+    "escalations": [
+      {
+        "rule_ref": "approval_stalled"
+      },
+      {
+        "rule_ref": "joining_date_at_risk"
+      }
+    ],
+    "overdue_monitoring": {
+      "derived_from_due_date": true,
+      "stored_status": false,
+      "sweep": "on_demand_no_scheduler"
+    },
+    "milestones": [
+      {
+        "milestone_key": "day_one_ready",
+        "title": "Ready for day one",
+        "offset_days": -1,
+        "required_task_keys": [
+          "laptop_request",
+          "system_access",
+          "payroll_setup"
+        ]
+      }
+    ],
+    "visa_vs_background_check": "not_applicable_no_visa_route",
+    "immigration_configuration": {
+      "routes": {
+        "citizen": [],
+        "permanent_resident": [],
+        "work_permit_holder": [
+          "work_permit_verification"
+        ],
+        "permit_required": [
+          "work_permit_application_support"
+        ]
+      },
+      "missing_status": "hr_review",
+      "legal_basis": "awaiting_confirmation",
+      "owner": "immigration"
+    },
+    "medical_insurance_configuration": {
+      "pre_employment_medical": "not configured",
+      "health_insurance": "benefits enrolment for full-time employees",
+      "coverage_category": "awaiting_confirmation",
+      "dependant_cover": "when family_cover is stated",
+      "owner": "benefits"
+    },
+    "payroll_configuration": {
+      "currency": "CAD",
+      "frequency": "awaiting_confirmation",
+      "eligibility": "all employees",
+      "required_forms": [
+        "tax_onboarding_forms",
+        "direct_deposit_details"
+      ],
+      "bank_verification": "direct_deposit_setup with evidence",
+      "owner": "finance",
+      "approval": "hr_manager",
+      "benefits_eligibility": "full_time",
+      "tax_rates": "never stored in configuration"
+    }
+  },
+  "uc03_document_validation": {
+    "global": {
+      "confidence_threshold": 0.7,
+      "authenticity_decided_by": "hr",
+      "name_difference_policy": "flag_to_hr_passport_name_for_legal_records",
+      "unrequested_document_policy": "do_not_use_flag_to_hr_follow_client_retention_rule",
+      "capabilities": {
+        "text_extraction": "local_extraction_with_hr_review_of_uncertain_values",
+        "antivirus_scanning": false,
+        "identity_verification": false,
+        "authority_verification": false
+      },
+      "note": "No OCR, antivirus, identity or authority verification is claimed; HR decides authenticity (Framework DL-04)."
+    },
+    "documents": [
+      {
+        "document_key": "signed_offer_letter",
+        "name": "Signed offer letter",
+        "category": "offer",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [
+          "employee_name",
+          "employer_signature",
+          "date"
+        ],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "readable",
+            "required_fields_present",
+            "name_matches_employee"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "HR Operations (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "document_key": "signed_employment_contract",
+        "name": "Signed employment agreement",
+        "category": "agreement",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [
+          "signature",
+          "date"
+        ],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "signed",
+            "evidence_stored"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "HR Operations (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": true
+      },
+      {
+        "document_key": "government_photo_id",
+        "name": "Government-issued photo identity",
+        "category": "identity",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [
+          "id_number",
+          "full_name",
+          "expiry_date"
+        ],
+        "expiry": {
+          "applies": true,
+          "min_remaining_validity_days": 0,
+          "handling": "reject_and_request_replacement"
+        },
+        "verification": {
+          "checks": [
+            "readable",
+            "required_fields_present",
+            "name_matches_employee"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "HR Operations (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "document_key": "work_authorization_evidence",
+        "name": "Work authorisation evidence",
+        "category": "visa",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [
+          "status",
+          "expiry_date"
+        ],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "readable",
+            "required_fields_present",
+            "name_matches_employee"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [
+          "work_authorization_check"
+        ],
+        "blocks_tasks": [
+          "work_authorization_check"
+        ],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "Immigration / Global Mobility (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": true
+      },
+      {
+        "document_key": "work_permit",
+        "name": "Work permit",
+        "category": "visa",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [
+            "work_authorization:work_permit_holder"
+          ],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [
+          "permit_number",
+          "expiry_date",
+          "conditions"
+        ],
+        "expiry": {
+          "applies": true,
+          "min_remaining_validity_days": 90,
+          "handling": "reject_and_request_replacement"
+        },
+        "verification": {
+          "checks": [
+            "readable",
+            "required_fields_present",
+            "name_matches_employee"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [
+          "work_permit_verification"
+        ],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "Immigration / Global Mobility (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "document_key": "passport",
+        "name": "Passport",
+        "category": "identity",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [
+            "work_authorization:work_permit_holder"
+          ],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [
+          "passport_number",
+          "expiry_date"
+        ],
+        "expiry": {
+          "applies": true,
+          "min_remaining_validity_days": 180,
+          "handling": "reject_and_request_replacement"
+        },
+        "verification": {
+          "checks": [
+            "readable",
+            "required_fields_present",
+            "name_matches_employee"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "HR Operations (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "document_key": "degree_certificate",
+        "name": "Degree certificate",
+        "category": "education",
+        "mandatory": false,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "optional",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [
+          "institution",
+          "graduate_name"
+        ],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "readable",
+            "required_fields_present",
+            "name_matches_employee"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "HR Operations (synthetic)",
+        "blocking": false,
+        "awaiting_confirmation": false
+      },
+      {
+        "document_key": "professional_qualification",
+        "name": "Professional designation",
+        "category": "education",
+        "mandatory": true,
+        "applicability": {
+          "roles": [
+            "finance_analyst"
+          ],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [
+          "body",
+          "membership"
+        ],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "readable",
+            "required_fields_present",
+            "name_matches_employee"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "HR Operations (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "document_key": "employment_history",
+        "name": "Employment history",
+        "category": "employment",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [
+          "employer_name",
+          "employment_period"
+        ],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "readable",
+            "required_fields_present",
+            "name_matches_employee"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "HR Operations (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "document_key": "reference_contacts",
+        "name": "Reference contacts",
+        "category": "employment",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [
+            "L4",
+            "L5"
+          ],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [
+          "referee"
+        ],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "readable",
+            "required_fields_present",
+            "name_matches_employee"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [
+          "reference_check"
+        ],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "HR Operations (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "document_key": "background_check_consent",
+        "name": "Background check consent",
+        "category": "employment",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "signed",
+            "evidence_stored"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "HR Onboarding Officer (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "document_key": "tax_onboarding_forms",
+        "name": "Federal and provincial tax onboarding forms",
+        "category": "tax",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "readable",
+            "required_fields_present",
+            "name_matches_employee"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [
+          "tax_onboarding_forms"
+        ],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "Payroll (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": true,
+        "province": "awaiting_confirmation",
+        "sensitive": "hr_payroll_only"
+      },
+      {
+        "document_key": "direct_deposit_details",
+        "name": "Direct deposit details",
+        "category": "bank_payroll",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "readable"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [
+          "direct_deposit_setup"
+        ],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "Payroll (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": false,
+        "sensitive": "hr_payroll_only"
+      },
+      {
+        "document_key": "benefits_enrolment_form",
+        "name": "Benefits enrolment form",
+        "category": "insurance",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [
+            "full_time"
+          ],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [
+          "plan_selection"
+        ],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "readable",
+            "required_fields_present",
+            "name_matches_employee"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "Benefits Administration (synthetic)",
+        "blocking": true,
+        "awaiting_confirmation": false
+      },
+      {
+        "document_key": "dependant_details",
+        "name": "Dependant details for benefits",
+        "category": "family",
+        "mandatory": false,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [
+            "full_time"
+          ],
+          "projects": [],
+          "requires_attributes": [
+            "family_cover"
+          ],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "optional",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [
+          "full_name",
+          "relationship"
+        ],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "readable",
+            "required_fields_present",
+            "name_matches_employee"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "pre_joining",
+        "responsible_team": "Benefits Administration (synthetic)",
+        "blocking": false,
+        "awaiting_confirmation": false
+      },
+      {
+        "document_key": "emergency_contact_form",
+        "name": "Emergency contact information",
+        "category": "identity",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "submission": {
+          "requirement": "required",
+          "deadline_offset_days": -7,
+          "channel": "client_configured_channel"
+        },
+        "accepted_formats": [
+          "pdf",
+          "jpeg",
+          "png"
+        ],
+        "required_metadata": [],
+        "expiry": {
+          "applies": false,
+          "min_remaining_validity_days": null,
+          "handling": "not_applicable"
+        },
+        "verification": {
+          "checks": [
+            "required_fields_present"
+          ],
+          "evidence_required": true,
+          "authenticity_decided_by": "hr",
+          "extraction_review": "uncertain_values_go_to_hr",
+          "approval_required": false
+        },
+        "initial_status": "pending",
+        "rejection_reasons": [
+          "EXPIRED_DOCUMENT",
+          "UNREADABLE",
+          "WRONG_TYPE",
+          "MISSING_FIELDS",
+          "NAME_MISMATCH"
+        ],
+        "resubmission": {
+          "allowed": true,
+          "max_attempts": 3,
+          "replacement_request_needs_hr_approval": true
+        },
+        "depends_on_tasks": [],
+        "blocks_tasks": [],
+        "applicable_country": "CA",
+        "submission_stage": "day_one",
+        "responsible_team": "HR Operations (synthetic)",
+        "blocking": false,
+        "awaiting_confirmation": false
+      }
+    ]
+  },
+  "uc04_equipment_access": {
+    "equipment_catalogue": [
+      {
+        "item_code": "laptop-standard",
+        "name": "Standard laptop",
+        "kind": "equipment",
+        "category": "hardware",
+        "owner_role": "it_manager",
+        "approval_class": "STANDARD",
+        "mandatory": true,
+        "provisioning_dependency": "hr_record_create",
+        "evidence_requirement": "provisioning_confirmation"
+      },
+      {
+        "item_code": "monitor-24",
+        "name": "24-inch monitor",
+        "kind": "equipment",
+        "category": "hardware",
+        "owner_role": "it_manager",
+        "approval_class": "STANDARD",
+        "mandatory": false,
+        "provisioning_dependency": "hr_record_create",
+        "evidence_requirement": "provisioning_confirmation"
+      },
+      {
+        "item_code": "headset-basic",
+        "name": "Headset",
+        "kind": "equipment",
+        "category": "hardware",
+        "owner_role": "it_manager",
+        "approval_class": "STANDARD",
+        "mandatory": true,
+        "provisioning_dependency": "hr_record_create",
+        "evidence_requirement": "provisioning_confirmation"
+      }
+    ],
+    "access_catalogue": [
+      {
+        "item_code": "email-teams-account",
+        "name": "Email and Teams",
+        "kind": "access",
+        "category": "software_access",
+        "owner_role": "it_manager",
+        "approval_class": "STANDARD",
+        "mandatory": true,
+        "provisioning_dependency": "hr_record_create",
+        "evidence_requirement": "provisioning_confirmation"
+      },
+      {
+        "item_code": "vpn-access",
+        "name": "VPN",
+        "kind": "access",
+        "category": "software_access",
+        "owner_role": "it_manager",
+        "approval_class": "STANDARD",
+        "mandatory": true,
+        "provisioning_dependency": "hr_record_create",
+        "evidence_requirement": "provisioning_confirmation"
+      },
+      {
+        "item_code": "source-control-access",
+        "name": "Source-code repository",
+        "kind": "access",
+        "category": "software_access",
+        "owner_role": "it_manager",
+        "approval_class": "STANDARD",
+        "mandatory": true,
+        "provisioning_dependency": "hr_record_create",
+        "evidence_requirement": "provisioning_confirmation"
+      },
+      {
+        "item_code": "crm-access",
+        "name": "Customer relationship system",
+        "kind": "access",
+        "category": "software_access",
+        "owner_role": "it_manager",
+        "approval_class": "STANDARD",
+        "mandatory": true,
+        "provisioning_dependency": "hr_record_create",
+        "evidence_requirement": "provisioning_confirmation"
+      },
+      {
+        "item_code": "finance-app-access",
+        "name": "Finance applications",
+        "kind": "access",
+        "category": "software_access",
+        "owner_role": "it_manager",
+        "approval_class": "MANAGER_EXCEPTION",
+        "mandatory": true,
+        "provisioning_dependency": "hr_record_create",
+        "evidence_requirement": "provisioning_confirmation"
+      },
+      {
+        "item_code": "building-access-badge",
+        "name": "Building access badge",
+        "kind": "access",
+        "category": "physical_access",
+        "owner_role": "facilities",
+        "approval_class": "STANDARD",
+        "mandatory": true,
+        "provisioning_dependency": "hr_record_create",
+        "evidence_requirement": "handover_confirmation"
+      },
+      {
+        "item_code": "standard-user-access",
+        "name": "Standard user access",
+        "kind": "access",
+        "category": "system_permission",
+        "owner_role": "it_manager",
+        "approval_class": "STANDARD",
+        "mandatory": true,
+        "provisioning_dependency": "hr_record_create",
+        "evidence_requirement": "provisioning_confirmation"
+      }
+    ],
+    "role_equipment_matrix": [
+      {
+        "role_id": "software_engineer",
+        "grades": [],
+        "items": [
+          "laptop-standard",
+          "monitor-24",
+          "headset-basic"
+        ]
+      },
+      {
+        "role_id": "customer_success_specialist",
+        "grades": [],
+        "items": [
+          "laptop-standard",
+          "headset-basic"
+        ]
+      },
+      {
+        "role_id": "finance_analyst",
+        "grades": [],
+        "items": [
+          "laptop-standard",
+          "monitor-24"
+        ]
+      }
+    ],
+    "role_access_matrix": [
+      {
+        "role_id": "software_engineer",
+        "items": [
+          "email-teams-account",
+          "vpn-access",
+          "source-control-access",
+          "building-access-badge",
+          "standard-user-access"
+        ]
+      },
+      {
+        "role_id": "customer_success_specialist",
+        "items": [
+          "email-teams-account",
+          "crm-access",
+          "building-access-badge",
+          "standard-user-access"
+        ]
+      },
+      {
+        "role_id": "finance_analyst",
+        "items": [
+          "email-teams-account",
+          "vpn-access",
+          "finance-app-access",
+          "building-access-badge",
+          "standard-user-access"
+        ]
+      }
+    ],
+    "approver_config": {
+      "ACCESS": {
+        "role": "manager",
+        "delegate_role": "hr_ops"
+      },
+      "EQUIPMENT": {
+        "role": "manager",
+        "delegate_role": null
+      },
+      "EXCEPTION": {
+        "role": "hr_manager",
+        "delegate_role": null
+      }
+    },
+    "lead_times": {
+      "EQUIPMENT": 8,
+      "ACCESS": 4,
+      "CLIENT_SITE_CLEARANCE": 10
+    },
+    "handover_rules": {
+      "mode": "DELIVER",
+      "keep_reserved_on_missed_slot": true
+    },
+    "evidence_roles": {
+      "provisioning": "it_service_desk",
+      "delivery": "it_service_desk",
+      "collection": "it_service_desk",
+      "client_site_clearance": "account_manager"
+    },
+    "provisioning_prerequisites": [
+      "plan_approved",
+      "hr_record_created",
+      "role_matrix_present"
+    ],
+    "completion_evidence": [
+      "provisioning_confirmation",
+      "handover_confirmation"
+    ],
+    "out_of_matrix_policy": "exception_approval_required",
+    "client_site_rules": null,
+    "country_rules": {
+      "country_code": "CA",
+      "courier_extra_days": 2,
+      "remote_first_day_required": true
+    }
+  },
+  "uc05_orientation_policy": {
+    "orientation_programmes": [
+      {
+        "programme_key": "company_induction",
+        "name": "Company induction",
+        "session_types": [
+          "orientation"
+        ],
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "completion_deadline_offset_days": 0,
+        "assessment": {
+          "required": false
+        },
+        "completion_criteria": "attended_or_completed_as_recorded",
+        "evidence_required": "attendance_record"
+      },
+      {
+        "programme_key": "department_orientation",
+        "name": "Department orientation",
+        "session_types": [
+          "team_intro"
+        ],
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "completion_deadline_offset_days": 1,
+        "assessment": {
+          "required": false
+        },
+        "completion_criteria": "attended_or_completed_as_recorded",
+        "evidence_required": "attendance_record"
+      },
+      {
+        "programme_key": "workplace_health_and_safety",
+        "name": "Workplace health and safety",
+        "session_types": [
+          "induction"
+        ],
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "completion_deadline_offset_days": 5,
+        "assessment": {
+          "required": true,
+          "pass_mark_percent": 80
+        },
+        "completion_criteria": "attended_or_completed_as_recorded",
+        "evidence_required": "attendance_and_assessment_record"
+      },
+      {
+        "programme_key": "information_security",
+        "name": "Information security training",
+        "session_types": [
+          "induction"
+        ],
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "completion_deadline_offset_days": 5,
+        "assessment": {
+          "required": false
+        },
+        "completion_criteria": "attended_or_completed_as_recorded",
+        "evidence_required": "attendance_record"
+      },
+      {
+        "programme_key": "remote_work_onboarding",
+        "name": "Remote-work onboarding",
+        "session_types": [
+          "induction"
+        ],
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [
+            "work_arrangement:remote"
+          ],
+          "excludes_attributes": []
+        },
+        "completion_deadline_offset_days": 2,
+        "assessment": {
+          "required": false
+        },
+        "completion_criteria": "attended_or_completed_as_recorded",
+        "evidence_required": "attendance_record"
+      }
+    ],
+    "policy_acknowledgements": [
+      {
+        "policy_key": "code_of_conduct",
+        "name": "Code of conduct",
+        "policy_reference": "client-policy-library://code_of_conduct (placeholder; real policy content awaiting client)",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "acknowledgement_deadline_offset_days": 2,
+        "evidence_required": true,
+        "evidence_type": "signed_acknowledgement"
+      },
+      {
+        "policy_key": "confidentiality",
+        "name": "Confidentiality agreement",
+        "policy_reference": "client-policy-library://confidentiality (placeholder; real policy content awaiting client)",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "acknowledgement_deadline_offset_days": 0,
+        "evidence_required": true,
+        "evidence_type": "signed_acknowledgement"
+      },
+      {
+        "policy_key": "acceptable_use",
+        "name": "Acceptable use policy",
+        "policy_reference": "client-policy-library://acceptable_use (placeholder; real policy content awaiting client)",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "acknowledgement_deadline_offset_days": 3,
+        "evidence_required": true,
+        "evidence_type": "signed_acknowledgement"
+      },
+      {
+        "policy_key": "remote_work",
+        "name": "Remote-work policy",
+        "policy_reference": "client-policy-library://remote_work (placeholder; real policy content awaiting client)",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [
+            "work_arrangement:remote"
+          ],
+          "excludes_attributes": []
+        },
+        "acknowledgement_deadline_offset_days": 3,
+        "evidence_required": true,
+        "evidence_type": "signed_acknowledgement"
+      },
+      {
+        "policy_key": "attendance_and_leave",
+        "name": "Attendance and leave policy",
+        "policy_reference": "client-policy-library://attendance_and_leave (placeholder; real policy content awaiting client)",
+        "mandatory": true,
+        "applicability": {
+          "roles": [],
+          "grades": [],
+          "nationality_groups": [],
+          "locations": [],
+          "employment_types": [],
+          "projects": [],
+          "requires_attributes": [],
+          "excludes_attributes": []
+        },
+        "acknowledgement_deadline_offset_days": 5,
+        "evidence_required": true,
+        "evidence_type": "signed_acknowledgement"
+      }
+    ],
+    "reminder_rules": {
+      "first_reminder_after_working_days": 2,
+      "repeat_every_working_days": 2,
+      "handover_to_hr_after_reminders": 3
+    },
+    "location_specific": [],
+    "scheduling": {
+      "session_types": [
+        "orientation",
+        "induction",
+        "team_intro",
+        "buddy_intro"
+      ],
+      "invitations": "on_approval"
+    }
+  },
+  "awaiting_confirmation": [
+    {
+      "item": "All values in this profile are synthetic assumptions",
+      "owning_team": "client HR / configuration owners"
+    },
+    {
+      "item": "Approval authority for client configuration versions",
+      "owning_team": "business owner (Framework OQ-04)"
+    },
+    {
+      "item": "Real document lists, deadlines, formats and retention rules",
+      "owning_team": "client HR admin / UC-03 team"
+    },
+    {
+      "item": "Real equipment and access matrices, approvers and lead times",
+      "owning_team": "client IT and hiring managers / UC-04 team"
+    },
+    {
+      "item": "Real orientation, mandatory-training, assessment and policy-acknowledgement requirements",
+      "owning_team": "client HR / UC-05 team"
+    },
+    {
+      "item": "Nationality-to-group mapping",
+      "owning_team": "client HR / process SME"
+    },
+    {
+      "item": "Work province (only the country is stored); provincial tax and health-and-safety items depend on it",
+      "owning_team": "client HR"
+    },
+    {
+      "item": "Canadian work-authorisation evidence rules and permit support",
+      "owning_team": "immigration counsel / Canada compliance pack owner"
+    }
+  ]
+}

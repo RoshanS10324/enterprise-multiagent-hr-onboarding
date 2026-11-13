@@ -1,0 +1,51 @@
+{
+  "id": "POLICY-01",
+  "title": "Self approval of HC_05 denied; a second manager succeeds",
+  "covers": ["GR-02", "GR-14"],
+  "setup": {
+    "client_id": "client-eval-pol01",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Casey Self Approve",
+    "candidate_email": "casey.selfapprove@example.test",
+    "salary_and_terms": "Base: 107000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {},
+      "save": "case",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "prepare",
+      "as": "HR_MANAGER",
+      "args": {"case_id": "$case.case.case_id"},
+      "save": "prep",
+      "expect": {"outcome": "PREPARED"}
+    },
+    {
+      "action": "decide_write",
+      "as": "HR_MANAGER",
+      "args": {"approval_id": "$prep.approval_id", "approve": true},
+      "expect": {"error": true, "error_type": "PolicyViolationError", "error_code": "SELF_APPROVAL"}
+    },
+    {
+      "action": "decide_write",
+      "as": "HR_MANAGER_2",
+      "args": {"approval_id": "$prep.approval_id", "approve": true}
+    },
+    {
+      "action": "execute_write",
+      "as": "HR_MANAGER_2",
+      "args": {"case_id": "$case.case.case_id"},
+      "expect": {"completed": true}
+    }
+  ],
+  "final": {
+    "case_ref": "case",
+    "stage": "RECORD_CREATED",
+    "audit_actions_present": ["POLICY_DENIED", "HRIS_WRITE_APPROVED"],
+    "invariants_clean": true
+  }
+}

@@ -1,0 +1,47 @@
+[project]
+name = "hr-onboarding-agent"
+version = "0.3.0"
+description = "Employee onboarding sub-agent (agent_id: employee-onboarding): LangGraph workflow + FastAPI service"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "hr-onboarding-common",
+    "langgraph>=0.4.0",
+    "langchain-core>=0.3.0",
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.10.0",
+    "pyyaml>=6.0",
+    "langgraph-checkpoint-sqlite>=2.0",
+    "pyjwt[crypto]>=2.10",
+    "python-dotenv>=1.0.0",
+]
+
+[tool.uv.sources]
+hr-onboarding-common = { path = "../hr-onboarding-common" }
+
+[dependency-groups]
+dev = ["pytest>=8.0", "pytest-html>=4.2.0"]
+
+# Tests:        uv run pytest
+# Evaluations:  uv run python evaluation/run_evals.py   (add --json results.json to keep a report)
+# API:          uv run uvicorn sub_agent.api:app --port 8010
+[tool.pytest.ini_options]
+addopts = "-q --import-mode=importlib"
+testpaths = ["tests"]
+python_files = ["testcase.py", "test_*.py"]  # testcase.py: the central workflow suite
+pythonpath = [".", "src"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Three import roots, matching the standard layout: src/sub_agent (the agent package) plus the
+# top-level connectors/ and context_layer/ packages (context_layer ships its policy documents and
+# SKILL.md files with it). guardrails/policy.yaml is read from AGENT_HOME at runtime, not packaged.
+[tool.hatch.build.targets.wheel]
+packages = ["src/sub_agent", "connectors", "context_layer"]
+
+# Editable installs put both the project root and src/ on sys.path.
+[tool.hatch.build]
+dev-mode-dirs = [".", "src"]

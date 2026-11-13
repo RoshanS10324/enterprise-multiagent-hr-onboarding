@@ -1,0 +1,38 @@
+# [Proposed]: every value in this file (autonomy level, role assignments,
+# separation-of-duties flags) is a draft to confirm with the process SME.
+# Nothing here is final policy.
+
+# Bump on any change to the roles or separation-of-duties flags below.
+# Recorded on every POLICY_DENIED entry so a past decision can be read
+# against the rules that were actually in force at the time.
+policy_version = 1
+
+autonomy_level = "L1"
+
+[decisions.HC_01_FORM]
+roles = ["HR_MANAGER", "CLIENT_USER"]
+separation_of_duties = true
+
+[decisions.HC_04_DATA]
+roles = ["HR_OFFICER", "HR_MANAGER"]
+separation_of_duties = false
+
+[decisions.HC_05_HRIS_WRITE]
+roles = ["HR_MANAGER"]
+separation_of_duties = true
+
+[decisions.HC_12_VARIANT]
+roles = ["HR_OFFICER", "HR_MANAGER"]
+separation_of_duties = false
+
+[actions.compare_sources]
+roles = ["HR_OFFICER", "HR_MANAGER"]
+
+[actions.propose_form_change]
+roles = ["HR_OFFICER", "HR_MANAGER", "CLIENT_USER"]
+
+[actions.prepare_hris]
+roles = ["HR_OFFICER", "HR_MANAGER"]
+
+[actions.execute_hris_write]
+roles = ["HR_MANAGER"]

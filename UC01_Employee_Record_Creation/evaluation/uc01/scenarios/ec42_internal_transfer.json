@@ -1,0 +1,53 @@
+{
+  "id": "EC-42",
+  "title": "Internal transfer (current employee match): variant approval blocks prepare until HR decides",
+  "covers": ["EC-42"],
+  "setup": {
+    "client_id": "client-eval-ec42",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Jordan Internal Transfer",
+    "candidate_email": "jordan.internaltransfer@example.test",
+    "salary_and_terms": "Base: 110000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {
+      "action": "seed_person_record",
+      "as": "SYSTEM",
+      "args": {
+        "email": "jordan.internaltransfer@example.test",
+        "full_name": "Jordan Internal Transfer (current)",
+        "kind": "CURRENT_EMPLOYEE"
+      }
+    },
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {},
+      "save": "case",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "prepare",
+      "as": "HR_OFFICER",
+      "args": {"case_id": "$case.case.case_id"},
+      "expect": {"outcome": "BLOCKED_PENDING_VARIANT_DECISION"}
+    },
+    {
+      "action": "decide_variant",
+      "as": "HR_OFFICER",
+      "args": {"approval_id": "$case.approvals_created.0", "approve": true, "note": "transfer confirmed with current manager"}
+    },
+    {
+      "action": "prepare",
+      "as": "HR_OFFICER",
+      "args": {"case_id": "$case.case.case_id"},
+      "expect": {"outcome": "PREPARED"}
+    }
+  ],
+  "final": {
+    "case_ref": "case",
+    "stage": "HRIS_APPROVAL_PENDING",
+    "audit_actions_present": ["HRIS_PREPARE_BLOCKED", "VARIANT_APPROVED", "HRIS_PREPARED"],
+    "invariants_clean": true
+  }
+}

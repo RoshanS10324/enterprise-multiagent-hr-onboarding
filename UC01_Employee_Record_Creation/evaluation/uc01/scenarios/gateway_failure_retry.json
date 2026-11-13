@@ -1,0 +1,58 @@
+{
+  "id": "GATEWAY-01",
+  "title": "Gateway failure then retry gives exactly one EmployeeRecordCreatedEvent",
+  "covers": ["GR-14"],
+  "setup": {
+    "client_id": "client-eval-gw01",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Robin Retry",
+    "candidate_email": "robin.retry@example.test",
+    "salary_and_terms": "Base: 99000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {
+      "action": "open_case",
+      "as": "SYSTEM",
+      "args": {},
+      "save": "case",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "prepare",
+      "as": "HR_OFFICER",
+      "args": {"case_id": "$case.case.case_id"},
+      "save": "prep",
+      "expect": {"outcome": "PREPARED"}
+    },
+    {
+      "action": "decide_write",
+      "as": "HR_MANAGER",
+      "args": {"approval_id": "$prep.approval_id", "approve": true}
+    },
+    {
+      "action": "fail_gateway_next",
+      "as": "SYSTEM",
+      "args": {"n": 1}
+    },
+    {
+      "action": "execute_write",
+      "as": "HR_MANAGER",
+      "args": {"case_id": "$case.case.case_id"},
+      "expect": {"completed": false}
+    },
+    {
+      "action": "execute_write",
+      "as": "HR_MANAGER",
+      "args": {"case_id": "$case.case.case_id"},
+      "expect": {"completed": true}
+    }
+  ],
+  "final": {
+    "case_ref": "case",
+    "stage": "RECORD_CREATED",
+    "events": {"EmployeeRecordCreatedEvent": 1},
+    "gateway_writes": 2,
+    "audit_actions_present": ["HRIS_WRITE_FAILED", "HRIS_WRITE_SUCCEEDED"],
+    "invariants_clean": true
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "_mock_note": "MOCK DATA - fictional identifiers only. Not real employee data.",
+  "approved": false,
+  "source": "MOCK fixture - approximate UAE dates, NOT Legal/HR approved",
+  "coverage_start": "2026-01-01",
+  "coverage_end": "2027-12-31",
+  "holidays": [
+    "2026-01-01",
+    "2026-03-19",
+    "2026-03-20",
+    "2026-03-21",
+    "2026-05-26",
+    "2026-05-27",
+    "2026-05-28",
+    "2026-06-16",
+    "2026-08-25",
+    "2026-12-01",
+    "2026-12-02",
+    "2026-12-03",
+    "2027-01-01",
+    "2027-12-01",
+    "2027-12-02",
+    "2027-12-03"
+  ]
+}

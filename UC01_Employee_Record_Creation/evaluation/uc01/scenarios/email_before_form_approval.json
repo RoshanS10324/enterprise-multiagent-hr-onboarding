@@ -1,0 +1,52 @@
+{
+  "id": "DL-01-EARLY",
+  "title": "Acceptance email arrives before the form is approved: waits, then starts once approved",
+  "covers": ["DL-01", "EC-19"],
+  "setup": {
+    "client_id": "client-eval-email02",
+    "hr_officer_id": "hr-officer-eval-1",
+    "candidate_name": "Casey Early Acceptance",
+    "candidate_email": "casey.earlyacceptance@example.test",
+    "salary_and_terms": "Base: 98000 SYNTHETIC/yr; benefits: standard"
+  },
+  "steps": [
+    {"action": "seed_offer", "as": "SYSTEM", "args": {"offer_ref": "OFFER-7002"}},
+    {
+      "action": "seed_form_for_offer",
+      "as": "SYSTEM",
+      "args": {"offer_ref": "OFFER-7002", "form_status": "DRAFT"}
+    },
+    {
+      "action": "inbound_email",
+      "as": "SYSTEM",
+      "args": {
+        "from": "casey.earlyacceptance@example.test",
+        "subject": "Re: Your offer [OFFER-7002] - I accept"
+      },
+      "expect": {"outcome": "WAITING_FOR_FORM", "reasons": ["form not approved"]}
+    },
+    {
+      "action": "approve_offer_form",
+      "as": "SYSTEM",
+      "args": {"offer_ref": "OFFER-7002", "approved_by": "hr-officer-eval-approver"}
+    },
+    {
+      "action": "form_approved",
+      "as": "SYSTEM",
+      "args": {"offer_ref": "OFFER-7002"},
+      "save": "started",
+      "expect": {"outcome": "CASE_OPENED"}
+    },
+    {
+      "action": "form_approved",
+      "as": "SYSTEM",
+      "args": {"offer_ref": "OFFER-7002"},
+      "expect": {"outcome": "NOTHING_PENDING"}
+    }
+  ],
+  "final": {
+    "case_ref": "started",
+    "audit_actions_present": ["OFFER_ACCEPTED", "CASE_OPENED"],
+    "invariants_clean": true
+  }
+}
